@@ -44,7 +44,7 @@ This file generates one output file for each of the public voting record files, 
 It does some removal of incomplete records (no birthdate, no first name, no last name, no zipcode).
 It is also structured so that adding new states/data should be relatively formulaic, just follow
 the pattern of the already existing states and then rerun the script.
-The data will be output in ```[path_to_data_dir]/raw_voter/cleaned_data/```.
+The data will be output in ```[path_to_data_dir]/cleaned_voter_files```.
 
 
 # Other Notes

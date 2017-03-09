@@ -28,7 +28,7 @@ if len(sys.argv) != 2:
 DATA_DIR = sys.argv[1]
 VOTER_FILE_DATA_DIR = os.path.join(DATA_DIR, "raw_voter", "public_voter_files")
 DNC_DATA_DIR = os.path.join(DATA_DIR, "raw_voter","dnc_voter_files")
-OUTPUT_DIR = os.path.join(DATA_DIR, "raw_voter","cleaned_data")
+OUTPUT_DIR = os.path.join(DATA_DIR,"cleaned_voter_files")
 try:
     os.mkdir(OUTPUT_DIR)
 except:
@@ -46,8 +46,8 @@ county_fips.county = county_fips.county.str.replace(" County", "")
 ALL_STATES = ['NC','OH','MI','CO','WA','CT','RI','OK','DE','FL',"NV"]
 
 all_var_names = ["voter_id", "first_name", "middle_name",
-                 "last_name", "birth_date", "gender", "turnout2008", "turnout2010",
-                 "turnout2012", "turnout2014", "party_affiliation2008",
+                 "last_name", "birth_date", "gender", "turnout_2008", "turnout_2010",
+                 "turnout_2012", "turnout_2014", "party_affiliation2008",
                  "party_affiliation2010", "party_affiliation2012", "party_affiliation2014",
                  "party_affiliation", "address", "city", "zipcode", "county", "race", 'ethnicity', 'state', 'age',
                  'from']
@@ -162,6 +162,10 @@ def get_data_for_state_from_dnc_data(filename, output_dir):
     data['middle_name'] = ''
 
     data['party_affiliation'] = data.apply(get_party_affiliation_dnc_data, axis=1)
+    data["party_affiliation2008"] = ''
+    data["party_affiliation2010"] = ''
+    data["party_affiliation2012"] = ''
+    data["party_affiliation2014"] = ''
 
     data['age'] = data.birth_date.apply(lambda x: 2016 - int(str(x)[:4]) if str(x) != 'nan' else 0)
     data = data[(data.age > 0) & (data.age < 120)]
