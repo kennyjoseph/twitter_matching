@@ -1,2 +1,3 @@
 data/raw_voter
+data/cleaned_voter_files/
 *.DS_STORE
