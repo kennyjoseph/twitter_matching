@@ -158,8 +158,10 @@ processNameText = function(twitterName) {
     # convert to latin, then latin-ascii (removing diacriticals); then remove symbols
     # (non-latin alphabets will be rare among US-based profiles, but common elsewhere)
     name = stri_trans_nfkc(twitterName)
-    name = stri_trans_general(name, "latin; latin-ascii")
+	# note (3/10/17): Because of occasional (1/10,000,000) errors, now switching to try removing symbols before converting to ascii. 
+	# (alternative would be a tryCatch() that returns blank upon error.)
     name = stri_replace_all(name, " ", charclass="[\\p{S}]")
+    name = stri_trans_general(name, "latin; latin-ascii")
     
     # handle punctuation exactly as in getNameWordsFromVoter(): apostrophes are deleted.
     # Other punctuation (and in twitter data we'll also see digits, underscores and anything else)
