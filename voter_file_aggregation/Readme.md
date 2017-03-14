@@ -54,10 +54,12 @@ The data will be output in ```[path_to_data_dir]/cleaned_voter_files```.
 
 Step 3 -> Load the data by following this tutorial (https://cloud.google.com/bigquery/quickstart-command-line)
 
+Here are the commands that I had to run, installation included
 ```
+wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-146.0.0-linux-x86_64.tar.gz
+tar -xzvf google-cloud-sdk-146.0.0-linux-x86_64.tar.gz 
+./google-cloud-sdk/install.sh
 gcloud init
-bq mk voter_records
-bq load --field_delimiter="\t" --skip_leading_rows=1 voter_records.records_table data/cleaned_voter_files/rhode_island.tsv data/bigquery_schema.json 
 ```
 
 # Other Notes
