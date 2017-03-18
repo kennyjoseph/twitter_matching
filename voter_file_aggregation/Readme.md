@@ -34,7 +34,7 @@ Most data is from the public database at, e.g., connvoters.com.
 -  NV http://nvsos.gov/index.aspx?page=332
 -  NY http://www.elections.ny.gov/FoilRequests.html
 
-# Process
+# Generating Clean Voter Files
 
 1. download voter data - this step has to be automated, sorry. 
 Right now the data is at ``` .... insert data loc ... ``` on achtung
@@ -46,6 +46,21 @@ It is also structured so that adding new states/data should be relatively formul
 the pattern of the already existing states and then rerun the script.
 The data will be output in ```[path_to_data_dir]/cleaned_voter_files```.
 
+
+# Loading data into BigQuery
+
+## Step 1
+ Follow (this)[https://cloud.google.com/bigquery/quickstart-web-ui] tutorial to install and initialize the cloud sdk, set up the project for BigQuery
+
+Step 3 -> Load the data by following this tutorial (https://cloud.google.com/bigquery/quickstart-command-line)
+
+Here are the commands that I had to run, installation included
+```
+wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-146.0.0-linux-x86_64.tar.gz
+tar -xzvf google-cloud-sdk-146.0.0-linux-x86_64.tar.gz 
+./google-cloud-sdk/install.sh
+gcloud init
+```
 
 # Other Notes
 

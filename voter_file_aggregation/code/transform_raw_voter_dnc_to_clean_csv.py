@@ -43,7 +43,7 @@ county_fips = pd.read_csv(COUNTY_FILE, header=None, names=['state_code', 'state_
 county_fips = county_fips[['state_code', 'reg_address_countyfips', 'county']]
 county_fips.county = county_fips.county.str.replace(" County", "")
 
-ALL_STATES = ['NC','OH','MI','CO','WA','CT','RI','OK','DE','FL',"NV"]
+ALL_STATES = ['NC','OH','MI','CO','WA','CT','RI','OK','DE','FL']
 
 all_var_names = ["voter_id", "first_name", "middle_name",
                  "last_name", "birth_date", "gender", "turnout_2008", "turnout_2010",

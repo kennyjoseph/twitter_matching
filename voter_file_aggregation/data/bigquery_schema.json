@@ -1,0 +1,97 @@
+[{
+	"name": "voter_id",
+	"type": "integer",
+	"mode": "nullable"
+}, {
+	"name": "first_name",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "middle_name",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "last_name",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "birth_date",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "gender",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "turnout_2008",
+	"type": "integer",
+	"mode": "nullable"
+}, {
+	"name": "turnout_2010",
+	"type": "integer",
+	"mode": "nullable"
+}, {
+	"name": "turnout_2012",
+	"type": "integer",
+	"mode": "nullable"
+}, {
+	"name": "turnout_2014",
+	"type": "integer",
+	"mode": "nullable"
+}, {
+	"name": "party_affiliation2008",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "party_affiliation2010",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "party_affiliation2012",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "party_affiliation2014",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "party_affiliation",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "address",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "city",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "zipcode",
+	"type": "integer",
+	"mode": "nullable"
+}, {
+	"name": "county",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "race",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "ethnicity",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "state",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "age",
+	"type": "integer",
+	"mode": "nullable"
+}, {
+	"name": "from",
+	"type": "string",
+	"mode": "nullable"
+}]

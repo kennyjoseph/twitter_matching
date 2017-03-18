@@ -1,0 +1,77 @@
+[{
+	"name": "id",
+	"type": "integer",
+	"mode": "nullable"
+}, {
+	"name": "name",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "handle",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "location",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "description",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "url",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "date_created",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "date_last_seen",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "num_followers",
+	"type": "integer",
+	"mode": "nullable"
+}, {
+	"name": "num_following",
+	"type": "integer",
+	"mode": "nullable"
+}, {
+	"name": "num_tweets",
+	"type": "integer",
+	"mode": "nullable"
+}, {
+	"name": "is_protected",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "is_verified",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "tz_offset",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "tz_name",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "profile_lang",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "tweet_lang",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "coords",
+	"type": "string",
+	"mode": "nullable"
+}, {
+	"name": "nameHandleWords",
+	"type": "string",
+	"mode": "nullable"
+}]
