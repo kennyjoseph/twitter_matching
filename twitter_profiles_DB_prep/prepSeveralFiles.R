@@ -39,6 +39,7 @@ runOnManyFiles = function(inDir, inFiles, outDir) {
 	#sfClusterApplyLB(files, 1, function(x) safeClusterDoOneFile(x[1], x[2], x[3]))	 <-- wrong b/c it doesn't do margins, only single vector arg
 	sfApply(files, 1, function(x) capture.output(safeClusterDoOneFile(x[1], x[2], x[3]), file=x[4]))
 	print("finished running!!")
+	sfStop()
 
 }
 
