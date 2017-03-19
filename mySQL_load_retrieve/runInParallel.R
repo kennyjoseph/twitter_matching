@@ -66,6 +66,7 @@ if (F) {
 
 	#system.time(runOnFileChunks(voterfileIn, outDir, linesPerCall = 200, totVoterRecords = 2300))
 	system.time(runOnFileChunks(voterfileIn, outDir, linesPerCall = 2000))		# at this rate, expect each job to take ~10 min, and each node will have 100 such jobs --> 17 hours total?
-																				# in practice, each job is taking 15-20 min instead --> 34 hours?
-																				# after 1 hour, had 77k lines --> 26 hours?
+											# in practice, each job is taking 15-20 min instead --> 34 hours?
+											# after 1 hour, had 77k lines --> 26 hours?
+	# actual runtime (March 2017): 21.22 hours. (Observation: final few files went *much* faster than others because competing processes had already finished.)
 }
