@@ -1,0 +1,51 @@
+
+r1 = read.csv("~/Documents/lazer-lab/twitterUSVoters/data/twitterDB-matching/match-results/locsFeb3/national2M-rule3.csv")
+# 22853 rows
+
+r2 = read.csv("~/Documents/lazer-lab/twitterUSVoters/data/twitterDB-matching/match-results/Oct2016/natl-rule3.csv")
+# 24951 rows
+
+r3 = read.csv("~/Documents/lazer-lab/twitter_matching/add_locs_and_do_match/data/rule3natl2M-march2017.csv") # not joined with full voter data
+# 27812 rows
+
+allVoters = unique(c(r1$personid, r2$personid, r3$personid))
+
+y = merge(list(personid=allVoters), r1[, c("personid", "twProfileID")], by="personid", all.x=T)
+y2 = merge(y, r2[, c("personid", "twProfileID")], by="personid", all.x=T, suffixes=c("1", "2"))
+y3 = merge(y2, r3[, c("personid", "twProfileID")], by="personid", all.x=T)
+colnames(y3)[4] = "twProfileID3"
+
+#> dim(y3)
+#[1] 35206     4	
+# sanity: nrow(y3) == length(allVoters)
+
+# Blank entries in table are NA.
+# Easier to work with as 0's?
+y3[is.na(y3)] = 0
+
+
+# How many voters ever matched to *different* Twitter accounts?
+sum((y3[,2] != 0 & y3[,3] != 0 & y3[,2] != y3[,3])  		# rounds 1 and 2 both have answers and disagree (-> 17)
+	| (y3[,3] != 0 & y3[,4] != 0 & y3[,3] != y3[,4])  	# rounds 2 and 3 both have answers and disagree (-> 36)
+	| (y3[,2] != 0 & y3[,4] != 0 & y3[,2] != y3[,4]))	# rounds 1 and 3 both have answers and disagree (-> 99)
+# all together: 116 with conflicts/disagreements
+
+disagreements = (y3[,2] != 0 & y3[,3] != 0 & y3[,2] != y3[,3]) | (y3[,3] != 0 & y3[,4] != 0 & y3[,3] != y3[,4]) | (y3[,2] != 0 & y3[,4] != 0 & y3[,2] != y3[,4])
+
+ok = y3[!disagreements,]		# that's 35090 voters without disagreements
+
+# Of the non-disagreeing ones, how many were seen in each round?
+sum(ok[,2] != 0 & ok[,3] != 0 & ok[,4] != 0)	# 16575 in all three
+
+sum(ok[,2] != 0 & ok[,3] != 0 & ok[,4] == 0)	# 3209 in both 1 and 2, but not 3
+sum(ok[,2] == 0 & ok[,3] != 0 & ok[,4] != 0)	# 3759 in both 2 and 3, but not 1
+sum(ok[,2] != 0 & ok[,3] == 0 & ok[,4] != 0)	# 140 in both 1 and 3, but not 2
+						# -> 7108 matched twice
+
+sum(ok[,2] != 0 & ok[,3] == 0 & ok[,4] == 0)	# 2824 only round 1
+sum(ok[,2] == 0 & ok[,3] != 0 & ok[,4] == 0)	# 1355 only round 2
+sum(ok[,2] == 0 & ok[,3] == 0 & ok[,4] != 0)	# 7228 only round 3 (yay! better coverage now, probably)
+						# -> 11407 matched only once
+
+# Could dig into how/why each failed to match in other rounds (to turn up possible errors, etc), but not going there now.
+# Easiest route (probably): checking DB tables.
