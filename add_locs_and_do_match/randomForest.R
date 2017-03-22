@@ -1,20 +1,24 @@
 # This file: code that computes and adds a probMetaForeign column for the candidate matches, using profile meta-data only (e.g., time zones and languages).
 # Function to call:
-# addPredictionToCandMatches(infile="data/allCandidateMatchLocs2M.csv", outfile="data/allCandidateMatchLocProbs2M.csv")
+# addPredictionToCandMatches(infile="data/allCandidateMatchLocs2M.csv", outfile="data/allCandidateMatchLocProbs2M.csv", downsampleTrainingFactor=.5, saveModelFile="data/partyT_from_natl2M.rds")
 # 
 # The feature preprocessing is ad hoc. In an effort to reduce the number of feature values (b/c of random forest's limitations, 
 # which are no longer relevant), I coalesced values that seemed like they'd make sense to, but I didn't 
 # experiment much with those choices. Using all the original labels might be fine (or even preferred) with ctree().
 
 
-library(randomForest)	# apparently its variable selection is biased in favor of continuous vars and discrete with many splits.
+#library(randomForest)	# apparently its variable selection is biased in favor of continuous vars and discrete with many splits.
 library(party)		# cparty solves those issues. I'll try both.
 library(data.table)
 library(ROCR)		# for computing AUC
 
 # note, whoops: geoCoords got truncated/dropped back at my first script in the pipeline: cleanProfilesIndexNames.R
 
-addPredictionToCandMatches = function(infile, outfile) {
+# downsampleTrainingFactor: defaults to 1 = don't downsample. I used .5 for the natl2M set.
+# reusing model file DOES NOT WORK yet, because model can't handle feature values not seen at training time.
+#   If we want to make it work, (a) set numToKeep to not truncate any, and (b) delete newdata values not seen in 
+#   training data, which is stored in partyT@data@get("input").
+addPredictionToCandMatches = function(infile, outfile, saveModelFile=NULL, useModelFile=NULL, downsampleTrainingFactor=1) {
 
 	dataWithFeatures = prepLabeledData(infile, trainingOnly = F)	
 	data = dataWithFeatures$data
@@ -22,18 +26,31 @@ addPredictionToCandMatches = function(infile, outfile) {
 
 	# specify rows for training, applying
 	hasUsefulLoc = !(data$inferredLoc %in% c("", "unparsed"))
+
 	# for speed considerations, only use half of these?
-	actuallyUse = sample(nrow(data), .5*nrow(data))	# gives a bunch of row numbers
+	actuallyUse = sample(nrow(data), downsampleTrainingFactor * nrow(data))	# gives a bunch of row numbers
 	actuallyUseBool = (1:nrow(data)) %in% actuallyUse
 
-	# learn a ctree model
-	partyT = ctree(isForeign ~ profileLang2 + tweetLang2 + timeZoneOffset2 + timeZoneName2 + yearCreated + isProtected 
-										+ isVerified + numFollowers + numFollowing + numTweets, 
-							data = as.data.frame(data)[hasUsefulLoc & actuallyUseBool,])
+	if (!is.null(useModelFile)) {
+		partyT = readRDS(useModelFile)
+	} else {
+		# learn a ctree model
+		partyT = ctree(isForeign ~ profileLang2 + tweetLang2 + timeZoneOffset2 + timeZoneName2 + yearCreated + isProtected 
+											+ isVerified + numFollowers + numFollowing + numTweets, 
+								data = as.data.frame(data)[hasUsefulLoc & actuallyUseBool,])
+	}
+
+	if (!is.null(saveModelFile)) {
+		saveRDS(partyT, saveModelFile)
+	}
 
 	# apply it to all rows (including those it trained on, to keep things simple)
 	partyPreds = treeresponse(partyT, newdata = as.data.frame(data))
 	partyProbs = matrix(unlist(partyPreds), byrow=T, ncol=2)[,2]
+
+	# report AUC on labeled data
+	predObj = prediction(partyProbs[hasUsefulLoc], data$inferredLoc[hasUsefulLoc] == "foreign")
+	print(paste("AUC for labeled data:", performance(predObj, "auc")@y.values[[1]]))
 
 	# save results
 	data$probMetaForeign = partyProbs

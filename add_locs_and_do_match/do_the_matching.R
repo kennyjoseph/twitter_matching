@@ -1,17 +1,16 @@
 
-source("processLocations.R")
+library(data.table)
 
 # File to take preliminary matching results (from querying voters against the twitter DB) and convert them to 
 # full-fledged matches, where each row = 1 voter + 1 twitter account.
 
-# matchFileIn: has one row per potential match. 
+# Notice: matchTheMatches only enables rule3 right now.
+
+# matchFileIn: has one row per potential match, must contain the columns inferredLoc, personid, and twProfileID. Probably also has [voter's] state_code, twProfileName, twProfileHandle, twProfileLoc.
 # voterfileIn: assumed to be one of the csv files, and it has to contain "personid".
 # fullMatchFileOut: will be a .csv file.
 matchTheMatches = function(voterfileIn, matchFileIn, fullMatchFileOut,
-                           matchFileFormat = 4,   
-                           #               4: all potential matches with *final* newInferredLoc column already added using addNewLocToFile()
-						   #                    (in which location inference takes into account the potentially matching location)
-                           matchRulesVersion = 3, placeListDir=NULL, someInputColsQuoted=FALSE) {
+                           matchRulesVersion = 3) {
                             # match rules:  [1: match iff there's only 1 candidate match and it's to the right state]
                             #               [2: match iff there's only 1 candidate match (after excluding matches to other states)]
                             #               3: match iff there's only 1 candidate match (after excluding matches to "foreign" and other states)
@@ -20,47 +19,39 @@ matchTheMatches = function(voterfileIn, matchFileIn, fullMatchFileOut,
                             #                   as long as there's only 1 in the right state
                             #               5: recreate the procedure KJ used (using either the naive location parse or newInferredLoc)
     
-    # Fields expected in matchFileIn fileFormat==4: personid, twProfileID, twProfileName, twProfileHandle, twProfileLoc, newInferredLoc, [voter's] state_code
-	
-    
-    # (note: specifically not using the flag colClasses = "character", to avoid excessive quotes in the output file)
-    if (someInputColsQuoted) {
-        # Oct 2016 version has tabs embedded in some fields, which are quoted
-        matchCountsData = read.table(file=matchFileIn, header=T, #stringsAsFactors=F, 
-                                     comment.char="", sep="\t", quote='"')
-    } else {
-        matchCountsData = read.table(file=matchFileIn, header=T, #stringsAsFactors=F, 
-                                     comment.char="", sep="\t", fill=T, quote="", na.strings=NULL) 
-    }
-    
-    # 1. Decide which matches are reliable (depending on the matching rules to use).
-    
-    # 1a. If input data includes voters whose names occur >1 time per state, remove those rows.
-    # (Should only apply to earliest 100k national sample.)
-    if ("voters_in_state" %in% colnames(matchCountsData)) {
-        matchCountsData = matchCountsData[matchCountsData$voters_in_state == 1,]
-    }
-    
 	# normally only need 1 of the voter columns returned, personid, since going to merge with voter data anyway.
     matchingColsToKeep = c("personid", "twProfileID", "twProfileName", "twProfileHandle", "twProfileLoc")
 	# But for testing/inspection purposes, may want others:
-	matchingColsToKeep = c("personid", "first_name", "last_name", "reg_address_city", "state_code", "twProfileID", "twProfileName", "twProfileHandle", "twProfileLoc")
+	#matchingColsToKeep = c("personid", "first_name", "last_name", "reg_address_city", "state_code", "twProfileID", "twProfileName", "twProfileHandle", "twProfileLoc")
+	locationColName = "inferredLoc"
 
+	# 0. Read data and preprocess if needed
+    matchCountsData = as.data.frame(fread(matchFileIn))
+
+    # If input data includes voters with blank cities, drop them. (Will try to prevent this at earlier steps.)
+    if ("reg_address_city" %in% colnames(matchCountsData) & sum(matchCountsData$reg_address_city == '') > 0) {
+        matchCountsData = matchCountsData[matchCountsData$reg_address_city != '',]
+    }
+
+    
+    # 1. Decide which matches are reliable (depending on the matching rules to use).
+    
     # Do the matching! (Exciting part.)
 	# 	matchRulesVersion 1 was: conservative / original: only allow the match when there's exactly 1 match on twitter and it's to the right state
 	# 	matchRulesVersion 2 was: Ignore any candidate matches for which we know the location and it's a different US state
     if (matchRulesVersion == 3) {
         # Additionally exclude "foreign" locs (requires more recent loc computation).
-		twMatches = matching3ExcludeForeign(matchCountsData, matchingColsToKeep)
+		twMatches = matching3ExcludeForeign(matchCountsData, locationColName, matchingColsToKeep)
     }
     
     # 2. Ensure uniqueness: if >= 2 voters match to the same twitter account, drop these rows.
     twitterAcctFreqs = table(twMatches$twProfileID)
-    rows_twitterOccurringJustOnce = (twMatches$twProfileID %in% names(twitterAcctFreqs)[twitterAcctFreqs==1])
+    rows_twitterOccurringJustOnce = (as.character(twMatches$twProfileID) %in% names(twitterAcctFreqs)[twitterAcctFreqs==1])
     twMatches = twMatches[rows_twitterOccurringJustOnce,]
     
     # 3. Merge with the original voter data
-    voterData = read.csv(file=voterfileIn, header=T) #, stringsAsFactors=F) #colClasses = "character")
+    voterData = as.data.frame(fread(voterfileIn))
+    #voterData = read.csv(file=voterfileIn, header=T) #, stringsAsFactors=F) #colClasses = "character")
     allDataMatched = merge(twMatches, voterData, by.x="personid", by.y="personid", all.x=T)
     
     # sanity check: specifying all.x shouldn't have created any blank fields

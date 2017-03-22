@@ -5,6 +5,7 @@ r1 = read.csv("~/Documents/lazer-lab/twitterUSVoters/data/twitterDB-matching/mat
 r2 = read.csv("~/Documents/lazer-lab/twitterUSVoters/data/twitterDB-matching/match-results/Oct2016/natl-rule3.csv")
 # 24951 rows
 
+# N.B. later deleted this (preliminary) file b/c it contained some duplicates and matches with blank cities. Updated version has 27744 rows instead.
 r3 = read.csv("~/Documents/lazer-lab/twitter_matching/add_locs_and_do_match/data/rule3natl2M-march2017.csv") # not joined with full voter data
 # 27812 rows
 
