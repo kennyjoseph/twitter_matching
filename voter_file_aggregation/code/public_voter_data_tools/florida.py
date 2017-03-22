@@ -10,7 +10,7 @@ def file_reader(fil):
     global voter_history
     voter_history = defaultdict(set)
     print 'FL reading voter history from: ',
-    history_file = fil.replace("20151130_voters","VH20151031").replace("20151217","H_20151109")
+    history_file = fil.replace("voting_records","voter_history").replace("20170307","H_20170307")
     print os.path.basename(history_file)
 
     curr_county = county_keys[os.path.basename(fil)[0:3]]

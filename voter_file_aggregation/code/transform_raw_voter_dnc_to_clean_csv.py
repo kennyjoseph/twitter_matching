@@ -22,13 +22,15 @@ from collections import defaultdict
 from multiprocessing import Pool, cpu_count
 from functools import partial
 
+import time
 if len(sys.argv) != 2:
     print 'USAGE: transform_raw_voter_dnc_to_clean_csv.py [path_to_raw_data_files -> e.g. ../data/]'
 
-DATA_DIR = sys.argv[1]
+DATA_DIR = "../data/"#sys.argv[1]
 VOTER_FILE_DATA_DIR = os.path.join(DATA_DIR, "raw_voter", "public_voter_files")
 DNC_DATA_DIR = os.path.join(DATA_DIR, "raw_voter","dnc_voter_files")
 OUTPUT_DIR = os.path.join(DATA_DIR,"cleaned_voter_files")
+TODAYS_DATE = time.strftime("%d/%m/%Y")
 try:
     os.mkdir(OUTPUT_DIR)
 except:
@@ -43,7 +45,20 @@ county_fips = pd.read_csv(COUNTY_FILE, header=None, names=['state_code', 'state_
 county_fips = county_fips[['state_code', 'reg_address_countyfips', 'county']]
 county_fips.county = county_fips.county.str.replace(" County", "")
 
-ALL_STATES = ['NC','OH','MI','CO','WA','CT','RI','OK','DE','FL']
+ALL_STATES = ['CO']#,'OH','MI','NC','WA','CT','RI','OK','DE','FL']
+
+STATE_TO_REGISTRY_DATE = {
+     'NC': "2017-03-18",
+     'OH': "2017-03-18",
+     'MI': "2016-09-01",
+     'CO': "2016-12-01",
+     'WA': "2017-02-01",
+     'CT': "2017-02-03",
+     'RI': "2015-01-01",
+     'OK': "2016-12-05",
+     'DE': "2015-05-21",
+     'FL': "2017-02-28"
+}
 
 all_var_names = ["voter_id", "first_name", "middle_name",
                  "last_name", "birth_date", "gender", "turnout_2008", "turnout_2010",
@@ -99,6 +114,9 @@ def get_data_for_state_from_voter_file(input_dir, output_filename, state,
                     # do any post processing consistent across all states here
                     dat = dict(zip(all_var_names, values))
 
+                    dat['voter_id'] = state + "_" + STATE_TO_REGISTRY_DATE[state] +"_" + dat['voter_id']
+
+
                     # set age
                     # all of these are either years or dd/mm/yyyy format, so this is safe for most
                     # if it isn't safe, then fix it in the state-specific file (e.g. see ohio)
@@ -111,7 +129,7 @@ def get_data_for_state_from_voter_file(input_dir, output_filename, state,
                     # TODO: This isn't exactly right either, the files come from different time periods
                     age = 2016 - int(birth_year)
                     dat['age'] = age
-                    dat['from'] = 'pub_vote'
+                    dat['from'] = 'public_'+ state + "_" + STATE_TO_REGISTRY_DATE[state]
 
                     # Make sure its a valid row
                     if not (len(dat['zipcode']) and
@@ -150,6 +168,8 @@ def get_data_for_state_from_voter_file(input_dir, output_filename, state,
                     print 'missed line!'
             except IndexError:
                 print 'row failed', line
+            except ValueError:
+                print 'row failed value error', line
     out.close()
     return set(all_counties_in_state)
 
@@ -217,25 +237,27 @@ if os.path.exists(STATE_COUNTY_FILE):
         state_to_county_data[state].add(county)
 
 # generate results in parallel for state voter files
-n_cpu = min(len(ALL_STATES), cpu_count()/float(2))
-print 'N CPUS: ', n_cpu
-pool = Pool(int(n_cpu))
-results = pool.map(get_data_voter_file_helper,ALL_STATES)
-for result in results:
-    state, counties = result
-    state_to_county_data[state] = state_to_county_data[state] | counties
-pool.close()
+#n_cpu = min(len(ALL_STATES), cpu_count()/float(2))
+
+get_data_voter_file_helper('NC')
+# print 'N CPUS: ', n_cpu
+# pool = Pool(int(n_cpu))
+# results = pool.map(get_data_voter_file_helper,ALL_STATES)
+# for result in results:
+#     state, counties = result
+#     state_to_county_data[state] = state_to_county_data[state] | counties
+# pool.close()
 
 # generate results for the DNC data
-dnc_partial = partial(get_data_for_state_from_dnc_data, output_dir = OUTPUT_DIR)
+# dnc_partial = partial(get_data_for_state_from_dnc_data, output_dir = OUTPUT_DIR)
 #pool = Pool(2)
 #results = pool.map(dnc_partial,glob.glob(DNC_DATA_DIR + "/*"))
 #for result in results:
 #    for state,counties in result.items():
 #        state_to_county_data[state] = state_to_county_data[state] | counties
 #pool.close()
-for x in glob.glob(DNC_DATA_DIR+"/*"):
-    dnc_partial(x)
+# for x in glob.glob(DNC_DATA_DIR+"/*"):
+#     dnc_partial(x)
 
 
 # write out county/state file

@@ -5,9 +5,14 @@ python libraries required (aside from standard anaconda distro):
 pip install nameparser
 ```
 
-Also, step 03 currently requires access to the deceptions spark cluster
 
 # Raw data info
+
+To download the raw data, run ```download_public_voter_data.sh```. This will, I think, download all
+the data used.  
+
+Note that in ```transform_raw_voter_dnc_to_clean_csv.py``` there is some information about when the data
+was downloaded. If you re-download new data, probably best to update these values.
 
 ### Most
 Most data is from the public database at, e.g., connvoters.com.  
@@ -17,16 +22,14 @@ Most data is from the public database at, e.g., connvoters.com.
 - OH - http://www6.sos.state.oh.us/ords/f?p=111:1:0::NO:RP:P1_TYPE:STATE
 - DC: https://github.com/ajschumacher/dc_voter_reg
 - WA: https://www.sos.wa.gov/elections/vrdb-download-form.aspx
-- NV (Clark County only): http://www.clarkcountynv.gov/election/Pages/VoterDataFiles.aspx
+- NC: http://dl.ncsbe.gov/data/
 
 ### For purchase, if we want:
 - PA - https://www.pavoterservices.state.pa.us/pages/PurchasePAFULLVoterExport.aspx
--  National - http://nationbuilder.com/voterfiled
 -  IL - https://www.elections.il.gov/votinginformation/computerizedvoterdata.aspx
 -  LA - http://www.sos.la.gov/ElectionsAndVoting/BecomeACandidate/PurchaseVoterLists/Pages/default.aspx
 -  GA - http://sos.ga.gov/index.php/elections/order_voter_registration_lists_and_files
 -  CA - Will email
-- NC full - http://www.ncsbe.gov/data-statistics
   
 ### Weird restrictions, but probably could be collected:
 -  TX http://www.txdemocrats.org/act/van

@@ -4,13 +4,13 @@ voters = defaultdict(set)
 
 def file_reader(fil):
     global voters
-    history_file = fil.replace("voting_data","../voting_history")
+    history_file = fil.replace("voting_records/201702_VRDB_Extract.txt","voting_history.txt")
     print 'HISTORY FILE WASHINGTON: ', history_file
     reader = csv.reader(open(history_file), delimiter="\t")
     for row in reader:
         elec = row[2]
         voterid = row[1]
-        voters[voterid].add(elec)
+        voters[voterid].add(elec.replace(" 00:00:00",""))
 
     return file_reader_simple_csv(fil,"\t")
 

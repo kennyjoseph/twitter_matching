@@ -4,7 +4,7 @@ import os
 voters = defaultdict(set)
 
 def file_reader(fil):
-    reader = csv.reader(open(os.path.join(os.path.dirname(fil),"../ncvhis92.txt")),delimiter="\t")
+    reader = csv.reader(open(os.path.join(os.path.dirname(fil),"../voter_history.txt")),delimiter="\t")
     vars = reader.next()
     for row in reader:
         voterid = row[10]
@@ -15,7 +15,7 @@ def file_reader(fil):
 
 
 def line_reader(row):
-    voterid = row[67]
+    voterid = row[68]
     votes = voters.get(voterid,[])
     county = row[1]
     turnout2008 = 1 if '11/04/2008' in votes else 0
