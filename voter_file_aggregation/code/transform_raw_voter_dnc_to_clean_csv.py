@@ -27,7 +27,7 @@ import time
 if len(sys.argv) != 2:
     print 'USAGE: transform_raw_voter_dnc_to_clean_csv.py [path_to_raw_data_files -> e.g. ../data/]'
 
-DATA_DIR = "../data/"#sys.argv[1]
+DATA_DIR = sys.argv[1]
 VOTER_FILE_DATA_DIR = os.path.join(DATA_DIR, "raw_voter", "public_voter_files")
 DNC_DATA_DIR = os.path.join(DATA_DIR, "raw_voter","dnc_voter_files")
 OUTPUT_DIR = os.path.join(DATA_DIR,"cleaned_voter_files")
@@ -46,7 +46,7 @@ county_fips = pd.read_csv(COUNTY_FILE, header=None, names=['state_code', 'state_
 county_fips = county_fips[['state_code', 'reg_address_countyfips', 'county']]
 county_fips.county = county_fips.county.str.replace(" County", "")
 
-ALL_STATES = ['CO']#,'OH','MI','NC','WA','CT','RI','OK','DE','FL']
+ALL_STATES = ['CO','OH','MI','NC','WA','CT','RI','OK','DE','FL']
 
 STATE_TO_REGISTRY_DATE = {
      'NC': "2017-03-18",
@@ -203,7 +203,7 @@ def get_data_for_state_from_dnc_data(filename, output_dir):
     data["party_affiliation2014"] = ''
 
     file_id = os.path.basename(filename).replace("voterfile_unique_","").replace(".csv","") +"_2015"
-    data['from'] = file_id
+    data['from'] = "dnc_"+file_id
 
     data['birth_year'] = data.birth_date.str.slice(0, 4)
 
@@ -246,25 +246,27 @@ if os.path.exists(STATE_COUNTY_FILE):
         state_to_county_data[state].add(county)
 
 # generate results in parallel for state voter files
-#n_cpu = min(len(ALL_STATES), cpu_count()/float(2))
+n_cpu = min(len(ALL_STATES), cpu_count()/float(2))
 
-get_data_voter_file_helper('WA')
-# print 'N CPUS: ', n_cpu
-# pool = Pool(int(n_cpu))
-# results = pool.map(get_data_voter_file_helper,ALL_STATES)
-# for result in results:
-#     state, counties = result
-#     state_to_county_data[state] = state_to_county_data[state] | counties
-# pool.close()
+#get_data_voter_file_helper('WA')
+print 'N CPUS: ', n_cpu
+pool = Pool(int(n_cpu))
+results = pool.map(get_data_voter_file_helper,ALL_STATES)
+for result in results:
+     state, counties = result
+     state_to_county_data[state] = state_to_county_data[state] | counties
+pool.close()
+pool.terminate()
 
 # generate results for the DNC data
-# dnc_partial = partial(get_data_for_state_from_dnc_data, output_dir = OUTPUT_DIR)
-#pool = Pool(2)
-#results = pool.map(dnc_partial,glob.glob(DNC_DATA_DIR + "/*"))
-#for result in results:
-#    for state,counties in result.items():
-#        state_to_county_data[state] = state_to_county_data[state] | counties
-#pool.close()
+dnc_partial = partial(get_data_for_state_from_dnc_data, output_dir = OUTPUT_DIR)
+pool = Pool(2)
+results = pool.map(dnc_partial,glob.glob(DNC_DATA_DIR + "/*"))
+for result in results:
+    for state,counties in result.items():
+        state_to_county_data[state] = state_to_county_data[state] | counties
+pool.close()
+pool.terminate()
 # for x in glob.glob(DNC_DATA_DIR+"/*"):
 #     dnc_partial(x)
 
