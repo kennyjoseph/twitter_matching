@@ -4,9 +4,8 @@
 #
 # Iterates through voter file. 
 # For each voter, clean the name, query the DB for matches, and write out all matches. That's it.
-# Hard-coded maximum of 10 matches printed per voter. (Should make this a variable and export it in runInParallel.R.)
+# Maximum of 10 matches printed per voter (unless specified otherwise). 
 
-# Note: matchCountsFile omits voters that didn't have enough words in their name to query the DB.
 
 library(RMySQL)
 options(warn=1)               # print warnings as they occur
@@ -20,20 +19,19 @@ alreadyInKeyCache = TRUE      # TRUE if it's been done manually; otherwise, will
 DBtables = c("profiles2017v2_1", "profiles2017v2_2", "profiles2017v2_3", "profiles2017v2_4")
 
 # All-purpose function we want.
-# Input: voter file, in any of three formats (see below).
+# Input: voter file, a CSV containing at least the first 5 column names in inputColnamesToKeep below.
 # Outputs:
 #   -outfileForCandMatches is .tsv file of all good-looking matches, to use in next step of matching.
 #   -voterfileOut [optional] shows number of matches per voter
-# Param inputFileHasCounts toggles between three input files: (1) voters-someFields.csv, which is csv;
-# (2) voters-moreFields.txt, which is tab-separated and adds voter counts per zip, state and country;
-# or (3) the original file format provided by the DNC, which is csv with many columns, but not counts
 countTwitterVoterMatches = function(voterfileIn, outfileForCandMatches, 
-				inputFileFormat=3, startWithRecord=1, stopAfterRecord=NULL, matchCountsFile = NULL) {
+				startWithRecord=1, stopAfterRecord=NULL, matchCountsFile = NULL, maxMatchesToSave=10) {
     
     print(paste("Args to main function: voterfileIn=", voterfileIn, ", outfileForCandMatches=", outfileForCandMatches, 
-        ", inputFileFormat=", inputFileFormat, ", startWithRecord=", startWithRecord, ", stopAfterRecord=", stopAfterRecord,
-        ", matchCountsFile=", matchCountsFile))
+        ", startWithRecord=", startWithRecord, ", stopAfterRecord=", stopAfterRecord, ", matchCountsFile=", matchCountsFile))
     
+	inputColnamesToKeep = c("personid", "first_name", "last_name", "reg_address_city", "state_code", "flags_online")
+	# (in the past, also hung on to voters_in_country, voters_in_state if present. flags_online could probably be dropped.)
+
     # db connection
     dbCon = initializeDBCon()
     
@@ -44,28 +42,23 @@ countTwitterVoterMatches = function(voterfileIn, outfileForCandMatches,
 		conCnts = file(matchCountsFile, open="wt")
 	}
     
-    inputIsCSV = F
-    if (inputFileFormat == 1) {		# voters-someFields.csv
-		# voter id, first name, last name, city, state (where registered)
-		inputColsToKeep = c(1,3:4, 13, 2)
-		inputIsCSV = T
-    } else if (inputFileFormat == 2) {		# voters-moreFields.txt
-		# 21:22 = voters_in_country, voters_in_state
-		inputColsToKeep = c(1,3:4, 21:22, 13, 2)	
-    } else if (inputFileFormat == 3) {	# orig format .csv
-		# voter id, first name, last name, flags_online, city, state (where registered)
-		inputColsToKeep = c(1,3:4, 45, 17, 2)
-		inputIsCSV = T
-    }
-	colsToQuote = length(inputColsToKeep) + 2:6   # quote fields (from db) name, handle, loc, descrip, url
     
     # read and write headers
-    if (!inputIsCSV) {
-    	# Must use colClasses = "character" here and at end of loop to avoid initials of F or T being expanded to FALSE or TRUE
-        fields = read.table(con, header=T, nrows=startWithRecord, stringsAsFactors=F, sep="\t", fill=T, quote="", comment.char="", colClasses = "character")
-    } else {
-        fields = read.csv(con, header=T, nrows=startWithRecord, stringsAsFactors=F, colClasses = "character")
-    }
+	# Must use colClasses = "character" here and at end of loop to avoid initials of F or T being expanded to FALSE or TRUE
+	fields = read.csv(con, header=T, nrows=startWithRecord, stringsAsFactors=F, colClasses = "character")
+	if (startWithRecord > nrow(fields)) {	
+		print(paste("Supposed to start with row", startWithRecord, ", but file only contains", nrow(fields), "rows; exiting countTwitterVoterMatches()"))
+		close(con)
+		close(twOut2)
+		dbDisconnect(dbCon)
+		if (!is.null(matchCountsFile)) {
+			close(conCnts)
+		}
+		return()
+	}
+
+	inputColsToKeep = which(colnames(fields) %in% inputColnamesToKeep)
+	colsToQuote = length(inputColsToKeep) + 2:6   # from DB's Twitter profiles, quote fields 2-6: name, handle, loc, descrip, url
 
 	writeLines(paste(c(colnames(fields[inputColsToKeep]), "twProfileID", "twProfileName", "twProfileHandle", "twProfileLoc", "etc"),
 				 collapse="\t"), con=twOut2)
@@ -107,15 +100,12 @@ countTwitterVoterMatches = function(voterfileIn, outfileForCandMatches,
             
         } else {
             startTime = Sys.time()
-			totNumMatches = countTwitterProfiles(dbCon, nameWords, maxOk=10)	# save time by only retrieving records when the number is small
+			totNumMatches = countTwitterProfiles(dbCon, nameWords, maxOk=maxMatchesToSave)	# save time by only retrieving records when the number is small
 			endTime = Sys.time()
 			queryCountTimes = c(queryCountTimes, as.numeric(endTime - startTime, units="secs"))
             
-			# If we have "unique in zip" field, require it be 1. Normally, take all lines.
-			uniqueInZip = (fields[23] == 1 || inputFileFormat != 2)		
-			
 			# Write out candidates matches, as input to further matching rules 
-			if (uniqueInZip && totNumMatches > 0 && totNumMatches <= 10) {
+			if (totNumMatches > 0 && totNumMatches <= maxMatchesToSave) {
                 startTime = Sys.time()
 				twProfiles = getAllTwitterProfiles(dbCon, nameWords)	# data.frame with columns: id, name, handle, locationString, inferredLoc
     			endTime = Sys.time()
@@ -155,12 +145,7 @@ countTwitterVoterMatches = function(voterfileIn, outfileForCandMatches,
         lineFound = readLines(con, n=1)
         fields = c()
         if (length(lineFound)) {
-            if (!inputIsCSV) {
-                fields = read.table(text=lineFound, header=F, nrows=1, stringsAsFactors=F, 
-                                    sep="\t", fill=T, quote="", comment.char="", colClasses = "character")
-            } else {
-                fields = read.csv(text=lineFound, header=F, nrows=1, stringsAsFactors=F, colClasses = "character")
-            }
+			fields = read.csv(text=lineFound, header=F, nrows=1, stringsAsFactors=F, colClasses = "character")
         }
     }
 	
@@ -260,4 +245,4 @@ initializeDBCon = function() {
 # outfileForCandMatches = "candMatches-head3.1.csv"
 # matchCountsFile = "matchCounts-head3.1.csv"
 
-#system.time(countTwitterVoterMatches(voterfileIn, outfileForCandMatches=outfileForCandMatches, inputFileFormat=3, matchCountsFile=matchCountsFile)) 
+#system.time(countTwitterVoterMatches(voterfileIn, outfileForCandMatches=outfileForCandMatches, matchCountsFile=matchCountsFile)) 

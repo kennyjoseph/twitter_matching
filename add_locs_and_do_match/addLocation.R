@@ -6,22 +6,26 @@ source("processLocations.R")	# for isLocationInUSA and its helper fns
 # Code to add a "inferredLoc" column to candidate matches.
 # addLocToFile() runs on one file.
 # runDirectory() loops over the output files from mySQL_load_retrieve/countTwitterVoterMatches().
+# grabAll() rbinds and saves as a single file.
 
-# to execute: system.time(runDirectory("~/twitter_matching/mySQL_load_retrieve/data", "~/twitter_matching/add_locs_and_do_match/data/candidateMatchFiles"))
-# quick! Took 55 minutes for all 1000 files (from the 2M voters).
+# to execute: 
+# inDir = "~/twitter_matching/mySQL_load_retrieve/data"
+# outDir = "~/twitter_matching/add_locs_and_do_match/data/candidateMatchFiles"
+# finalOutfile = "~/twitter_matching/add_locs_and_do_match/data/allCandidateMatchLocs2M.csv"
+# system.time(runDirectory(inDir, outDir)) 	# quick! Took 55 minutes for all 1000 files (from the 2M voters).
+# grabAll(outDir, 1000, finalOutfile)
 
 # and finally, rbind all of them:
-grabAll = function() {
-	listOfDataTables = vector(mode="list", length=1000)
-	infiles = paste0("~/twitter_matching/add_locs_and_do_match/data/candidateMatchFiles/candMatchLocs-", 1:1000, ".csv")
-	for (i in 1:1000) {
+grabAll = function(dataDir, numFiles, outFile) {
+	listOfDataTables = vector(mode="list", length=numFiles)
+	infiles = paste0(dataDir, "/candMatchLocs-", 1:numFiles, ".csv")
+	for (i in 1:numFiles) {
 		listOfDataTables[[i]] = fread(infiles[i])
 		# need to explicitly convert twitterID to integer64 for all tables, else some treat it as numeric
 		listOfDataTables[[i]] = listOfDataTables[[i]][, twProfileID := as.integer64(twProfileID)]	# note unfamiliar syntax. Seems to mean "replace one col, while keeping the others"
 	}
 	allTogether = rbindlist(listOfDataTables)
-	fwrite(allTogether, file="~/twitter_matching/add_locs_and_do_match/data/allCandidateMatchLocs2M.csv")
-		
+	fwrite(allTogether, file=outFile)
 }
 
 runDirectory = function(inDir, outDir, numFiles=1000) {
@@ -62,8 +66,9 @@ addLocToFile = function(infile, outfile, placeListDir, inParallel=F, timeProfili
 	places$countryList = unique(stri_trans_general(places$countryList, "latin-ascii"))
 		
 	candMatches = as.data.table(fread(infile, skip=1))		# header doesn't have enough fields; easier to paste on correct names here.
-	#candMatches = read.table(infile, sep="\t")
-	colnames(candMatches)[1:10] = c("personid", "first_name", "last_name", "flags_online", "reg_address_city", "state_code", "twProfileID", "twProfileName", "twProfileHandle", "twProfileLoc")
+	headerStart = read.table(infile, nrows=1)
+	colnames(candMatches)[1:ncol(headerStart)] = sapply(headerStart[1,], as.character)
+
 	print(paste("Read", nrow(candMatches), "lines of matches to process"))
 	if (timeProfiling) {
 		print(paste("Time since start:", Sys.time()-startTime, units(Sys.time()-startTime)))

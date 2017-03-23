@@ -1,0 +1,133 @@
+
+source("randomForest.R")	# for printConfusionMatrix
+
+# Now with classifier's predictions of foreign 
+data = fread("data/allCandidateMatchLocProbs2M.csv")
+
+hasUsefulLoc = !(data$inferredLoc %in% c("", "unparsed"))
+
+# Which cutoff to use? Check what happened on labeled data:
+# rowsums: c(407584, 206308) -- 1/3 of the data with extracted locations is foreign
+> printConfusionMatrix(data$probMetaForeign[hasUsefulLoc], data$inferredLoc[hasUsefulLoc] == "foreign", cutoff=.5)
+[1] "                FALSE   TRUE (predicted)"
+[1] "(truth) FALSE 397782 9802"
+[1] "        TRUE 95365 110943"
+> printConfusionMatrix(data$probMetaForeign[hasUsefulLoc], data$inferredLoc[hasUsefulLoc] == "foreign", cutoff=.6)
+[1] "                FALSE   TRUE (predicted)"
+[1] "(truth) FALSE 398870 8714"
+[1] "        TRUE 96747 109561"
+> printConfusionMatrix(data$probMetaForeign[hasUsefulLoc], data$inferredLoc[hasUsefulLoc] == "foreign", cutoff=.7)
+[1] "                FALSE   TRUE (predicted)"
+[1] "(truth) FALSE 402100 5484"
+[1] "        TRUE 103108 103200"
+> printConfusionMatrix(data$probMetaForeign[hasUsefulLoc], data$inferredLoc[hasUsefulLoc] == "foreign", cutoff=.8)
+[1] "                FALSE   TRUE (predicted)"
+[1] "(truth) FALSE 402449 5135"
+[1] "        TRUE 104211 102097"
+> printConfusionMatrix(data$probMetaForeign[hasUsefulLoc], data$inferredLoc[hasUsefulLoc] == "foreign", cutoff=.9)
+[1] "                FALSE   TRUE (predicted)"
+[1] "(truth) FALSE 403452 4132"
+[1] "        TRUE 110114 96194"
+> printConfusionMatrix(data$probMetaForeign[hasUsefulLoc], data$inferredLoc[hasUsefulLoc] == "foreign", cutoff=.95)
+[1] "                FALSE   TRUE (predicted)"
+[1] "(truth) FALSE 405398 2186"
+[1] "        TRUE 138396 67912"
+> printConfusionMatrix(data$probMetaForeign[hasUsefulLoc], data$inferredLoc[hasUsefulLoc] == "foreign", cutoff=.97)
+[1] "                FALSE   TRUE (predicted)"
+[1] "(truth) FALSE 406435 1149"
+[1] "        TRUE 161623 44685"
+
+# See also density plots (in this directory): they show a large number of foreign ones that look US, but not vice versa.
+# Among predictions for unlabeled data, there are a lot with scores > .8 and .9.
+> quantile(data$probMetaForeign[!hasUsefulLoc], probs=seq(0,1,.1))
+       0%       10%       20%       30%       40%       50%       60%       70% 
+0.0000000 0.1182365 0.1927243 0.2565159 0.2565159 0.2565159 0.2842960 0.3238520 
+      80%       90%      100% 
+0.6855576 0.9553552 1.0000000 
+# specifically:
+      80%       85%       90%       95%      100% 
+0.6855576 0.9376066 0.9553552 0.9736157 1.0000000 
+# That is: 10% of the (1.1M items of) unlabeled data have scores above .955; 15% of them have scores above .938
+
+
+# How to use these predictions?
+# -Among the nuisance records preventing matches: 
+#	Probably ok to treat P(foreign) > .9 ==> actually foreign
+#	Then, send the rest to Derek when <= 2 nuisance left.
+# -Among the large number of single matches:
+#	Prioritize those with lowest P(foreign). (In fact, could do even better by screening for those with correct time zone.)
+
+## Borrow from existing matching code to grab candidate matches having <= 2 nuisance records after excluding based on probMetaForeign.
+matchCountsData = prepMatchDataRmExcluded(data)		# nrow now 1200790
+righttStateFreq = table(matchCountsData$personid[matchCountsData$newInferredLoc == matchCountsData$state_code])
+votersWithOneGoodMatch = names(rightStateFreq[rightStateFreq==1])
+print(paste("[rule4 matching] Found", length(votersWithOneGoodMatch), "voters who had exactly 1 correct-state match"))	# 45987
+
+# different: grab their rows
+rowsWanted = (matchCountsData$personid %in% votersWithOneGoodMatch)
+matchCountsData = matchCountsData[rowsWanted,]		# 90981 rows
+
+# originally, did this to find 27812 with 0 nuisance, 7465 with 1 nuisance, 3763 with 2.
+if (F) {
+	numBlanksAllowed = 2
+    unknownLocFreq = table(matchCountsData$personid[matchCountsData$newInferredLoc == "USA" | 
+                                                        matchCountsData$newInferredLoc == "" |
+                                                        matchCountsData$newInferredLoc == "unparsed"])
+    # This table missed voters who had 0 blank matches. Put in entries for them.
+    entriesToAdd = setdiff(votersWithOneGoodMatch, names(unknownLocFreq))
+    vectorToAdd = rep(0, length(entriesToAdd))
+    names(vectorToAdd) = entriesToAdd
+                      
+    unknownAugmented = c(unknownLocFreq, vectorToAdd)
+    votersWithAllowedBlankMatches = names(unknownAugmented[unknownAugmented <= numBlanksAllowed])
+    print(paste("[rule4 matching] Found", length(votersWithAllowedBlankMatches), "voters with <=", numBlanksAllowed, "unknown loc matches"))
+	# "Found 39040 voters with <= 2 unknown loc matches"
+}
+# Today, further trim matchCountsData by excluding rows for which probMetaForeign > .9 (yet newInferredLoc != state_code).
+rowsToExclude = (matchCountsData$newInferredLoc != matchCountsData$state_code) & matchCountsData$probMetaForeign > .9	# 6744 rows
+matchCountsData = matchCountsData[!rowsToExclude,]
+# Then rerun the code fragment above [...]
+# --> "Found 40344 voters with <= 2 unknown loc matches"
+# Now, 29048 have 0 nuisance (yay!), 7598 have 1, 3698 have 2. Found by "sum(unknownAugmented==0)", etc.
+# Grab that block of rows. The 29048 are our new matches (up from 27812 before the classifier), and the nuisance candidates will go to Derek.
+rowsWanted = (matchCountsData$personid %in% votersWithAllowedBlankMatches)
+goodBlock = matchCountsData[rowsWanted,]		# nrow = 55338 = 29048 + 7598*2 + 3*3698
+newMatches = goodBlock[(goodBlock$state_code == goodBlock$inferredLoc & goodBlock$personid %in% names(unknownAugmented[unknownAugmented == 0])),]	# 29048
+needGeo = goodBlock[state_code != inferredLoc,]		# nrow = 14994 = 7598 + 2*3698
+#write.table(needGeo$twProfileID, file="nuisanceIDs.txt", row.names=F, col.names=F)	# see below, which removes duplicates
+write.table(needGeo, file="nuisanceCandidates.txt", row.names=F)
+
+
+## Grab candidates having a single match, and decide which ones to send (with the help of probMetaForeign)
+matchCountsData = prepMatchDataRmExcluded(data)		# (reset variable) 
+# howManyCandidates(matchCountsData[matchCountsData$inferredLoc %in% c("", "unparsed", "USA")]) --> tells us there are 253403 with exactly 1 match. Get them:
+nameFreqs = table(matchCountsData$personid[matchCountsData$inferredLoc %in% c("", "unparsed", "USA")])
+rows_votersOccurringJustOnce = (matchCountsData$personid %in% names(nameFreqs)[nameFreqs==1] & matchCountsData$inferredLoc %in% c("", "unparsed", "USA"))
+votersWithOneMatch = matchCountsData[rows_votersOccurringJustOnce,]	# those 253403 rows
+
+# What's their distribution of probMetaForeign scores?	 --> 80% are below prob of .32. (85th percentile -> 0.81700555)
+# > quantile(votersWithOneMatch$probMetaForeign, probs=seq(0,1,.1))
+#         0%        10%        20%        30%        40%        50%        60% 
+# 0.00000000 0.08983103 0.18670416 0.25651594 0.25651594 0.25651594 0.25775258 
+#        70%        80%        90%       100% 
+# 0.31335553 0.32385202 0.93977211 1.00000000 
+
+# So: let's send the ones with scores < .5 (i.e., 82% of them), and order them with the lowest probMetaForeign first.
+bestSingleMatches = (votersWithOneMatch[probMetaForeign < .5,])[order(probMetaForeign),]	# 208467 rows
+#write.table(bestSingleMatches$twProfileID, file="bestSingleMatchIDs.txt", row.names=F, col.names=F)	# see below, which removes duplicates
+write.table(bestSingleMatches, file="bestSingleMatchCandidates.txt", row.names=F)
+
+
+## Postprocessing to ensure we send lists w/o duplicates:
+needGeoIDs = needGeo$twProfileID
+needGeoIDsUniq = needGeoIDs[!duplicated(needGeoIDs)]	# shrinks (by 32) to 14962
+write.table(needGeoIDsUniq, file="nuisanceIDs.txt", row.names=F, col.names=F)	
+allIDsWanted = c(needGeoIDsUniq, bestSingleMatches$twProfileID)
+allIDsWantedUniq = allIDsWanted[!duplicated(allIDsWanted)]
+allIDsNewUniq = allIDsWantedUniq[(length(needGeoIDsUniq)+1):length(allIDsWantedUniq)]	# has shrunk to 195430 
+write.table(allIDsNewUniq, file="bestSingleMatchIDs.txt", row.names=F, col.names=F)	
+
+## Also to ensure we don't ask for any we already have:
+alreadyHaveGeo = scan("~/twitterUSVoters/data/twitterDB-matching/twitter-geoinferences/idsWithGeo.txt")
+length(intersect(allIDsWantedUniq, as.integer64(alreadyHaveGeo)))	# 361. Is it really important to remove them?? 
+# I'd actually rather find out if they've changed since before. Let them be, I guess.

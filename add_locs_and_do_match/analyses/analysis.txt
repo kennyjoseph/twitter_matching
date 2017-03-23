@@ -1,0 +1,108 @@
+
+source("do_the_matching.R")
+
+a = fread("data/allCandidateMatchLocs2M.csv")
+# Starting stats: 1751161 rows, 27 cols
+# Contains 632797 distinct voters (personid) and 1649112 distinct Twitter accounts (twProfileID)
+
+
+## Before removing invalid matches, how many people had how many matches? (Similar info as the matchCounts files.)
+#
+g1 = howManyCandidates(a)
+	# nameFreqs
+	#      1      2      3      4      5      6      7      8      9     10
+	# 277889 116427  68903  46460  33915  25952  20637  17058  13901  11655
+	# I.e., 277889 voters had 1 potential Twitter match, etc.
+
+## And how many after removing invalid matches?
+#
+matchCountsData = prepMatchDataRmExcluded(a)
+dim(matchCountsData)
+	# [1] 1200790      28
+
+g2 = howManyCandidates(matchCountsData)
+	# nameFreqs
+	#      1      2      3      4      5      6      7      8      9     10 
+	# 273497 107434  61089  39452  26693  17493  10384   5100   1761    359 
+	# (Interesting: when it knocks a voter out of one bucket, it just shifts them down, so we end up with almost as many 
+	# 1's as we started with.)
+
+## How many people (in either set--will be the same) have how many same-state matches?
+#
+dim(matchCountsData[matchCountsData$state_code == matchCountsData$inferredLoc,])
+	# [1] 49114    28
+	# --> Ah, yes, that's the bottleneck.
+
+g3 = howManyCandidates(matchCountsData[matchCountsData$state_code == matchCountsData$inferredLoc,])
+	# nameFreqs
+	#     1     2     3     4     5     6     7 
+	# 45987  1357    95    18     5     4     1 
+	# So, a small number of people have >1 match that looks good, but they're not the main problem.
+
+## How many people (after removing excluded/foreign) have how many matches to blank or unparsed or USA?
+#
+dim(matchCountsData[matchCountsData$inferredLoc %in% c("", "unparsed", "USA")])
+	# [1] 1151676      28
+	# Just the complement of those with a matching state--i.e., 1151676 + 49114 = 1200790.
+g4 = howManyCandidates(matchCountsData[matchCountsData$inferredLoc %in% c("", "unparsed", "USA")])
+	# nameFreqs
+	#      1      2      3      4      5      6      7      8      9     10 
+	# 253403 103247  59766  38605  26091  16991   9920   4817   1616    314 
+
+	# (Can sanity check with stats in matching below: e.g., "27812 voters with <= 0 unknown loc matches" + nameFreqs[1] (253403) = "281215 voters with <= 1 unknown loc matches")
+
+
+# Good candidates to send to Derek will be:
+# -Voters having exactly 1 match, but we don't know where
+#	That'll be a lot of them; expect low-ish match rates once we know geo.
+#	Actually, can estimate match rates by looking at match rates among people having exactly 1 candidate and where we do know the location.
+#	How many? exactly 245685. (from getting votersWithOneMatch from matchCountsData, then filtering on location)
+#	How well will they match? (do votersWithOneMatch on unfiltered a --> 277889 voters with 1 candidate match.)
+#			sum(! (votersWithOneMatch$inferredLoc %in% c("", "unparsed", "USA"))) 
+#			--> 98803 locs are known
+# 			sum(votersWithOneMatch$inferredLoc == votersWithOneMatch$state_code)
+# 			--> 25187 locs are correct
+#		That says that when we did find out geo for voters having exactly 1 match (before any filtering), 
+#		about 25% of them were the right state. Wow!
+#	So, this set should give a high payoff: about 25% of 245k --> about 62k. (Subject to however many Derek has enough info to infer geo for.)
+# -Voters having exactly 1 correct-state match, and 1 nuisance record.
+#	There's a low ceiling here: only 45987 people start out having a correct-state match.
+#	How many nuisance records do they each have? Matching routine tell us (indirectly; see print-outs below): 
+#	27812 have 0 nuisance; 35277 have <=1; 39040 have <=2; 41608 have <=3; 43386 have <= 4.
+#	That means 7465 have 1 nuisance; 3763 have 2 nuisance (or 7526 to check); 2568 have 3 (or 7704 to check); 1778 have 4 (or 7112 to check).
+#	These will . . . probably have more or less the same rate of true-state matches as the ones above. (I can see arguments
+#	for it changing in either direction, but assuming independence is probably safest guess.)
+#	So, payoff here will be:-about 75% of the first 7465 should allow matches --> ~5600 (from 7465 candidates)
+#							-about (.75)^2 of the next 3763 should allow matches --> 2116 matches (from 7526 candidates)
+#							-about (.75)^3 of next 2568 --> 1083 (from 7704 candidates)   At this point it's no longer as useful (.14 of a match per twitter acct) as checking the pure blanks.
+
+# But! Before making judgment calls about that list, use profile meta-data to exclude more foreign ones.
+
+# Also, if absolutely need to prune further, could exclude people with protected accounts or few tweets, who won't be as useful to us anyway.
+# Also: bring back the 100k (and re-process them)?
+# Before sending, make sure to remove duplicates.
+# Also remove any for which Derek already sent geo.
+
+## What matching code does for existing data:
+# > m1 = matching4AllowBlanks(as.data.frame(a), 0)
+# [1] "[rule4 matching] Found 45987 voters who had exactly 1 correct-state match"
+# [1] "[rule4 matching] Found 27812 voters with <= 0 unknown loc matches"
+# [1] "[rule4 matching]  27812 voters satisfied both criteria"
+# > m2 = matching4AllowBlanks(as.data.frame(a), 1)
+# [1] "[rule4 matching] Found 45987 voters who had exactly 1 correct-state match"
+# [1] "[rule4 matching] Found 281215 voters with <= 1 unknown loc matches"
+# [1] "[rule4 matching]  35277 voters satisfied both criteria"
+# > m3 = matching4AllowBlanks(as.data.frame(a), 2)
+# [1] "[rule4 matching] Found 45987 voters who had exactly 1 correct-state match"
+# [1] "[rule4 matching] Found 384462 voters with <= 2 unknown loc matches"
+# [1] "[rule4 matching]  39040 voters satisfied both criteria"
+## (After modifying syntax for calling)
+# > m3 = matching4AllowBlanks(as.data.frame(a), 3, "inferredLoc", matchingColsToKeep)  
+# [1] "[rule4 matching] Found 45987 voters who had exactly 1 correct-state match"
+# [1] "[rule4 matching] Found 444228 voters with <= 3 unknown loc matches"
+# [1] "[rule4 matching]  41608 voters satisfied both criteria"
+#> m4 = matching4AllowBlanks(as.data.frame(a), 4, "inferredLoc", matchingColsToKeep)  
+#[1] "[rule4 matching] Found 45987 voters who had exactly 1 correct-state match"
+#[1] "[rule4 matching] Found 482833 voters with <= 4 unknown loc matches"
+#[1] "[rule4 matching]  43386 voters satisfied both criteria"
+
