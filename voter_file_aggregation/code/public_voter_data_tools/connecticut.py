@@ -1,6 +1,13 @@
 import csv
 import glob
+from util import get_party
 
+party_map = {
+    "R":"R",
+    "D":"D",
+    "U":"U",
+    "UNAFF":"U",
+}
 
 def file_reader(fil):
     return open(fil)
@@ -19,10 +26,13 @@ def line_reader(line):
     turnout2014 = 1 if '11/04/2014' in votes else 0
     address = line[179:185].strip() + ' ' + line[195:235].strip()
     city = line[236:254].strip()
+
+    party = get_party(line[445:450],party_map)
+
     values = [line[4:13], line[50:70].strip(), line[71:86].strip(),
         line[14:49].strip(), line[423:433], line[457:458],
         turnout2008, turnout2010, turnout2012, turnout2014,
-        "NA", "NA", "NA", "NA", line[445:450].strip(), address,city,
+        "NA", "NA", "NA", "NA", party, address,city,
         line[258:263].strip(),county, '','']
     return values
 

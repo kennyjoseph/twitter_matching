@@ -19,6 +19,7 @@ from util import *
 import sys
 import pandas as pd
 from collections import defaultdict
+from copy import copy
 from multiprocessing import Pool, cpu_count
 from functools import partial
 
@@ -64,19 +65,17 @@ all_var_names = ["voter_id", "first_name", "middle_name",
                  "last_name", "birth_date", "gender", "turnout_2008", "turnout_2010",
                  "turnout_2012", "turnout_2014", "party_affiliation2008",
                  "party_affiliation2010", "party_affiliation2012", "party_affiliation2014",
-                 "party_affiliation", "address", "city", "zipcode", "county", "race", 'ethnicity', 'state', 'age',
-                 'from']
+                 "party_affiliation", "address", "city", "zipcode", "county", "race", 'ethnicity', 'state',
+                 'from','birth_year']
 
-varnames_to_keep =all_var_names# ["voter_id", "first_name", "last_name",
-                  #  "gender", "race", "ethnicity", "party_affiliation",
-                  #  "age", "address", "city",
-                  #  "zipcode", "county", "state", 'from']
+varnames_to_keep =copy(all_var_names)
+varnames_to_keep.remove("birth_date")
+
 varnames_to_keep_len = len(varnames_to_keep)
 
 def get_data_for_state_from_voter_file(input_dir, output_filename, state,
                                        get_state_file_reader, get_line_function):
     """
-
     :param input_dir: directory of input files, should only contain voting records files (i.e. put history
     files somewhere else)
     :param output_filename: output file name, usually just the state name
@@ -90,7 +89,7 @@ def get_data_for_state_from_voter_file(input_dir, output_filename, state,
     the necessary structure required for the output files
     :return: a set of counties for this state that are in the voter file
     """
-    print "STARTING STATE: ", state
+    print "STARTING STATE: ", state, output_filename
     all_counties_in_state = set()
     out = io.open(output_filename.replace(".csv",".tsv"), 'w')
     out.write(tsn(varnames_to_keep))
@@ -116,26 +115,20 @@ def get_data_for_state_from_voter_file(input_dir, output_filename, state,
 
                     dat['voter_id'] = state + "_" + STATE_TO_REGISTRY_DATE[state] +"_" + dat['voter_id']
 
-
-                    # set age
-                    # all of these are either years or dd/mm/yyyy format, so this is safe for most
-                    # if it isn't safe, then fix it in the state-specific file (e.g. see ohio)
-                    birth_year = dat['birth_date'][-4:]
-
                     # if no birthdate, continue
                     if not len(dat['birth_date']):
                         continue
 
-                    # TODO: This isn't exactly right either, the files come from different time periods
-                    age = 2016 - int(birth_year)
-                    dat['age'] = age
+                    # all of these are either years or dd/mm/yyyy format, so this is safe for most
+                    # if it isn't safe, then fix it in the state-specific file (e.g. see ohio)
+                    birth_year = dat['birth_date'][-4:]
+
                     dat['from'] = 'public_'+ state + "_" + STATE_TO_REGISTRY_DATE[state]
 
                     # Make sure its a valid row
                     if not (len(dat['zipcode']) and
                                 len(dat['first_name']) and
-                                len(dat['last_name']) and
-                                    dat['age'] <= 120):
+                                len(dat['last_name'])):
                         # print 'NOT VALID!!!'
                         # print age <= 100, age, dat['birth_date']
                         # print len(dat['first_name'])
@@ -143,7 +136,6 @@ def get_data_for_state_from_voter_file(input_dir, output_filename, state,
                         # print len(dat['zipcode'])
                         continue
 
-                    # TODO: THIS IS NOT EXACTLY CORRECT ... but it mostly is so its fine for now
                     dat['party_affiliation'] = dat['party_affiliation'] if len(dat['party_affiliation']) else ''
                     dat['gender'] = dat['gender'] if len(dat['gender']) else ''
                     dat['address'] = dat['address'].replace("\xbd"," 1/2").replace("\xbc"," 1/4")
@@ -151,10 +143,15 @@ def get_data_for_state_from_voter_file(input_dir, output_filename, state,
                     dat['last_name'] = clean_name_text(dat['last_name'])
                     dat['county'] = dat['county'].lower()
                     dat['city'] = dat['city'].lower()
+
+                    # just focus on birth year
+                    dat['birth_year'] = birth_year
                     n_voters += 1
                     towrite = [dat[x] for x in varnames_to_keep]
+
                     try:
-                        output_line = tsn(towrite)
+                        #tab-separate, remove quote chars
+                        output_line = tsn(towrite).replace("\"","")
                         if len(output_line.split("\t")) != varnames_to_keep_len:
                             print 'skipping line, extra tab somewhere'
                         else:
@@ -174,12 +171,30 @@ def get_data_for_state_from_voter_file(input_dir, output_filename, state,
     return set(all_counties_in_state)
 
 
+def clean_dnc_address_data(data,addr_type):
+    data = pd.merge(data, county_fips, on=['state_code', addr_type+'_address_countyfips'])
+    data = data.rename(columns={"sex": "gender",
+                                "ethnicity_code": "race",
+                                "ethnicity_subgroup": "ethnicity",
+                                addr_type+"_address_street1": "address",
+                                addr_type+"_address_city": "city",
+                                addr_type+"_address_zip5": "zipcode",
+                                addr_type+"_address_state": "state",
+                                "personid": "voter_id"
+                                })
+    data['county'] = data.county.str.lower()
+    data['city']= data.city.str.lower()
+    return data[varnames_to_keep]
+
 def get_data_for_state_from_dnc_data(filename, output_dir):
     print filename
     output_filename = os.path.join(output_dir, os.path.basename(filename))
     data = pd.read_csv(filename,encoding='utf8')
-
+    data = data.fillna("")
     data['middle_name'] = ''
+
+    data['first_name'] = data.first_name.astype("unicode").apply(clean_name_text)
+    data['last_name'] = data.last_name.astype("unicode").apply(clean_name_text)
 
     data['party_affiliation'] = data.apply(get_party_affiliation_dnc_data, axis=1)
     data["party_affiliation2008"] = ''
@@ -187,30 +202,24 @@ def get_data_for_state_from_dnc_data(filename, output_dir):
     data["party_affiliation2012"] = ''
     data["party_affiliation2014"] = ''
 
-    data['age'] = data.birth_date.apply(lambda x: 2016 - int(str(x)[:4]) if str(x) != 'nan' else 0)
-    data = data[(data.age > 0) & (data.age < 120)]
+    file_id = os.path.basename(filename).replace("voterfile_unique_","").replace(".csv","") +"_2015"
+    data['from'] = file_id
 
-    data['from'] = os.path.basename(filename)
-    data = pd.merge(data, county_fips, on=['state_code', 'reg_address_countyfips'])
-    data = data.rename(columns={"sex": "gender",
-                                "ethnicity_code": "race",
-                                "ethnicity_subgroup": "ethnicity",
-                                "reg_address_street1": "address",
-                                "reg_address_city": "city",
-                                "reg_address_zip5": "zipcode",
-                                "reg_address_state": "state",
-                                "personid": "voter_id"
-                                })
-    data['first_name'] = data.first_name.astype("unicode").apply(clean_name_text)
-    data['last_name'] = data.last_name.astype("unicode").apply(clean_name_text)
-    data['county'] = data.county.str.lower()
-    data['city']= data.city.str.lower()
-    
+    data['birth_year'] = data.birth_date.str.slice(0, 4)
+
+    # split data into those we should extract reg_address from and those
+    # for whom there isn't a reg address so we turn to their mailing address
+    reg_address_data = clean_dnc_address_data(data[data.reg_address_city != ""],"reg")
+    mailing_address_data = clean_dnc_address_data(data[data.reg_address_city == ""],"mailing")
+
+    data = pd.concat((reg_address_data, mailing_address_data), axis=0)
+
+    data['voter_id'] = data.voter_id.apply(lambda x: file_id +"_" + str(x))
+
     state_county_res = defaultdict(set)
     for r in data[['state', 'county']].drop_duplicates().itertuples():
         state_county_res[r[1]].add(r[2])
 
-    data = data[varnames_to_keep]
     write_file(data,output_filename.replace(".csv",".tsv"))
     return state_county_res
 
@@ -239,7 +248,7 @@ if os.path.exists(STATE_COUNTY_FILE):
 # generate results in parallel for state voter files
 #n_cpu = min(len(ALL_STATES), cpu_count()/float(2))
 
-get_data_voter_file_helper('NC')
+get_data_voter_file_helper('WA')
 # print 'N CPUS: ', n_cpu
 # pool = Pool(int(n_cpu))
 # results = pool.map(get_data_voter_file_helper,ALL_STATES)

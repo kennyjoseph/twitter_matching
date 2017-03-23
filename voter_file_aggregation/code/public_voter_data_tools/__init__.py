@@ -77,9 +77,9 @@ def get_party_affiliation_dnc_data(row):
     if row['reg_party_oth'] == 1:
         return 'O'
     if row['reg_party_lib'] == 1:
-        return 'L'
+        return 'O'
     if row['reg_party_grn'] == 1:
-        return 'G'
+        return 'O'
     if row['reg_party_ind'] == 1:
         return 'I'
     return ''

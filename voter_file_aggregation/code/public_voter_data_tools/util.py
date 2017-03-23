@@ -14,3 +14,9 @@ def file_reader_simple_csv(fil,delim=',',is_unicode=False):
     vars = reader.next()
     return reader
 
+
+def get_party(party_text, party_map):
+    party = party_text.strip()
+    if len(party_text):
+        party = 'O' if party_text not in party_map else party_map[party_text]
+    return party

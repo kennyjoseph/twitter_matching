@@ -56,6 +56,9 @@ def write_file(res,filename):
             print 'fail - something weird with address',v
     outfil.close()
 
+
+
+
 # hacky but necessary for now
 
 def get_florida_specific_location_name(k):

@@ -5,6 +5,23 @@ import os
 voter_history = defaultdict(set)
 curr_county = "COUNTY"
 
+party_map = {
+    "REP":"R",
+    "DEM":"D",
+    "IDP":"I"
+}
+race_map = {
+"1" : "I",
+"5" : "W",
+"2" : "A",
+"6" : "O",
+"3" : "B",
+"7" : "M",
+"4" : "H",
+"9" : "U"
+}
+
+
 def file_reader(fil):
     global curr_county
     global voter_history
@@ -31,9 +48,12 @@ def line_reader(row):
     address = row[7].strip()
     if len(row[8].strip()):
         address += ", " + row[8].strip()
+
+    race = race_map[row[20]] if row[20] in race_map else ''
+    party = get_party(row[23], party_map)
     return [row[1], row[4], row[5], row[2], row[21], row[19],
             turnout2008, turnout2010, turnout2012, turnout2014,
-            "", "", "", "", row[23].strip(), address,row[9].strip(), row[11],  curr_county, row[20],'']
+            "", "", "", "", party, address,row[9].strip(), row[11],  curr_county, race,'']
 
 county_keys = {}
 county_keys["ALA"] = "Alachua"

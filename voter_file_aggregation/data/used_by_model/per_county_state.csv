@@ -3,41 +3,40 @@ DE	sussex
 DE	kent
 CO	san juan
 CO	san miguel
+CO	larimer
 CO	bent
+CO	las animas
 CO	prowers
 CO	pitkin
 CO	gilpin
 CO	washington
 CO	moffat
-CO	dolores
+CO	lake
 CO	logan
-CO	huerfano
+CO	denver
 CO	otero
-CO	sedgwick
 CO	jackson
 CO	chaffee
 CO	elbert
-CO	rio blanco
+CO	crowley
 CO	alamosa
-CO	lake
-CO	denver
+CO	dolores
+CO	huerfano
 CO	kit carson
 CO	phillips
 CO	jefferson
 CO	cheyenne
 CO	grand
-CO	baca
 CO	el paso
-CO	broomfield
 CO	boulder
 CO	eagle
-CO	mineral
 CO	custer
-CO	douglas
-CO	park
-CO	gunnison
 CO	fremont
+CO	gunnison
+CO	park
 CO	saguache
+CO	kiowa
+CO	adams
 CO	archuleta
 CO	costilla
 CO	delta
@@ -46,25 +45,26 @@ CO	arapahoe
 CO	mesa
 CO	ouray
 CO	teller
-CO	adams
+CO	broomfield
 CO	pueblo
 CO	lincoln
+CO	routt
 CO	weld
-CO	kiowa
+CO	rio blanco
 CO	montezuma
 CO	montrose
 CO	yuma
 CO	garfield
 CO	rio grande
 CO	clear creek
-CO	crowley
+CO	baca
 CO	summit
 CO	morgan
 CO	hinsdale
-CO	las animas
+CO	sedgwick
 CO	la plata
-CO	routt
-CO	larimer
+CO	mineral
+CO	douglas
 WA	san juan
 WA	pend oreille
 WA	clark
@@ -73,12 +73,12 @@ WA	lewis
 WA	pacific
 WA	garfield
 WA	chelan
-WA	kittitas
+WA	mason
 WA	asotin
 WA	snohomish
 WA	grant
 WA	douglas
-WA	mason
+WA	kittitas
 WA	jefferson
 WA	whatcom
 WA	wahkiakum
@@ -87,15 +87,15 @@ WA	columbia
 WA	grays harbor
 WA	thurston
 WA	yakima
-WA	lincoln
+WA	pierce
 WA	okanogan
 WA	kitsap
 WA	skamania
-WA	adams
-WA	king
-WA	pierce
-WA	spokane
 WA	whitman
+WA	king
+WA	lincoln
+WA	spokane
+WA	adams
 WA	walla walla
 WA	island
 WA	benton
@@ -113,9 +113,9 @@ OH	mercer
 OH	warren
 OH	mahoning
 OH	lake
-OH	wayne
+OH	wood
 OH	putnam
-OH	coshocton
+OH	brown
 OH	vinton
 OH	champaign
 OH	hamilton
@@ -138,8 +138,8 @@ OH	lawrence
 OH	defiance
 OH	pike
 OH	lorain
-OH	meigs
-OH	franklin
+OH	union
+OH	columbiana
 OH	ashland
 OH	highland
 OH	holmes
@@ -147,12 +147,12 @@ OH	clinton
 OH	clark
 OH	washington
 OH	muskingum
-OH	union
+OH	meigs
 OH	sandusky
 OH	athens
 OH	stark
 OH	fairfield
-OH	wood
+OH	wayne
 OH	butler
 OH	crawford
 OH	williams
@@ -165,7 +165,7 @@ OH	ross
 OH	fulton
 OH	seneca
 OH	pickaway
-OH	brown
+OH	coshocton
 OH	trumbull
 OH	belmont
 OH	allen
@@ -182,7 +182,7 @@ OH	montgomery
 OH	jefferson
 OH	ashtabula
 OH	hocking
-OH	columbiana
+OH	franklin
 OH	noble
 OH	medina
 OH	richland
@@ -196,85 +196,85 @@ NC	wake
 MI	iosco
 MI	kalamazoo
 MI	st clair
+MI	washtenaw
 MI	clinton
-MI	newaygo
+MI	kalkaska
+MI	antrim
 MI	clare
 MI	schoolcraft
 MI	arenac
 MI	chippewa
 MI	genesee
+MI	bay
 MI	wexford
 MI	shiawassee
 MI	ontonagon
 MI	marquette
 MI	menominee
-MI	huron
-MI	missaukee
 MI	oakland
+MI	missaukee
+MI	huron
 MI	jackson
-MI	sanilac
+MI	alger
 MI	midland
 MI	gogebic
 MI	ingham
 MI	barry
-MI	gratiot
 MI	st joseph
 MI	calhoun
 MI	mason
-MI	alcona
 MI	wayne
 MI	monroe
 MI	branch
 MI	dickinson
-MI	hillsdale
 MI	crawford
 MI	lake
 MI	kent
 MI	oscoda
+MI	charlevoix
 MI	mecosta
+MI	osceola
 MI	tuscola
 MI	baraga
-MI	alger
+MI	sanilac
+MI	mackinac
 MI	keweenaw
 MI	manistee
-MI	isabella
+MI	presque isle
 MI	ogemaw
 MI	alpena
-MI	montcalm
-MI	presque isle
+MI	alcona
 MI	lapeer
 MI	grand traverse
-MI	livingston
 MI	ionia
 MI	oceana
 MI	allegan
-MI	benzie
 MI	emmet
 MI	macomb
 MI	lenawee
-MI	kalkaska
+MI	isabella
 MI	houghton
 MI	saginaw
 MI	berrien
-MI	cheboygan
+MI	gratiot
 MI	gladwin
 MI	otsego
-MI	washtenaw
+MI	cheboygan
 MI	van buren
-MI	charlevoix
+MI	hillsdale
 MI	ottawa
-MI	bay
+MI	benzie
 MI	roscommon
 MI	luce
 MI	delta
-MI	antrim
+MI	livingston
 MI	eaton
-MI	cass
 MI	iron
+MI	cass
 MI	leelanau
-MI	mackinac
+MI	newaygo
 MI	muskegon
-MI	osceola
+MI	montcalm
 MI	montmorency
 OK	muskogee
 OK	alfalfa
@@ -296,17 +296,17 @@ OK	blaine
 OK	choctaw
 OK	cleveland
 OK	beaver
-OK	kay
+OK	caddo
 OK	pottawatomie
 OK	carter
 OK	jackson
 OK	stephens
 OK	grant
 OK	cherokee
-OK	ottawa
 OK	pontotoc
 OK	delaware
 OK	woodwar
+OK	wagoner
 OK	jefferson
 OK	seminole
 OK	okfuskee
@@ -314,34 +314,34 @@ OK	mayes
 OK	cotton
 OK	nowata
 OK	texas
+OK	grady
 OK	noble
 OK	leflore
 OK	washita
-OK	greer
 OK	custer
 OK	mcintosh
 OK	latimer
 OK	tillman
 OK	cimarron
-OK	comanche
 OK	sequoyah
 OK	garvin
-OK	harper
-OK	johnston
+OK	kingfisher
+OK	coal
 OK	ellis
-OK	caddo
+OK	kay
 OK	atoka
+OK	adair
 OK	dewey
 OK	payne
 OK	hughes
 OK	rogers
 OK	roger mills
-OK	kingfisher
-OK	adair
+OK	greer
+OK	comanche
 OK	canadian
 OK	garfield
-OK	wagoner
-OK	coal
+OK	ottawa
+OK	harper
 OK	kiowa
 OK	okmulgee
 OK	mcclain
@@ -349,7 +349,7 @@ OK	lincoln
 OK	harmon
 OK	bryan
 OK	haskell
-OK	grady
+OK	johnston
 OK	pawnee
 OK	tulsa
 OK	oklahoma
@@ -360,12 +360,12 @@ FL	taylor
 FL	dixie
 FL	washington
 FL	leon
-FL	calhoun
+FL	lake
 FL	marion
 FL	santa rosa
 FL	escambia
 FL	collier
-FL	osceola
+FL	bay
 FL	polk
 FL	monroe
 FL	alachua
@@ -376,24 +376,24 @@ FL	union
 FL	volusia
 FL	duval
 FL	sumter
-FL	lake
+FL	calhoun
 FL	liberty
 FL	hillsborough
-FL	sarasota
+FL	citrus
 FL	brevard
-FL	suwannee
+FL	wakulla
 FL	seminole
 FL	flagler
-FL	lafayette
+FL	glades
 FL	desoto
 FL	st. lucie
 FL	putnam
 FL	levy
 FL	columbia
 FL	lee
-FL	citrus
+FL	sarasota
 FL	okeechobee
-FL	martin
+FL	clay
 FL	manatee
 FL	orange
 FL	st. johns
@@ -402,7 +402,7 @@ FL	miami-dade
 FL	nassau
 FL	broward
 FL	jefferson
-FL	wakulla
+FL	suwannee
 FL	indian river
 FL	bradford
 FL	pasco
@@ -411,19 +411,19 @@ FL	highlands
 FL	walton
 FL	baker
 FL	gadsden
-FL	bay
+FL	osceola
 FL	gilchrist
 FL	hernando
-FL	glades
+FL	lafayette
 FL	franklin
 FL	pinellas
-FL	clay
+FL	martin
 FL	hamilton
 FL	hardee
 RI	providence
 RI	newport
-RI	kent
 RI	bristol
+RI	kent
 RI	washington
 CT	new london
 CT	new haven

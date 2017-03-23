@@ -1,5 +1,12 @@
 from util import *
 
+party_map = {
+    "D":"D",
+    "M":"O",
+    "R": "R",
+    "U" : "U"
+}
+
 def file_reader(fil):
     f = file_reader_simple_csv(fil,"|")
     f.next()
@@ -13,8 +20,9 @@ def line_reader(row):
 
 
     county = towns[row[12]]
+    party = get_party(row[30],party_map)
     return [row[0], row[3], row[4], row[2], row[37], row[34],
-        "", "", "", "", "", "", "", "",row[30], address, row[12], row[10],
+        "", "", "", "", "", "", "", "",party, address, row[12], row[10],
         county, '','']
 
 

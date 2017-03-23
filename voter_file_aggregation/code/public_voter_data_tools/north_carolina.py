@@ -3,6 +3,13 @@ from collections import defaultdict
 import os
 voters = defaultdict(set)
 
+party_map = {
+    "REP":"R",
+    "DEM":"D",
+    "UNA":"U",
+    "LIB" : "O"
+}
+
 def file_reader(fil):
     reader = csv.reader(open(os.path.join(os.path.dirname(fil),"../voter_history.txt")),delimiter="\t")
     vars = reader.next()
@@ -23,8 +30,10 @@ def line_reader(row):
     turnout2012 = 1 if '11/06/2012' in votes else 0
     turnout2014 = 1 if '11/04/2014' in votes else 0
     address = row[13].strip()
+
+    party = get_party(row[27], party_map)
     return [voterid, row[10].strip(), row[11].strip(), row[9].strip(),
             str(2013 - int(row[29])),
             row[28], turnout2008, turnout2010, turnout2012, turnout2014,
-            "", "", "", "", row[27], address, row[14].strip(),row[16],county,
+            "", "", "", "", party, address, row[14].strip(),row[16],county,
             row[25].strip(), row[26].strip()]

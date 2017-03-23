@@ -1,5 +1,10 @@
 from util import *
 
+party_map = {
+    "D": "D",
+    "R" : "R"
+}
+
 def file_reader(fil):
     return file_reader_simple_csv(fil)
 
@@ -11,11 +16,11 @@ def line_reader(row):
 
     # doesn't fit the established pattern, so do it a different way
     birth_year = row[7][:4]
-
+    party = get_party(row[10],party_map)
     return [row[0], row[4], row[5], row[3], birth_year, "",
         1 if row[70] is 'X' else 0, 1 if row[80] is 'X' else 0,
         1 if row[85] is 'X' else 0, 1 if row[91] is 'X' else 0,
-        row[68], row[77], row[84], row[90], row[10],
+        row[68], row[77], row[84], row[90], party,
         address, row[13], row[15],county_keys[row[1]],'','']
 
 

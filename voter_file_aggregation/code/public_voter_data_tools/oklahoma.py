@@ -1,5 +1,12 @@
 from util import *
 
+party_map = {
+    "DEM":"D",
+    "IND":"I",
+    "REP": "R"
+}
+
+
 def file_reader(fil):
     return file_reader_simple_csv(fil)
 
@@ -7,14 +14,15 @@ def file_reader(fil):
 def line_reader(row):
     county = county_keys[row[0][0:2]]
     address = " ".join([row[8], row[9], row[10], row[11]])
-    if len(row[13]):
+    if len(row[12]):
         address += ", " + row[12]
 
     votes = row[22:len(row)]
+    party = get_party(row[6], party_map)
     return [row[5], row[2], row[3], row[1], row[15], '',
             1 if '20081104' in votes else 0, 1 if '20101102' in votes else 0,
             1 if '20121106' in votes else 0, '',
-            '', '', '', '', row[6], address,row[13], row[14],county,'','']
+            '', '', '', '', party, address,row[13], row[14],county,'','']
 
 
 county_keys = {}
