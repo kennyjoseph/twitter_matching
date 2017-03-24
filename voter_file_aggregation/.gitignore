@@ -1,3 +1,5 @@
 data/raw_voter
 data/cleaned_voter_files/
 *.DS_STORE
+data/cleaned_voter_files_with_counts/
+data/used_by_model/per_county_state.csv
