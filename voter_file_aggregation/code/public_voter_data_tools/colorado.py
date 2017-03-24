@@ -3,8 +3,8 @@ from util import *
 party_map = {
     "ACN":"O",
     "DEM":"D",
-    "GRN":"G",
-    "LBR":"L",
+    "GRN":"O",
+    "LBR":"O",
     "REP":"R",
     "UAF":"U",
     "UNI":"O",
