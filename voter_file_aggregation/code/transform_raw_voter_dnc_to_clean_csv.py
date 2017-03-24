@@ -215,6 +215,7 @@ def get_data_for_state_from_dnc_data(filename, output_dir):
     data = pd.concat((reg_address_data, mailing_address_data), axis=0)
 
     data['voter_id'] = data.voter_id.apply(lambda x: file_id +"_" + str(x))
+    data['zipcode'] = data.zipcode.apply(lambda x: str(int(x)) if x != '' else x)
 
     state_county_res = defaultdict(set)
     for r in data[['state', 'county']].drop_duplicates().itertuples():
