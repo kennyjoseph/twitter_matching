@@ -172,7 +172,8 @@ def get_data_for_state_from_voter_file(input_dir, output_filename, state,
 
 
 def clean_dnc_address_data(data,addr_type):
-    data = pd.merge(data, county_fips, on=['state_code', addr_type+'_address_countyfips'])
+    data = pd.merge(data, county_fips, left_on=['state_code', addr_type+'_address_countyfips'],
+                right_on=['state_code', 'reg_address_countyfips'])
     data = data.rename(columns={"sex": "gender",
                                 "ethnicity_code": "race",
                                 "ethnicity_subgroup": "ethnicity",
@@ -217,6 +218,7 @@ def get_data_for_state_from_dnc_data(filename, output_dir):
     data['voter_id'] = data.voter_id.apply(lambda x: file_id +"_" + str(x))
     data['zipcode'] = data.zipcode.apply(lambda x: str(int(x)) if x != '' else x)
 
+    data = data.fillna("")
     state_county_res = defaultdict(set)
     for r in data[['state', 'county']].drop_duplicates().itertuples():
         state_county_res[r[1]].add(r[2])
@@ -268,15 +270,12 @@ for result in results:
         state_to_county_data[state] = state_to_county_data[state] | counties
 pool.close()
 pool.terminate()
-# for x in glob.glob(DNC_DATA_DIR+"/*"):
-#     dnc_partial(x)
-
 
 # write out county/state file
 state_county_out_fil = open(STATE_COUNTY_FILE, "w")
 for k, v in state_to_county_data.items():
     for county in v:
-        state_county_out_fil.write(k + "\t" + county + "\n")
+        state_county_out_fil.write(k + "\t" + str(county) + "\n")
 state_county_out_fil.close()
 
 
