@@ -1,9 +1,19 @@
 import string
-from twitter_dm.nlp.nlp_helpers import get_cleaned_text
 from nameparser import HumanName
 import io
 import re
-from twitter_dm.utility.general_utils import tab_stringify_newline
+
+
+CRAP_CHAR_REMOVAL = {
+    ord(u"\x85") : None,
+    ord(u'\x96') : None,             # u'\u2013' en-dash
+    ord(u'\x97') : None,             # u'\u2014' em-dash
+    ord(u'\x91') : None,             # u'\u2018' left single quote
+    ord(u'\x92') : None,             # u'\u2019' right single quote
+    ord(u'\x93') : None,             # u'\u201C' left double quote
+    ord(u'\x94') : None,             # u'\u201D' right double quote
+    ord(u'\x95') : None              # u'\u2022' bullet
+}
 
 
 def stringify(data):
@@ -18,6 +28,11 @@ def tsn(data,newline=True):
          return to_return + "\n"
     return to_return
 
+def get_cleaned_text(text):
+    try:
+        return text.lower().replace("'s","").replace(u"\u2026","").strip(string.punctuation).translate(CRAP_CHAR_REMOVAL)
+    except:
+        return text
 
 def clean_name_text(orig_name):
     # clean any name field
@@ -25,6 +40,7 @@ def clean_name_text(orig_name):
     name3 = get_cleaned_text(name2)
     name3 = name3.replace(".","")
     return name3
+
 
 def clean_name(orig_name):
     # get the first and last name
@@ -48,16 +64,13 @@ def gen_first_middle_last_name(d):
 
 def write_file(res,filename):
     outfil = io.open(filename,"w")
-    outfil.write(tab_stringify_newline(res.columns.tolist()))
+    outfil.write(tsn(res.columns.tolist()))
     for v in res.itertuples():
         try:
-            outfil.write(tab_stringify_newline(v[1:]))
+            outfil.write(tsn(v[1:]))
         except:
             print 'fail - something weird with address',v
     outfil.close()
-
-
-
 
 # hacky but necessary for now
 
