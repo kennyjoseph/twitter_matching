@@ -10,3 +10,5 @@ Files:
 * cleanProfilesIndexNames.R holds the main functionality. Runs on 1 input file, optionally parallelized.
 * prepSeveralFiles.R calls it for many files.
 * nameChunking.R is the nitty gritty of inferring "name words". It's slow and messy, but that's because it tries to cover so many cases.
+
+
