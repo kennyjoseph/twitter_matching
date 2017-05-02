@@ -1,0 +1,201 @@
+voter_id,twProfileID,twProfileName,twProfileHandle,twProfileLoc,first_name,middle_name,last_name,gender,turnout_2008,turnout_2010,turnout_2012,turnout_2014,party_affiliation2008,party_affiliation2010,party_affiliation2012,party_affiliation2014,party_affiliation,address,city,zipcode,county,race,ethnicity,state,voterdata_from,birth_year,county_count,city_count,state_count,zipcode_count
+CO_2016-12-01_600166577,14178972,Sherri M PurifoyFrie,sherrifrie,"Highlands Ranch, CO",sherri,MICHELLE,purifoy-frie,F,,,,,,,,,U,10141   AUTUMN BLAZE TRL,highlands ranch,80129,douglas,,,CO,public_CO_2016-12-01,1965,1,1,1,1
+national2m_2015_240371214,14178972,Sherri M PurifoyFrie,sherrifrie,"Highlands Ranch, CO",sherri,,purifoy frie,F,1,0,0,0,,,,,I,10141 Autumn Blaze Trl,highlands ranch,80129,douglas,W,,CO,dnc_national2m_2015,1965,1,1,1,1
+NC_2017-03-18_EH965954,18510223,Jeremy Wingle,JeremyWingle,Raleigh + NYC + Vancouver,jeremy,ALLEN,wingle,M,0,0,1,1,,,,,D,4404  TIMBERHURST DR,raleigh,27612,wake,W,NL,NC,public_NC_2017-03-18,1981,1,1,1,1
+national2m_2015_231669020,18510223,Jeremy Wingle,JeremyWingle,Raleigh + NYC + Vancouver,jeremy,,wingle,M,0,0,0,0,,,,,D,567 Flushing Ave Apt 505,brooklyn,11206,kings,W,,NY,dnc_national2m_2015,1985,1,1,1,1
+CT_2017-02-03_004161260,18737838,Macy Corica,macycorica,"New Haven, CT",macy,A,corica,F,0,0,1,0,,,,,O,900 Mix Avenue,hamden,6514,new haven,,,CT,public_CT_2017-02-03,1993,1,1,1,1
+national2m_2015_327109172,18737838,Macy Corica,macycorica,"New Haven, CT",,,,,,,,,,,,,,,,,,,,,,,,,,
+FL_2017-02-28_107886695,21269512,Cynthia Franck Juul,resqme3,"Orlando,FL & Denmark",cynthia,DARLENE,juul,F,1,0,0,0,,,,,R,"6221   WESTGATE DR, APT 1006",orlando,32835,orange,W,,FL,public_FL_2017-02-28,1965,1,1,1,1
+national2m_2015_279334670,21269512,Cynthia Franck Juul,resqme3,"Orlando,FL & Denmark",cynthia,,franck,F,1,0,0,0,,,,,R,1825 S Kirkman Rd Apt 1217,orlando,32811,orange,W,,FL,dnc_national2m_2015,1965,1,1,1,1
+MI_2016-09-01_32383058,25449752,Sarah Levandoski,sarahanders308,"Kalamazoo, MI",sarah,ELIZABETH,levandoski,F,1,0,0,0,,,,,,3068  MILL CREEK DR,kalamazoo,49009,kalamazoo,,,MI,public_MI_2016-09-01,1990,1,1,2,1
+national2m_2015_283292187,25449752,Sarah Levandoski,sarahanders308,"Kalamazoo, MI",sarah,,levandoski,F,0,0,1,0,,,,,,2911 Ivanrest Ave SW,grandville,49418,kent,W,,MI,dnc_national2m_2015,1986,1,1,1,1
+OH_2017-03-18_OH0021171309,26861945,Chase Michael Peavy,chasepeavy,"Toledo, OH",chase,MICHAEL,peavy,,0,0,0,0,,,,,,2939 BELLE GLADE DR,toledo,43617,lucas,,,OH,public_OH_2017-03-18,1985,1,1,1,1
+national2m_2015_286249906,26861945,Chase Michael Peavy,chasepeavy,"Toledo, OH",michael,,peavy,M,0,0,0,0,,,,,,1841 S 5th St,columbus,43207,franklin,B,,OH,dnc_national2m_2015,1975,1,1,1,1
+WA_2017-02-01_WA010403326,27560835,Rasha Pecoraro,RashaPecoraro,"Portland, OR/Battle Ground, WA",rasha,MARIE,pecoraro,F,0,0,0,0,,,,,,1103  SE RASMUSSEN  BLVD,battle ground,98604,clark,,,WA,public_WA_2017-02-01,1978,1,1,1,1
+national2m_2015_16765442,27560835,Rasha Pecoraro,RashaPecoraro,"Portland, OR/Battle Ground, WA",rasha,,pecoraro,F,1,1,1,0,,,,,D,470 SW Valeria View Dr Apt 302,portland,97225,washington,U,,OR,dnc_national2m_2015,1978,1,1,1,1
+FL_2017-02-28_110847987,29367868,Lo-Ammi Richardson,LoRich84,"Orlando, FL",lo ammi,J,richardson,M,1,0,0,0,,,,,D,7626   LAKE GANDY CIR,orlando,32810,orange,H,,FL,public_FL_2017-02-28,1984,1,1,1,1
+national2m_2015_241827986,29367868,Lo-Ammi Richardson,LoRich84,"Orlando, FL",lo-ammi,,richardson,M,1,0,0,0,,,,,D,7626 Lake Gandy Cir,orlando,32810,orange,H,,FL,dnc_national2m_2015,1984,1,1,1,1
+WA_2017-02-01_WA002862101,39800751,Gaurab Bansal,GaurabBansal,DC via Seattle via Baltimore,gaurab,,bansal,M,0,0,0,0,,,,,,6509   42ND NE AVE,seattle,98115,king,,,WA,public_WA_2017-02-01,1978,1,1,1,1
+national2m_2015_205565915,39800751,Gaurab Bansal,GaurabBansal,DC via Seattle via Baltimore,gaurab,,bansal,M,0,0,0,0,,,,,D,9 Basswood Ct,baltimore,21228,baltimore,A,Unknown,MD,dnc_national2m_2015,1978,1,1,1,1
+ia_nh_20150915_2015_299419021,41833937,cassidy lemkau,casskae6,ATX. Iowa City. Omaha.,cassidy,,lemkau,F,0,1,1,0,,,,,R,100 Burge # 1428,iowa city,52242,johnson,W,,IA,dnc_ia_nh_20150915_2015,1992,1,1,1,1
+national2m_2015_286468025,41833937,cassidy lemkau,casskae6,ATX. Iowa City. Omaha.,cassidy,,lemkau,F,0,0,0,0,,,,,R,16119 Bedford Ave,omaha,68116,douglas,W,,NE,dnc_national2m_2015,1992,1,1,1,1
+OH_2017-03-18_OH0024237744,47769275,Todd Merriss,toddmerriss,"Lakewood, OH",todd,FOSTER,merriss,,0,0,0,0,,,,,,"12810 DETROIT AVE, APT 5",lakewood,44107,cuyahoga,,,OH,public_OH_2017-03-18,1965,1,1,2,1
+national2m_2015_320541403,47769275,Todd Merriss,toddmerriss,"Lakewood, OH",todd,,merriss,M,0,0,0,0,,,,,,797 Addy Rd,columbus,43214,franklin,W,,OH,dnc_national2m_2015,1989,1,1,1,1
+OH_2017-03-18_OH0023285729,52558250,Debbie Gerdau Willet,DebraGerdau,"Marysville, OH",debra,,gerdau willet,,0,0,0,0,,,,,,20 HILLCREST CIR,marysville,43040,union,,,OH,public_OH_2017-03-18,1978,1,1,1,1
+national2m_2015_360152191,52558250,Debbie Gerdau Willet,DebraGerdau,"Marysville, OH",debra,,gerdau-willet,F,0,0,0,0,,,,,,21021 Peoria Loop Rd,raymond,43067,union,W,,OH,dnc_national2m_2015,1978,1,1,1,1
+OK_2016-12-05_801220537,62704296,Nikola Dunkelberg,NikolaPaschal,Oklahoma! Oklahoma! Oklahoma!,nikola,KAY,dunkelberg,,0,0,0,,,,,,R,"609 SE 11 ST, APT. D",bartlesville,74003,washington,,,OK,public_OK_2016-12-05,1990,1,1,1,1
+national2m_2015_309990581,62704296,Nikola Dunkelberg,NikolaPaschal,Oklahoma! Oklahoma! Oklahoma!,nikola,,paschal,U,1,0,1,1,,,,,R,4318 E 79th St,tulsa,74136,tulsa,W,,OK,dnc_national2m_2015,1990,1,1,1,1
+NC_2017-03-18_CW1050619,66475028,Darian L Hairston,Siradoboy20,"CHARLOTTE, NC D.M.[V] Virginia",darian,LAMAR,hairston,U,0,0,0,0,,,,,U,6010  BENNETTSVILLE LN   #108,charlotte,28262,mecklenburg,U,UN,NC,public_NC_2017-03-18,1987,1,1,1,1
+national2m_2015_230644894,66475028,Darian L Hairston,Siradoboy20,"CHARLOTTE, NC D.M.[V] Virginia",darian,,hairston,M,0,1,1,0,,,,,,1046 Independence Dr,martinsville,24112,martinsville city,B,,VA,dnc_national2m_2015,1990,1,1,1,1
+MI_2016-09-01_4000133101,67659096,Phillip Hedgspeth,OverTheHedge,Zeeland Michigan,phillip,RAY,hedgspeth,M,1,1,1,1,,,,,,8361  BENNIGAN LN,zeeland,49464,ottawa,,,MI,public_MI_2016-09-01,1950,1,1,1,1
+national2m_2015_166000733,67659096,Phillip Hedgspeth,OverTheHedge,Zeeland Michigan,phillip,,hedge,M,1,1,1,1,,,,,,687 Machette Ct,rochester hills,48307,oakland,W,,MI,dnc_national2m_2015,1945,1,1,1,1
+FL_2017-02-28_113929660,69151183,Vincent Tubiana,KeysLawyer,"Miami, FL",vincent,J,tubiana,M,0,0,1,1,,,,,R,"601  NE 36Th St, APT 3410",miami,33137,miami-dade,W,,FL,public_FL_2017-02-28,1977,1,1,1,1
+national2m_2015_230830780,69151183,Vincent Tubiana,KeysLawyer,"Miami, FL",vincent,,lawyer,M,0,0,0,0,,,,,R,156 Marlin Ave,ponte vedra beach,32082,st. johns,W,,FL,dnc_national2m_2015,1969,1,1,1,1
+ia_nh_20150915_2015_356609111,73875035,Marc Checket,redbeategg,"Portsmouth, NH",marc,,checket,M,0,0,0,1,,,,,D,12 E Derry Rd,derry,3038,rockingham,W,,NH,dnc_ia_nh_20150915_2015,,1,1,1,1
+national2m_2015_356609111,73875035,Marc Checket,redbeategg,"Portsmouth, NH",marc,,checket,M,0,0,0,1,,,,,D,12 E Derry Rd,derry,3038,rockingham,W,,NH,dnc_national2m_2015,1981,1,1,1,1
+FL_2017-02-28_117230887,75611694,Abigail DeCou,AbigailDeCou,"Sarasota, Florida",abigail,Caitlin,decou,F,0,1,1,0,,,,,R,31940   Clay Gully RD,myakka city,342519488,manatee,W,,FL,public_FL_2017-02-28,1990,1,1,1,1
+national2m_2015_226121520,75611694,Abigail DeCou,AbigailDeCou,"Sarasota, Florida",abigail,,de cou,F,0,1,1,1,,,,,R,4932 Live Oak Dr,sarasota,34232,sarasota,W,,FL,dnc_national2m_2015,1990,1,1,1,1
+OK_2016-12-05_550769394,77137635,Juliann Strange Test,Jewelsou,"Oklahoma City, OK",juliann,STRANGE,test,,0,0,0,,,,,,R,18217  BODEGON RD,edmond,73012,oklahoma,,,OK,public_OK_2016-12-05,1985,1,1,1,1
+national2m_2015_177095158,77137635,Juliann Strange Test,Jewelsou,"Oklahoma City, OK",juliann,,strange,F,1,1,1,0,,,,,R,3349 Brush Creek Rd,oklahoma city,73120,oklahoma,W,,OK,dnc_national2m_2015,1985,1,1,1,1
+CO_2016-12-01_601062156,87611240,Charissa Murphy,CharissaMurphy,"Denver, CO (VA/DC area native)",charissa,,murphy,F,,,,,,,,,D,"1332  N WILLIAMS ST  APT, 204",denver,80218,denver,,,CO,public_CO_2016-12-01,1986,1,1,1,1
+national2m_2015_22260681,87611240,Charissa Murphy,CharissaMurphy,"Denver, CO (VA/DC area native)",charissa,,murphy,F,1,0,1,0,,,,,,3013 9th St N,arlington,22201,arlington,W,,VA,dnc_national2m_2015,1986,1,1,1,1
+OH_2017-03-18_OH0023839197,90056130,Betsy Lee~Bauer,Miss_Daisie,"Maineville, OH",betsy,I,bauer,,0,0,0,0,,,,,,8431 DAVIS RD,maineville,45039,warren,,,OH,public_OH_2017-03-18,1975,1,1,2,1
+national2m_2015_121675196,90056130,Betsy Lee~Bauer,Miss_Daisie,"Maineville, OH",betsy,,bauer,F,1,1,0,0,,,,,,8311 State Route 113 E,berlin heights,44814,erie,W,,OH,dnc_national2m_2015,1986,1,1,1,1
+FL_2017-02-28_118139395,104065170,Christopher Durst,callendurst,"Naples, Florida",christopher,Allen,durst,M,0,0,1,0,,,,,R,8299   Yasmina Way,naples,34114,collier,W,,FL,public_FL_2017-02-28,1970,1,1,3,1
+national2m_2015_338016908,104065170,Christopher Durst,callendurst,"Naples, Florida",christopher,,callen,M,0,0,1,0,,,,,D,1200 E Muriel St,orlando,32806,orange,W,,FL,dnc_national2m_2015,1982,1,1,1,1
+ia_nh_20150915_2015_356612433,117829535,Lindsey Archila,MadMox08,"Barrington, NH",lindsey,,archila,F,0,0,0,1,,,,,I,52 Old Settlers Rd,barrington,3825,strafford,W,,NH,dnc_ia_nh_20150915_2015,,1,1,1,1
+national2m_2015_356612433,117829535,Lindsey Archila,MadMox08,"Barrington, NH",lindsey,,archila,F,0,0,0,1,,,,,I,52 Old Settlers Rd,barrington,3825,strafford,W,,NH,dnc_national2m_2015,1905,1,1,1,1
+OH_2017-03-18_OH0021900442,119493321,Beth Scheckelhoff,bfausey,Northwest Ohio,beth,ANNE,fausey scheckelhoff,,1,0,1,1,X,,,,R,231 STATE ST,leipsic,45856,putnam,,,OH,public_OH_2017-03-18,1975,1,1,1,1
+national2m_2015_332378396,119493321,Beth Scheckelhoff,bfausey,Northwest Ohio,beth,,fausey-scheckelhoff,F,0,0,1,1,,,,,,231 State St,leipsic,45856,putnam,W,,OH,dnc_national2m_2015,1975,1,1,1,1
+ia_nh_20150915_2015_174064527,146425051,joseph mcpoland,mcpoland01,"cedar rapids, iowa",joseph,,mcpoland,M,1,1,1,1,,,,,I,117 Simpson St SW,cedar rapids,52404,linn,W,,IA,dnc_ia_nh_20150915_2015,1976,1,1,1,1
+national2m_2015_174273261,146425051,joseph mcpoland,mcpoland01,"cedar rapids, iowa",joseph,,mc poland,M,1,0,0,0,,,,,D,2250 N Grandview Ave,dubuque,52001,dubuque,W,,IA,dnc_national2m_2015,1932,1,1,1,1
+MI_2016-09-01_2880001377,152084760,Ryan Kielczewski,theryanking21,"Ann Arbor, MI / Madison, WI",ryan,THOMAS,kielczewski,M,0,0,0,1,,,,,,2046  SCIO CHURCH CT,ann arbor,48103,washtenaw,,,MI,public_MI_2016-09-01,1994,1,1,1,1
+national2m_2015_351586444,152084760,Ryan Kielczewski,theryanking21,"Ann Arbor, MI / Madison, WI",ryan,,kielczewski,M,0,0,0,0,,,,,,35 N Park St Unit 6255,madison,53715,dane,W,,WI,dnc_national2m_2015,,1,1,1,1
+OH_2017-03-18_OH0021258363,171213774,Kelly Gaier Evans,kellymgaier,"Columbus, Ohio",kelly,M,gaier evans,,1,1,1,1,D,,,,D,1144 NORTHWEST BLVD,columbus,43212,franklin,,,OH,public_OH_2017-03-18,1986,1,1,1,1
+national2m_2015_308356858,171213774,Kelly Gaier Evans,kellymgaier,"Columbus, Ohio",kelly,,gaier,F,0,1,1,1,,,,,,1144 Northwest Blvd,columbus,43212,franklin,W,,OH,dnc_national2m_2015,1986,1,1,1,1
+FL_2017-02-28_120341914,175280572,Michael DeTura,MichaelDeTura,"Palm Beach Gardens, FL",michael,,detura,M,0,0,0,1,,,,,D,"1600  S ESTRELLA CT, APT 204",palm beach gardens,33410,palm beach,W,,FL,public_FL_2017-02-28,1979,1,1,1,1
+national2m_2015_350130450,175280572,Michael DeTura,MichaelDeTura,"Palm Beach Gardens, FL",michael,,tura,M,0,0,0,0,,,,,I,7203 121st Ter,largo,33773,pinellas,W,,FL,dnc_national2m_2015,1984,1,1,1,1
+FL_2017-02-28_110326327,189991351,Karl Fong Yee,kafy1987,"Miami, FL",karl,Albert,fong yee,M,1,0,0,0,,,,,R,"8350  SW 152Nd AVE, UNIT 2",miami,33193,miami-dade,O,,FL,public_FL_2017-02-28,1987,1,1,1,1
+national2m_2015_224443101,189991351,Karl Fong Yee,kafy1987,"Miami, FL",karl,,fong-yee,M,1,0,1,1,,,,,R,5576 NW 125th Ter,coral springs,33076,broward,A,Unknown,FL,dnc_national2m_2015,1957,1,1,1,1
+ia_nh_20150915_2015_340157270,204182201,Anders Haukoos,AndersHaukoos,"Lakeville, MN + Dubuque, IA",anders,,haukoos,M,0,0,1,0,,,,,R,2000 University Ave,dubuque,52001,dubuque,W,,IA,dnc_ia_nh_20150915_2015,1993,1,1,1,1
+national2m_2015_330048499,204182201,Anders Haukoos,AndersHaukoos,"Lakeville, MN + Dubuque, IA",anders,,haukoos,M,0,0,0,0,,,,,,22076 Wagon Wheel Trl,lakeville,55044,scott,W,,MN,dnc_national2m_2015,1993,1,1,1,1
+OH_2017-03-18_OH0019337941,214641216,Angela Shuckahosee,ashuck33,"Cleveland, OH",angela,P,shuckahosee,,1,1,1,1,D,D,D,D,D,"10803 LAKE AVE, APT 406",cleveland,44102,cuyahoga,,,OH,public_OH_2017-03-18,1977,1,1,1,1
+national2m_2015_119746280,214641216,Angela Shuckahosee,ashuck33,"Cleveland, OH",angela,,shuck,F,1,0,1,1,,,,,,2233 E 34th St,lorain,44055,lorain,W,,OH,dnc_national2m_2015,1989,1,1,1,1
+WA_2017-02-01_WA010229747,232676784,"Shelby Winckler, RDH",miss_shelby_lee,"Zillah, WA",shelby,LEE,winckler,F,0,0,0,0,,,,,,1560   ORCHARDVALE  RD,zillah,98953,yakima,,,WA,public_WA_2017-02-01,1992,1,1,1,1
+national2m_2015_23720899,232676784,"Shelby Winckler, RDH",miss_shelby_lee,"Zillah, WA",lee,,winckler,M,1,1,1,1,,,,,,7009 W Willamette Ave,kennewick,99336,benton,W,,WA,dnc_national2m_2015,1968,1,1,1,1
+MI_2016-09-01_103624459,234133116,D'Ann Colombo,colombo3795,"Clarkston, MI",d-ann,MARIE,colombo,F,1,0,1,0,,,,,,7433  STONEVALLEY BLF,clarkston,48348,oakland,,,MI,public_MI_2016-09-01,1966,1,1,1,1
+national2m_2015_172717186,234133116,D'Ann Colombo,colombo3795,"Clarkston, MI",ann,,colombo,F,1,1,1,1,,,,,,1261 Lakeshore Park Pl,marquette,49855,marquette,W,,MI,dnc_national2m_2015,1952,1,1,1,1
+ia_nh_20150915_2015_186222614,237441947,Ashley Rennebu,Ashley_Rennebu,"Washington, DC/New Hampshire",ashley,,rennebu,F,1,1,0,0,,,,,I,287 Rochester Hill Rd Apt 405,rochester,3867,strafford,W,,NH,dnc_ia_nh_20150915_2015,1989,1,1,1,1
+national2m_2015_341157778,237441947,Ashley Rennebu,Ashley_Rennebu,"Washington, DC/New Hampshire",ashley,,rennebu,F,0,0,1,0,,,,,I,235 2nd St NE Apt 312,washington,20002,district of columbia,W,,DC,dnc_national2m_2015,,1,1,1,1
+NC_2017-03-18_BY596701,257186037,Jaylin Koonce,ov_jay_xo,Greensboro,jaylin,JAMAL,koonce,M,0,0,1,0,,,,,D,1022 S AYCOCK ST   #M,greensboro,27403,guilford,B,NL,NC,public_NC_2017-03-18,1991,1,1,1,1
+national2m_2015_244794006,257186037,Jaylin Koonce,ov_jay_xo,Greensboro,jay,,koonce,M,1,0,1,0,,,,,I,4507 Tyler Rd,kinston,28504,lenoir,W,,NC,dnc_national2m_2015,1965,1,1,1,1
+WA_2017-02-01_WA009467673,293342868,Edward Rychlowski,ny_pole,"Renton, WA  NYC Native",edward,RICHARD,rychlowski,M,0,0,0,0,,,,,,16842   113TH SE LN,renton,98055,king,,,WA,public_WA_2017-02-01,1964,1,1,1,1
+national2m_2015_17863232,293342868,Edward Rychlowski,ny_pole,"Renton, WA  NYC Native",edward,,pole,M,1,1,1,1,,,,,,8545 Garden of Eden Rd,sedro woolley,98284,skagit,W,,WA,dnc_national2m_2015,1960,1,1,1,1
+FL_2017-02-28_123447779,297273107,debra wenzel,debrawenzel,palm coast florida,debra,,wenzel,F,0,0,0,0,,,,,O,8   BIRCHWOOD PL,palm coast,32137,flagler,W,,FL,public_FL_2017-02-28,1962,1,1,2,1
+national2m_2015_225660393,297273107,debra wenzel,debrawenzel,palm coast florida,debra,,wenzel,F,0,0,0,0,,,,,D,2530 Leonard Dr,deltona,32725,volusia,W,,FL,dnc_national2m_2015,1959,1,1,1,1
+WA_2017-02-01_WA010452898,308765394,Angela Pflugrath,AngelaBizzarri,"Seattle, WA",angela,BIZZARRI,pflugrath,F,0,0,0,0,,,,,,"4411   WOODLAND PARK N AVE, # 5",seattle,98103,king,,,WA,public_WA_2017-02-01,1988,1,1,2,1
+national2m_2015_328862941,308765394,Angela Pflugrath,AngelaBizzarri,"Seattle, WA",angela,,pflugrath,F,0,0,0,0,,,,,,11609 N Madison St,spokane,99218,spokane,W,,WA,dnc_national2m_2015,1970,1,1,1,1
+OH_2017-03-18_OH0021850538,348797328,JohnAnthony D'Ulisse,JA_DUlisse,"Steubenville, Ohio",john anthony,PASQUALE,dulisse,,0,0,1,1,,,,,R,2530 CHESTNUT ST,steubenville,43952,jefferson,,,OH,public_OH_2017-03-18,1994,1,1,1,1
+national2m_2015_134813016,348797328,JohnAnthony D'Ulisse,JA_DUlisse,"Steubenville, Ohio",john,,ulisse,M,1,0,0,0,,,,,,2213 Sherwin Dr,twinsburg,44087,summit,W,,OH,dnc_national2m_2015,1962,1,1,1,1
+OH_2017-03-18_OH0023675272,351718811,Matthew Pytel,MattPytel14,"Medina, OH",matthew,T,pytel,,0,0,0,0,,,,,,4140 SIERRA CIR,medina,44256,medina,,,OH,public_OH_2017-03-18,1998,1,1,2,1
+national2m_2015_337790281,351718811,Matthew Pytel,MattPytel14,"Medina, OH",matthew,,pytel,M,0,0,1,0,,,,,,25680 Timber Cv,north olmsted,44070,cuyahoga,W,,OH,dnc_national2m_2015,1993,1,1,1,1
+NC_2017-03-18_EH481667,366726549,RaineyTurnerRomeo,raineytromeo,cary nc,rainey,,turner,F,1,1,1,1,,,,,R,102  LUDINGTON CT   #J,cary,27513,wake,W,NL,NC,public_NC_2017-03-18,1979,1,1,1,1
+national2m_2015_345545786,366726549,RaineyTurnerRomeo,raineytromeo,cary nc,romeo,,rainey,M,0,0,0,0,,,,,D,2098 Keith Dr,gastonia,28054,gaston,B,,NC,dnc_national2m_2015,1996,1,1,1,1
+OH_2017-03-18_OH0020395612,377137915,Kelly Niemic,KellyNoce,"Columbus, OH",kelly,JO,niemic,,1,0,0,0,,,,,,2465 FARLEIGH RD,columbus,43221,franklin,,,OH,public_OH_2017-03-18,1983,1,1,1,1
+national2m_2015_39618842,377137915,Kelly Niemic,KellyNoce,"Columbus, OH",kelly,,noce,F,1,0,0,0,,,,,,1260 State Route 97 E Lot 69,bellville,44813,richland,W,,OH,dnc_national2m_2015,1967,1,1,1,1
+FL_2017-02-28_122286643,413188714,LaMarr,Datcher300,"Washington, DC | Miami, FL",lamarr,Eugene,datcher,M,0,0,0,0,,,,,D,"1111   Brickell Bay DR, APT 2908",miami,33131,miami-dade,B,,FL,public_FL_2017-02-28,1979,1,1,1,1
+national2m_2015_338519637,413188714,LaMarr,Datcher300,"Washington, DC | Miami, FL",lamarr,,datcher,M,0,0,1,1,,,,,D,118 R St NE Apt 2,washington,20002,district of columbia,B,,DC,dnc_national2m_2015,,1,1,1,1
+CT_2017-02-03_003737392,424632968,Tiffiny castro poma,Tiffxpoma,"Connecticut, USA",tiffiny,,castro-poma,F,0,0,0,0,,,,,O,389 South Main Street,seymour,6483,new haven,,,CT,public_CT_2017-02-03,1989,1,1,1,1
+national2m_2015_282289458,424632968,Tiffiny castro poma,Tiffxpoma,"Connecticut, USA",tiffiny,,castro,F,0,0,0,0,,,,,I,4 Prospect St,ansonia,6401,new haven,H,,CT,dnc_national2m_2015,1989,1,1,1,1
+ia_nh_20150915_2015_356606986,446576347,Devlin Tatro,duhh4203,New Hampshire,devlin,,tatro,U,0,0,0,1,,,,,I,3 Hills Acres,lee,3861,strafford,W,,NH,dnc_ia_nh_20150915_2015,,1,1,1,1
+national2m_2015_356606986,446576347,Devlin Tatro,duhh4203,New Hampshire,devlin,,tatro,U,0,0,0,1,,,,,I,3 Hills Acres,lee,3861,strafford,W,,NH,dnc_national2m_2015,,1,1,1,1
+NC_2017-03-18_BL117176,455134130,Stephanie Gaither-Ha,SGaitherHarris,"Durham, NC",stephanie,LOREE,gaither-harris,F,1,1,1,1,,,,,D,308 N WATERS EDGE DR,durham,27703,durham,B,NL,NC,public_NC_2017-03-18,1958,1,1,1,1
+national2m_2015_279529384,455134130,Stephanie Gaither-Ha,SGaitherHarris,"Durham, NC",stephanie,,gaither,F,1,1,1,1,,,,,I,3387 Harmony Hwy,harmony,28634,iredell,W,,NC,dnc_national2m_2015,1988,1,1,1,1
+ia_nh_20150915_2015_356594524,463339369,Alana Persson,alana_persson11,"New Hampshire, USA",alana,,persson,F,0,0,0,1,,,,,I,43 McGrath St,laconia,3246,belknap,W,,NH,dnc_ia_nh_20150915_2015,,1,1,1,1
+national2m_2015_356594524,463339369,Alana Persson,alana_persson11,"New Hampshire, USA",alana,,persson,F,0,0,0,1,,,,,I,43 McGrath St,laconia,3246,belknap,W,,NH,dnc_national2m_2015,1965,1,1,1,1
+WA_2017-02-01_WA011573361,470499858,Justin,Julland3,"Spokane, WA",justin,G,ulland,M,0,0,0,0,,,,,,9321  N COURSIER  LN,spokane,99208,spokane,,,WA,public_WA_2017-02-01,1998,1,1,2,1
+national2m_2015_311520994,470499858,Justin,Julland3,"Spokane, WA",justin,,ulland,M,1,1,1,0,,,,,,27029 SE 164th Pl,issaquah,98027,king,W,,WA,dnc_national2m_2015,1980,1,1,1,1
+OH_2017-03-18_OH0021226981,473561110,Patrick McSweeny,PatrickMcSweeny,"Toledo, Ohio",patrick,MICHAEL,mcsweeny,,1,1,1,1,D,,,,D,4146 NORTHMOOR RD,toledo,43606,lucas,,,OH,public_OH_2017-03-18,1981,1,1,2,1
+national2m_2015_329033237,473561110,Patrick McSweeny,PatrickMcSweeny,"Toledo, Ohio",patrick,,sweeny,M,0,0,1,1,,,,,,2907 Sunset Dr,uniontown,44685,summit,W,,OH,dnc_national2m_2015,1981,1,1,1,1
+WA_2017-02-01_WA011055884,537825711,Nash Emrich,NashEmrich,CO-MT-DC-Seattle,nash,WILLIAM,emrich,M,0,0,0,0,,,,,,"617   3RD W AVE, # 103",seattle,98119,king,,,WA,public_WA_2017-02-01,1985,1,1,1,1
+national2m_2015_192559593,537825711,Nash Emrich,NashEmrich,CO-MT-DC-Seattle,nash,,emrich,M,0,1,1,0,,,,,,2512 Hancock Dr,billings,59102,yellowstone,W,,MT,dnc_national2m_2015,1985,1,1,1,1
+NC_2017-03-18_DE300626,575753123,Brittany Colonna,BrittanyLeigh_C,New York • UNC Chapel Hill,brittany,LEIGH,colonna,F,0,0,0,0,,,,,U,712  MARTIN LUTHER KING JR BLVD   #H1,chapel hill,27514,orange,W,NL,NC,public_NC_2017-03-18,1992,1,1,1,1
+national2m_2015_343701867,575753123,Brittany Colonna,BrittanyLeigh_C,New York • UNC Chapel Hill,brittany,,colonna,F,0,0,0,0,,,,,R,4 Lyndon Pl,melville,11747,suffolk,W,,NY,dnc_national2m_2015,1995,1,1,1,1
+MI_2016-09-01_2000422795,577529083,Antonio Griffieth Jr,YoYoJr27,Detroit --- Las Vegas,antonio,,griffieth,M,1,0,0,0,,,,,,6133  AVERY ST,detroit,48208,wayne,,,MI,public_MI_2016-09-01,1966,1,1,1,1
+national2m_2015_336045982,577529083,Antonio Griffieth Jr,YoYoJr27,Detroit --- Las Vegas,antonio,,griffieth,M,0,0,1,0,,,,,D,9077 Westchester Hill Ave,las vegas,89148,clark,B,,NV,dnc_national2m_2015,1993,1,1,1,1
+ia_nh_20150915_2015_356606982,588754875,Dev,DevanKurr,"Auburn, NH",devan,,kurr,U,0,0,0,1,,,,,I,42 Miner Rd,auburn,3032,rockingham,W,,NH,dnc_ia_nh_20150915_2015,,1,1,1,1
+national2m_2015_356606982,588754875,Dev,DevanKurr,"Auburn, NH",devan,,kurr,U,0,0,0,1,,,,,I,42 Miner Rd,auburn,3032,rockingham,W,,NH,dnc_national2m_2015,,1,1,1,1
+OH_2017-03-18_OH0023194884,610371520,meaghan bashaw,meaghanminor,"Ohio, USA",meaghan,ALYSSA,bashaw,,0,0,1,0,,,,,R,"853 MOON RD, APT D",columbus,43224,franklin,,,OH,public_OH_2017-03-18,1992,1,1,1,1
+national2m_2015_329032894,610371520,meaghan bashaw,meaghanminor,"Ohio, USA",meaghan,,minor,F,0,0,1,0,,,,,,4567 Marilyn St,hilliard,43026,franklin,W,,OH,dnc_national2m_2015,1992,1,1,1,1
+CT_2017-02-03_004446451,724932746,usha latif,ushalatif,"Fairfield, CT",usha,,latif,F,0,0,0,0,,,,,O,1 University Of Ct 1,mansfield,0,tolland,,,CT,public_CT_2017-02-03,1995,1,1,1,1
+national2m_2015_354985517,724932746,usha latif,ushalatif,"Fairfield, CT",,,,,,,,,,,,,,,,,,,,,,,,,,
+ia_nh_20150915_2015_356606389,893571331,Briana Simoneau,brianasimoneau,New Hampshire,briana,,simoneau,F,0,0,0,0,,,,,I,215 South Rd,fremont,3044,rockingham,W,,NH,dnc_ia_nh_20150915_2015,,1,1,1,1
+national2m_2015_356606389,893571331,Briana Simoneau,brianasimoneau,New Hampshire,briana,,simoneau,F,0,0,0,0,,,,,I,215 South Rd,fremont,3044,rockingham,W,,NH,dnc_national2m_2015,,1,1,1,1
+WA_2017-02-01_WA000822509,905235438,Vallerie R. Hart,Vrhart57,"Kelso, WA",vallerie,R,hart,F,0,0,0,0,,,,,,202  N 6TH  AVE,kelso,98626,cowlitz,,,WA,public_WA_2017-02-01,1957,1,1,1,1
+national2m_2015_13477073,905235438,Vallerie R. Hart,Vrhart57,"Kelso, WA",vallerie,,hart,F,1,1,1,0,,,,,,202 N 6th Ave,kelso,98626,cowlitz,W,,WA,dnc_national2m_2015,1959,1,1,1,1
+OK_2016-12-05_801359632,914657185,L. Vermilyea Miller,LeotaMiller,"Tahlequah, Oklahoma",leota,JUANITA,miller,,0,0,0,,,,,,I,"218 W DOWNING ST, APT C",tahlequah,74464,cherokee,,,OK,public_OK_2016-12-05,1963,1,1,2,1
+national2m_2015_158593423,914657185,L. Vermilyea Miller,LeotaMiller,"Tahlequah, Oklahoma",leota,,miller,F,1,1,1,1,,,,,D,23365 E 1180 Rd,cordell,73632,washita,W,,OK,dnc_national2m_2015,1933,1,1,1,1
+OH_2017-03-18_OH0019745525,919868352,Alice Rolfes,0509BigAl,"New Richmond, OH",alice,JEAN,rolfes,,1,1,1,0,R,,,,R,2559 LAUREL LINDALE RD,new richmond,45157,clermont,,,OH,public_OH_2017-03-18,1969,1,1,1,1
+national2m_2015_117955983,919868352,Alice Rolfes,0509BigAl,"New Richmond, OH",al,,rolfes,M,1,1,1,1,,,,,,644 Conina Dr,cincinnati,45233,hamilton,W,,OH,dnc_national2m_2015,1938,1,1,1,1
+OH_2017-03-18_OH0018249736,1051794866,Krista Habig-Klee,krishk02,ohio,krista,ANN,habig klee,,1,0,1,1,,,,,R,53765 QUIMBY AVE,blaine,43909,belmont,,,OH,public_OH_2017-03-18,1984,1,1,1,1
+national2m_2015_117884619,1051794866,Krista Habig-Klee,krishk02,ohio,krista,,habig-klee,F,1,0,1,1,,,,,,53765 Quimby Ave,blaine,43909,belmont,W,,OH,dnc_national2m_2015,1984,1,1,1,1
+OH_2017-03-18_OH0012286930,1058164328,Gia Gennari-Lynch,giagennari,Ohio,gia,L M,gennari lynch,,1,1,1,1,,R,R,R,R,3008 DEERFOOT TRL,huron,44839,erie,,,OH,public_OH_2017-03-18,1975,1,1,1,1
+national2m_2015_122360573,1058164328,Gia Gennari-Lynch,giagennari,Ohio,gia,,gennari-lynch,F,1,1,1,1,,,,,,3008 Deerfoot Trl,huron,44839,erie,W,,OH,dnc_national2m_2015,1975,1,1,1,1
+FL_2017-02-28_105128825,1099892990,Kraig Beahn,KraigBeahn,"Tallahassee, Florida",kraig,STEVEN,beahn,M,0,0,0,0,,,,,R,2615   FARRAGUT WAY,tallahassee,32312,leon,W,,FL,public_FL_2017-02-28,1982,1,1,2,1
+national2m_2015_226632526,1099892990,Kraig Beahn,KraigBeahn,"Tallahassee, Florida",kraig,,beahn,M,0,0,0,0,,,,,R,471 NW 87th Ter Apt 102,plantation,33324,broward,W,,FL,dnc_national2m_2015,1959,1,1,1,1
+ia_nh_20150915_2015_356594690,1387969704,Adam Geddis,geddisofthefive,"Lee, NH",adam,,geddis,M,0,0,0,1,,,,,I,0 Randall Hall Ksc 205B,keene,3431,cheshire,W,,NH,dnc_ia_nh_20150915_2015,,1,1,1,1
+national2m_2015_356594690,1387969704,Adam Geddis,geddisofthefive,"Lee, NH",adam,,geddis,M,0,0,0,1,,,,,I,0 Randall Hall Ksc 205B,keene,3431,cheshire,W,,NH,dnc_national2m_2015,,1,1,1,1
+WA_2017-02-01_WA011217729,1429223226,Matthew Yusko,Yuskovonovitch,"Seattle, WA",matthew,PATRICK,yusko,M,0,0,0,0,,,,,,7565  S 120TH  ST,seattle,98178,king,,,WA,public_WA_2017-02-01,1986,1,1,2,1
+national2m_2015_327015565,1429223226,Matthew Yusko,Yuskovonovitch,"Seattle, WA",matthew,,yusko,M,0,0,1,0,,,,,,5412 Kinney Rd SW,olympia,98512,thurston,W,,WA,dnc_national2m_2015,1984,1,1,1,1
+CT_2017-02-03_003489187,1440571896,Meghan Herbst,EUSmkh,"Hartford, CT",meghan,Kelly,herbst,F,0,0,1,1,,,,,O,75 Nicole Drive,glastonbury,0,hartford,,,CT,public_CT_2017-02-03,1980,1,1,1,1
+national2m_2015_257227119,1440571896,Meghan Herbst,EUSmkh,"Hartford, CT",,,,,,,,,,,,,,,,,,,,,,,,,,
+WA_2017-02-01_WA010875735,1442650176,Allison Buchholtz-Au,allison_au,"Seattle, WA",allison,KAIE,buchholtz au,F,0,0,0,0,,,,,,"215   10TH E AVE, # 311",seattle,98102,king,,,WA,public_WA_2017-02-01,1993,1,1,1,1
+national2m_2015_360232614,1442650176,Allison Buchholtz-Au,allison_au,"Seattle, WA",allison,,buchholtz-au,F,0,0,0,0,,,,,,1200 Western Ave Apt 1618,seattle,98101,king,W,,WA,dnc_national2m_2015,1993,1,1,1,1
+NC_2017-03-18_BY381383,1530853490,Candace Gorham,EbonyExodus,"Durham, North Carolina",candace,RENEE,gorham,F,0,0,1,0,,,,,D,2721  ATLANTIC ST,durham,27707,durham,B,UN,NC,public_NC_2017-03-18,1977,1,1,1,1
+national2m_2015_280108064,1530853490,Candace Gorham,EbonyExodus,"Durham, North Carolina",ebony,,exodus,F,0,1,1,0,,,,,D,4500 Chorus Ln,greensboro,27405,guilford,B,,NC,dnc_national2m_2015,1983,1,1,1,1
+WA_2017-02-01_WA002932385,1681478653,Dale Alan Weydert,Weydert1981,"Seattle, WA",dale,ALAN,weydert,M,0,0,0,0,,,,,,4133   23RD SW AVE,seattle,98106,king,,,WA,public_WA_2017-02-01,1981,1,1,1,1
+national2m_2015_13441706,1681478653,Dale Alan Weydert,Weydert1981,"Seattle, WA",alan,,weydert,M,1,1,1,1,,,,,,360 S Forest St,bellingham,98225,whatcom,W,,WA,dnc_national2m_2015,1958,1,1,1,1
+WA_2017-02-01_WA002202188,1707590622,James Bookwalter,jbookwalter3,washington,james,,bookwalter,M,0,0,0,0,,,,,,1316   BROWN  ST,wenatchee,98801,chelan,,,WA,public_WA_2017-02-01,1982,1,1,1,1
+national2m_2015_341161961,1707590622,James Bookwalter,jbookwalter3,washington,james,,bookwalter,M,0,0,1,1,,,,,R,4545 Connecticut Ave NW Apt 807,washington,20008,district of columbia,W,,DC,dnc_national2m_2015,,1,1,1,1
+NC_2017-03-18_CW1152028,1859226481,Davone Harrison,davoneharrison,"Baltimore, MD➡Charlotte, NC",davone,TYRELL,harrison,M,0,0,0,0,,,,,D,5419  NORTHSIDE RD,charlotte,28269,mecklenburg,B,UN,NC,public_NC_2017-03-18,1990,1,1,1,1
+national2m_2015_327350258,1859226481,Davone Harrison,davoneharrison,"Baltimore, MD➡Charlotte, NC",davone,,harrison,M,0,0,0,0,,,,,D,1906 Kelmore Rd,baltimore,21222,baltimore,B,,MD,dnc_national2m_2015,1994,1,1,1,1
+OH_2017-03-18_OH0023979782,1872850958,Kyle,KylePrueter,"Findlay, OH",kyle,F,prueter,,0,0,0,0,,,,,,410 LYNSHIRE LN,findlay,45840,hancock,,,OH,public_OH_2017-03-18,1998,1,1,2,1
+national2m_2015_127586264,1872850958,Kyle,KylePrueter,"Findlay, OH",kyle,,prueter,M,1,1,1,0,,,,,,5501 Cherrywood Rd,columbus,43229,franklin,W,,OH,dnc_national2m_2015,1989,1,1,1,1
+OK_2016-12-05_140255399,1875656965,Jeana Sorrells,jeanaholly,"Moore, OK",jeana,JAN,sorrells,,0,0,0,,,,,,I,15413  LILY GARDEN LN,oklahoma city,73170,cleveland,,,OK,public_OK_2016-12-05,1977,1,1,1,1
+national2m_2015_169470916,1875656965,Jeana Sorrells,jeanaholly,"Moore, OK",jeana,,holly,F,1,0,1,0,,,,,I,15413 Lilly Garden Ln,oklahoma city,73170,cleveland,W,,OK,dnc_national2m_2015,1977,1,1,1,1
+OH_2017-03-18_OH0024085318,2308584986,darron graham,Bodie400,Cincinnati Ohio,darron,LEE,graham,,0,0,0,0,,,,,,450 BLUE TEAL DR,cincinnati,45246,hamilton,,,OH,public_OH_2017-03-18,1998,1,1,2,1
+national2m_2015_327479377,2308584986,darron graham,Bodie400,Cincinnati Ohio,darron,,graham,M,0,0,1,0,,,,,,3808 Spring Mill Way,maineville,45039,warren,W,,OH,dnc_national2m_2015,1978,1,1,1,1
+MI_2016-09-01_4003906929,2310102378,Robert Chryczyk,oakland_u_fan,"Macomb, MI",robert,JOHN,chryczyk,M,1,1,1,1,,,,,,47315  CONCORD RD,macomb,48044,macomb,,,MI,public_MI_2016-09-01,1975,1,1,1,1
+national2m_2015_337642729,2310102378,Robert Chryczyk,oakland_u_fan,"Macomb, MI",robert,,oakland,M,0,0,0,0,,,,,,144 E Blueberry St,gwinn,49841,marquette,W,,MI,dnc_national2m_2015,1989,1,1,1,1
+MI_2016-09-01_31385757,2321131895,Amanda Muszynski,AMarieMuszynski,Michigan,amanda,MARIE,muszynski,F,0,0,0,0,,,,,,11757  FOREST GLEN LN,shelby township,48315,macomb,,,MI,public_MI_2016-09-01,1997,1,1,1,1
+national2m_2015_166384511,2321131895,Amanda Muszynski,AMarieMuszynski,Michigan,marie,,muszynski,F,0,0,0,0,,,,,,1092 Coolidge Hwy,river rouge,48218,wayne,W,,MI,dnc_national2m_2015,1926,1,1,1,1
+FL_2017-02-28_118775522,2374743418,Michael DixonPeabody,dixon_peabody,"Tallahassee, Florida",michael,RICHARD,dixon-peabody,M,0,0,0,0,,,,,D,4396   60TH WAY N,st petersburg,33709,pinellas,W,,FL,public_FL_2017-02-28,1993,1,1,1,1
+national2m_2015_306926697,2374743418,Michael DixonPeabody,dixon_peabody,"Tallahassee, Florida",michael,,dixon peabody,M,0,0,1,0,,,,,D,0 Wildwood Hall Rm 2529,tallahassee,32306,leon,W,,FL,dnc_national2m_2015,1993,1,1,1,1
+OH_2017-03-18_OH0023783778,2397236231,Antoine Walton,twonthegreat25,Cleveland oh,antoine,L,walton,,0,0,0,0,,,,,,3888 E 57TH ST,cleveland,44105,cuyahoga,,,OH,public_OH_2017-03-18,1989,1,1,2,1
+national2m_2015_316923330,2397236231,Antoine Walton,twonthegreat25,Cleveland oh,antoine,,walton,M,0,0,0,0,,,,,,1760 Denham St,cincinnati,45225,hamilton,B,,OH,dnc_national2m_2015,1986,1,1,1,1
+MI_2016-09-01_109032270,2450085284,Shiela Lee-Schick,legsschick,"Livonia, Michigan",shiela,MARIE,lee-schick,F,1,1,1,1,,,,,,34946  PARKDALE ST,livonia,48150,wayne,,,MI,public_MI_2016-09-01,1972,1,1,1,1
+national2m_2015_158019844,2450085284,Shiela Lee-Schick,legsschick,"Livonia, Michigan",lee,,schick,M,1,1,1,1,,,,,,3836 Frazho Rd,warren,48091,macomb,W,,MI,dnc_national2m_2015,1943,1,1,1,1
+FL_2017-02-28_110267203,2458276761,Valerie Coto,vstanisky,"Miami, Fl",valerie,,coto,F,1,1,1,0,,,,,O,7401  SW 136Th Ave,miami,33183,miami-dade,W,,FL,public_FL_2017-02-28,1973,1,1,1,1
+national2m_2015_226602324,2458276761,Valerie Coto,vstanisky,"Miami, Fl",valerie,,stanisky,F,0,0,0,0,,,,,D,3191 SW 176th Way,miramar,33029,broward,W,,FL,dnc_national2m_2015,1973,1,1,1,1
+WA_2017-02-01_WA011409186,2567660958,brittney partlow,partlowbrittney,"Walla Walla, WA",brittney,RENEE,partlow,F,0,0,0,0,,,,,,609   WILSON  ST,walla walla,99362,walla walla,,,WA,public_WA_2017-02-01,1998,1,1,2,1
+national2m_2015_17760251,2567660958,brittney partlow,partlowbrittney,"Walla Walla, WA",brittney,,partlow,F,0,0,0,0,,,,,,726 7th Ave,carbonado,98323,pierce,W,,WA,dnc_national2m_2015,1991,1,1,1,1
+FL_2017-02-28_100440528,2658195104,Linda S. DiFranco,lsdifranco,"Alachua, Florida",linda,Susan,di franco,F,1,1,1,1,,,,,O,5807  NW 168Th ST,alachua,32615,alachua,W,,FL,public_FL_2017-02-28,1950,1,1,2,1
+national2m_2015_234747175,2658195104,Linda S. DiFranco,lsdifranco,"Alachua, Florida",linda,,di franco,F,1,1,1,1,,,,,R,1 Stokesia Ct N,homosassa,34446,citrus,W,,FL,dnc_national2m_2015,1952,1,1,1,1
+OH_2017-03-18_OH0017927928,2716345634,Margie Osborn,margie_osborn,Ohio,margie,A,osborn,,1,1,1,1,R,,R,R,R,5712 MELODY LN,milford,45150,clermont,,,OH,public_OH_2017-03-18,1944,1,1,1,1
+national2m_2015_127646143,2716345634,Margie Osborn,margie_osborn,Ohio,margie,,osborn,F,1,1,1,1,,,,,,5712 Melody Ln,milford,45150,clermont,W,,OH,dnc_national2m_2015,1965,1,1,1,1
+OH_2017-03-18_OH0021472720,2798240586,Heather Tubbs Cooley,htubbscooley_RN,"Cincinnati, Ohio, USA",heather,LYNN,tubbs cooley,,0,0,1,0,,,,,R,8755 TANAGERWOODS DR,cincinnati,45249,hamilton,,,OH,public_OH_2017-03-18,1980,1,1,1,1
+national2m_2015_316923282,2798240586,Heather Tubbs Cooley,htubbscooley_RN,"Cincinnati, Ohio, USA",heather,,tubbs-cooley,F,0,0,1,0,,,,,,8755 Tanagerwoods Dr,cincinnati,45249,hamilton,W,,OH,dnc_national2m_2015,1980,1,1,1,1
+OK_2016-12-05_430005614,2818198154,Sandy Hembree,SconceSandy,"marietta, oklahoma",sandy,MARIE,sconce,,0,0,0,,,,,,D,506 SW 3 AVE,marietta,73448,love,,,OK,public_OK_2016-12-05,1972,1,1,1,1
+national2m_2015_154221133,2818198154,Sandy Hembree,SconceSandy,"marietta, oklahoma",sandy,,hembree,F,1,1,1,0,,,,,D,506 S 3rd Ave,marietta,73448,love,W,,OK,dnc_national2m_2015,1972,1,1,1,1
+FL_2017-02-28_115796494,2830731111,Devon Bennett-Cason,devbencas,"High Springs, FL",devon,DESIREE,bennett-cason,F,1,0,1,0,,,,,D,846  SE MAID MARION LN,high springs,32643,columbia,W,,FL,public_FL_2017-02-28,1978,1,1,1,1
+national2m_2015_338390095,2830731111,Devon Bennett-Cason,devbencas,"High Springs, FL",devon,,cason,F,0,0,0,0,,,,,D,311 Washington Ave,lehigh acres,33936,lee,O,,FL,dnc_national2m_2015,1994,1,1,1,1
+OH_2017-03-18_OH0023761011,2864747968,Edward Garber,83a63f20e0ac41c,dayton ohio,edward,LOUIS,garber,,0,0,0,0,,,,,,"2605 REVERE AVE, APT K",dayton,45420,montgomery,,,OH,public_OH_2017-03-18,1980,1,1,1,1
+national2m_2015_124265409,2864747968,Edward Garber,83a63f20e0ac41c,dayton ohio,edward,,garber,M,1,1,1,1,,,,,,3001 Garden Ave,cleveland,44109,cuyahoga,W,,OH,dnc_national2m_2015,1944,1,1,1,1
+OH_2017-03-18_OH0019260677,2918171670,Amanda Fellabaum,fella614baum,"Columbus, OH",amanda,G,fellabaum,,1,1,1,0,,,,D,D,805 TIMBERMAN RD,columbus,43212,franklin,,,OH,public_OH_2017-03-18,1989,1,1,2,1
+national2m_2015_126618169,2918171670,Amanda Fellabaum,fella614baum,"Columbus, OH",amanda,,fella,F,1,0,0,0,,,,,,221 N Riverview Ave,miamisburg,45342,montgomery,W,,OH,dnc_national2m_2015,1983,1,1,1,1
+FL_2017-02-28_123980093,3226538131,Gideon Massey,GideonMassey_,"Chipley, FL",gideon,,massey,M,0,0,0,0,,,,,R,1540   Lonnie RD,chipley,32428,washington,W,,FL,public_FL_2017-02-28,1999,1,1,2,1
+national2m_2015_225500448,3226538131,Gideon Massey,GideonMassey_,"Chipley, FL",gideon,,massey,M,1,1,1,1,,,,,R,31142 Cove Rd,tavares,32778,lake,W,,FL,dnc_national2m_2015,1945,1,1,1,1
+OK_2016-12-05_801395140,3229476281,Cynthia McCarter,CMcCarterSN,"Altus, OK",cynthia,NICOLE,mccarter,,0,0,0,,,,,,R,619 N HIGHTOWER ST,altus,73521,jackson,,,OK,public_OK_2016-12-05,1996,1,1,2,1
+national2m_2015_328264456,3229476281,Cynthia McCarter,CMcCarterSN,"Altus, OK",cynthia,,mccarter,F,0,0,1,0,,,,,D,408 W Roots Ave,bromide,74530,johnston,W,,OK,dnc_national2m_2015,1992,1,1,1,1
+NC_2017-03-18_BE29204,3295540895,Pamela Barefoot,bare_earth_oils,Linden NC,pamela,SUE,barefoot,F,1,1,1,1,,,,,R,10755  GILES RD,linden,28356,cumberland,W,NL,NC,public_NC_2017-03-18,1960,2,1,11,1
+national2m_2015_243172933,3295540895,Pamela Barefoot,bare_earth_oils,Linden NC,pamela,,bare,F,0,0,0,0,,,,,D,485 Hawkridge Ln,salisbury,28146,rowan,W,,NC,dnc_national2m_2015,1951,1,1,1,1
+FL_2017-02-28_123198989,3314421424,Steven breazeale,sprkz69,"Panama City Beach, FL",steven,WAYNE,breazeale,M,0,0,0,0,,,,,R,346   GREENWOOD CIR,panama city beach,32407,bay,W,,FL,public_FL_2017-02-28,1976,1,1,2,1
+national2m_2015_286027423,3314421424,Steven breazeale,sprkz69,"Panama City Beach, FL",steven,,breazeale,M,0,1,1,1,,,,,R,5354 Soto Grande Dr,pensacola,32504,escambia,W,,FL,dnc_national2m_2015,1967,1,1,1,1
+FL_2017-02-28_119354337,3461958023,Ms.Clymer,gail_madeleine,"Delray Beach, FL",madeleine,GAIL,clymer,F,0,0,1,1,,,,,R,5185   TENNIS LN,delray beach,33484,palm beach,W,,FL,public_FL_2017-02-28,1984,1,1,1,1
+national2m_2015_355141655,3461958023,Ms.Clymer,gail_madeleine,"Delray Beach, FL",gail,,clymer,F,0,0,0,0,,,,,R,132 Tate Ln,saint johns,32259,st. johns,W,,FL,dnc_national2m_2015,1950,1,1,1,1
+FL_2017-02-28_112311042,3960811216,Patricia Clenzi,psalvaticlenzi,"Boca Raton, FL",patricia,G,clenzi,F,1,1,1,1,,,,,R,1223  SW PEPPERRIDGE TER,boca raton,33486,palm beach,W,,FL,public_FL_2017-02-28,1958,1,1,1,1
+national2m_2015_218532759,3960811216,Patricia Clenzi,psalvaticlenzi,"Boca Raton, FL",patricia,,salvati,F,1,0,1,0,,,,,I,1335 Fleming Ave Lot 155,ormond beach,32174,volusia,W,,FL,dnc_national2m_2015,1942,1,1,1,1
+MI_2016-09-01_102971732,4108589895,Justin minzey,justinryan422,"Lansing, MI",justin,RYAN,minzey,M,1,0,1,0,,,,,,1223  KALAMAZOO ST,lansing,48912,ingham,,,MI,public_MI_2016-09-01,1980,1,1,1,1
+national2m_2015_328619140,4108589895,Justin minzey,justinryan422,"Lansing, MI",ryan,,minzey,M,0,0,1,0,,,,,,9922 S 8 Mile Rd,mc bain,49657,missaukee,W,,MI,dnc_national2m_2015,1994,1,1,1,1
+WA_2017-02-01_WA010919781,4670918310,Angelia Vincent,lil_buddy90,"Washington, USA",angelia,MARIE,vincent,F,0,0,0,0,,,,,,1541  E WEBER  RD,ritzville,99169,adams,,,WA,public_WA_2017-02-01,1990,1,1,1,1
+national2m_2015_111671722,4670918310,Angelia Vincent,lil_buddy90,"Washington, USA",angelia,,vincent,F,1,0,1,0,,,,,D,4614 Foote St NE,washington,20019,district of columbia,B,,DC,dnc_national2m_2015,1961,1,1,1,1
+NC_2017-03-18_ER41365,4819956893,Othoniel Cruz Rondon,cruz_othoniel,North Carolina,othoniel,,cruz rondon,M,0,0,0,0,,,,,R,115  REECE WAY,advance,27006,davie,O,HL,NC,public_NC_2017-03-18,1978,1,1,1,1
+national2m_2015_359176610,4819956893,Othoniel Cruz Rondon,cruz_othoniel,North Carolina,othoniel,,cruz-rondon,M,0,0,0,0,,,,,R,1444 Charity Church Rd,boonville,27011,yadkin,U,,NC,dnc_national2m_2015,1982,1,1,1,1
+NC_2017-03-18_BE187507,703958231161245696,Thanena Wilson,nena_wilson,"High Point, NC",thanena,SPENCER,wilson,F,1,1,1,1,,,,,D,4301  BRADBURY WAY,high point,27265,guilford,B,NL,NC,public_NC_2017-03-18,1964,1,1,1,1
+national2m_2015_242370116,703958231161245696,Thanena Wilson,nena_wilson,"High Point, NC",nena,,wilson,F,1,1,1,0,,,,,R,281 Enwood Dr,charlotte,28214,mecklenburg,W,,NC,dnc_national2m_2015,1962,1,1,1,1
+FL_2017-02-28_122975955,736260122872274944,Bradley mcElrath,B_raad617,"Clearwater, FL",bradley,PAUL,mcelrath,M,0,0,0,0,,,,,O,"2666  N MCMULLEN BOOTH RD, #1023",clearwater,33761,pinellas,M,,FL,public_FL_2017-02-28,1999,1,1,1,1
+national2m_2015_361289278,736260122872274944,Bradley mcElrath,B_raad617,"Clearwater, FL",bradley,,mc elrath,M,0,0,0,0,,,,,I,2666 N McMullen Booth Rd Apt 1023,clearwater,33761,pinellas,W,,FL,dnc_national2m_2015,1999,1,1,1,1
+CO_2016-12-01_653271,760834978653491200,Peggy Hof-Corrigan,HofCorrigan,"Pueblo, CO",peggy,MARIE,hof,F,,,,,,,,,U,1643   CEDAR ST,pueblo,81004,pueblo,,,CO,public_CO_2016-12-01,1945,1,1,1,1
+national2m_2015_254331113,760834978653491200,Peggy Hof-Corrigan,HofCorrigan,"Pueblo, CO",peggy,,hof corrigan,M,0,0,0,1,,,,,I,1643 Cedar St,pueblo,81004,pueblo,W,,CO,dnc_national2m_2015,1945,1,1,1,1
+OH_2017-03-18_OH0023707405,770594144481869824,Jordan Greathouse,JGreathouse28,"Dayton, OH",jordan,D,greathouse,,0,0,0,0,,,,,,5308 BRENDONWOOD LN,dayton,45415,montgomery,,,OH,public_OH_2017-03-18,1997,1,1,3,1
+national2m_2015_308433136,770594144481869824,Jordan Greathouse,JGreathouse28,"Dayton, OH",jordan,,greathouse,M,0,0,0,0,,,,,,4916 Heights Dr,stow,44224,summit,W,,OH,dnc_national2m_2015,1989,1,1,1,1
