@@ -83,3 +83,28 @@ def get_party_affiliation_dnc_data(row):
     if row['reg_party_ind'] == 1:
         return 'I'
     return ''
+
+
+def get_targetsmart_party_affil(x):
+    if x == 'Conservative':
+        return 'O'
+    if x == 'Democrat':
+        return 'D'
+    if x == 'Green':
+        return 'O'
+    if x == 'Independent':
+        return 'I'
+    if x == 'Libertarian':
+        return 'O'
+    if x == 'No Party':
+        return 'N'
+    if x == 'Other':
+        return 'O'
+    if x == 'Republican':
+        return 'R'
+    if x == 'Unaffiliated':
+        return 'N'
+    if x == 'Unknown':
+        return ''
+    if x == 'Working Fam':
+        return 'O'
