@@ -368,7 +368,11 @@ isDefinitelyForeignVectorized = function(profileLang, statusLang, timeZoneUTCOff
 
 	hasTZ = ( sapply(timeZoneUTCOffset, nchar) > 0 & !is.na(as.numeric(timeZoneUTCOffset)) )
 	utc = as.numeric(timeZoneUTCOffset)
-	foreignTime1 = hasTZ & (utc > -18000 | utc < -28800) & (utc != -32400) & (utc != -36000)	# hasTZ & foreignTime1 --> foreign
+	# true U.S. UTC offsets: during standard time, -3600 * (5 to 8 and 9 and 10); during daylight savings, generally -3600 * (1 + what it was before).
+	# All together, that's -3600 * (4 to 8 and 9 and 10), or let's just call it -3600 * (4 to 10)?
+	foreignTime1 = hasTZ & (utc > -14400 | utc < -36000) 						# hasTZ & foreignTime1 --> foreign
+	# this was a bug, didn't account for utc changes during daylight savings. Was correct but only for profile data collected during standard time.
+	#foreignTime1 = hasTZ & (utc > -18000 | utc < -28800) & (utc != -32400) & (utc != -36000)	# hasTZ & foreignTime1 --> foreign
 	alsoCheckTime2 = hasTZ & !foreignTime1 & !is.null(timeZoneString)							# offset looks U.S., but we have a string to check too
 	# hasTZ & !foreignTime1 & !alsoCheckTime2 --> u.s.
 	foreignTZString = !(timeZoneString %in% USTimeZoneStrings)
@@ -419,7 +423,7 @@ fixGPS = function(coordsTxt) {
     if (nchar(coordsTxt) == 0) {
         return("")
     }
-    ms = regexpr("\\[ (.+), (.+) \\]", coordsTxt, perl=T)
+    ms = regexpr("\\[(.+), (.+)\\]", coordsTxt, perl=T)
     starts = attr(ms, "capture.start")
     lengths = attr(ms, "capture.length")
     lat = substr(coordsTxt, starts[2], starts[2] + lengths[2] - 1)
