@@ -87,9 +87,15 @@ def get_data_for_state_from_targetsmart(filename, output_dir):
 
     for x in ['county', 'city', 'state', 'zipcode']:
         print("\t", file_id, x)
-        v = pd.DataFrame(data.groupby(['first_name', 'last_name', x]).size()).reset_index()
-        v.columns = ['first_name', 'last_name', x, x + '_count']
-        data = pd.merge(data, v, on=['first_name', 'last_name', x])
+        if x != 'state':
+            gvs = [x, 'state']
+        else:
+            gvs = ['state']
+        group_vars = ['first_name', 'last_name'] + gvs
+        v = pd.DataFrame(data.groupby(group_vars).size()).reset_index()
+        v.columns = group_vars + [x + "_count"]
+        data = pd.merge(data, v, on=group_vars)
+        
     data = data.fillna("")
 
     write_file(data,output_filename.replace(".csv",".tsv"))
