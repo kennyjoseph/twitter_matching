@@ -117,7 +117,7 @@ runXVal = function() {
 		print(paste("AUC on training data:", x1@y.values[[1]]))
 		predObj = prediction(partyProbsTest, labeledData$isForeign[fold == i & actuallyUseBool])
 		x1 = performance(predObj, "auc")	# look at the number in x1@y.values[[1]]
-		print(paste("AUC on training data:", x1@y.values[[1]]))
+		print(paste("AUC on test data:", x1@y.values[[1]]))
 
 		# Switching to ctree() immediately gets us to AUC of 0.84. (cforest() took forever on my machine, so I haven't gone back to it quite yet.)
 		# Plus, it gives reasonable confusion matrices. Looks like we could use a cutoff of .7-.95 to mark 10-20% of records as foreign (where in truth, 33% are foreign)
@@ -161,7 +161,7 @@ printConfusionMatrix = function(votes, truth, cutoff) {
 # Returns data.table with 10 preprocessed features + a label (isForeign, derived from inferredLoc).
 # If trainingOnly, returns only those columns and rows.
 # Else returns the whole thing for further work. In which case, still need to filter rows before building classifier.
-prepLabeledData = function(infile, trainingOnly=T) {
+prepLabeledData = function(infile, trainingOnly=T, keepLabelsRaw=F) {
 	candMatches = fread(infile)
 
 	# As training data, we'll use all lines for which a location was inferrable from the location string
@@ -172,7 +172,9 @@ prepLabeledData = function(infile, trainingOnly=T) {
 	training = candMatches
 
 	# a bunch of columns are unlabeled after twProfileLoc and before locContainsCity and inferredLoc
-	colnames(training)[11:25] = c("descriptionString", "urlString", "acctCreationDate", "lastSeenDate",
+	# They contain whatever's in the database table.
+	colIndsToChange = (which(colnames(training) == "etc") : (which(colnames(training) == "locContainsCity") - 1))
+	colnames(training)[colIndsToChange] = c("descriptionString", "urlString", "acctCreationDate", "lastSeenDate",
 					"numFollowers", "numFollowing", "numTweets", "isProtected", "isVerified", 
 					"timeZoneOffset", "timeZoneName", "profileLang", "tweetLang", "geoCoords", "nameHandleWords")
 
@@ -182,11 +184,28 @@ prepLabeledData = function(infile, trainingOnly=T) {
 	# RF can handle discrete inputs, but only up to 32 values each
 	training$yearCreated = as.factor(substr(training$acctCreationDate, 1, 4))
 
-	# some preprocessing
-	training$profileLang2 = preprocProfileLang(training$profileLang)
-	training$tweetLang2 = preprocTweetLang(training$tweetLang)
-	training$timeZoneOffset2 = preprocTZOffset(training$timeZoneOffset)
-	training$timeZoneName2 = recodeTimeZoneLabel(training$timeZoneName)
+	# some preprocessing of features
+
+	if (keepLabelsRaw) { # least possible amount of preprocessing -- mostly for expts
+		training$timeZoneOffset2 = preprocTZOffset(training$timeZoneOffset, numToKeep = 1000)
+		training$profileLang2 = as.factor(tolower(training$profileLang))
+		training$tweetLang2 = as.factor(tolower(training$tweetLang))
+		# experimental: try minimal amount
+		training$timeZoneName2 = as.factor(training$timeZoneName)	
+	} else {
+		# the usual preprocessing (determined from an analysis of Delaware only)
+		# first 3: don't need to change much of anything
+		training$profileLang2 = as.factor(tolower(training$profileLang))
+		training$tweetLang2 = as.factor(tolower(training$tweetLang))
+		training$timeZoneOffset2 = preprocTZOffset(training$timeZoneOffset, numToKeep = 100)
+		# a little cleaning seems to help here, and also makes runtime much faster
+		training$timeZoneName2 = recodeTimeZoneLabel2(training$timeZoneName)	# recodeTimeZoneLabel2 is smarter: doesn't collapse labels that would be in top N.
+		# older/orig way it was coded
+		#training$profileLang2 = preprocProfileLang(training$profileLang)
+		#training$timeZoneName2 = recodeTimeZoneLabel(training$timeZoneName)
+		#training$tweetLang2 = preprocTweetLang(training$tweetLang)
+		#training$timeZoneOffset2 = preprocTZOffset(training$timeZoneOffset)
+	}
 
 	features = c("profileLang2", "tweetLang2", "timeZoneOffset2", "timeZoneName2", "yearCreated", "isProtected", "isVerified",
 			"numFollowers", "numFollowing", "numTweets")	# not sure why these last 3 would matter, but doesn't hurt to try
@@ -318,6 +337,79 @@ recodeTimeZoneLabel = function(tzName, numToKeep = 20) {
 	#numFreqToKeep = min(53, numToKeep - numNotChangeable)
 	#placesToKeep = names(sort(t4, d=T)[1:numFreqToKeep])	# 43 most frequent, besides "" and importantLocalTZ. 
 							# (That number chosen because + "" + importantLocalTZ + "foreign" gives 53 == RF's max allowed categories.)
+	tzName[ !(tzName %in% importantLocalTZ) & tzName != "" & !(tzName %in% placesToKeep)] = "rare"
+
+	tzName = as.factor(tzName)
+	return(tzName)
+}
+
+recodeTimeZoneLabel2 = function(tzName, numToKeep = 20) {
+
+	t3 = table(tzName)
+
+	# 1. First, abbreviate the ones that we know are fairly rare and have no need to stay broken out separately.
+	asiaSlash = names(t3)[grepl("Asia/", names(t3))]
+	tzName[tzName %in% asiaSlash] = "Asia/"
+	europeSlash = names(t3)[grepl("Europe/", names(t3))]
+	tzName[tzName %in% europeSlash] = "Europe/"
+	africaSlash = names(t3)[grepl("Africa/", names(t3))]
+	tzName[tzName %in% africaSlash] = "Africa/"
+	australiaSlash = names(t3)[grepl("Australia/", names(t3))]
+	tzName[tzName %in% australiaSlash] = "Australia/"
+	pacificSlash = names(t3)[grepl("Pacific/", names(t3))]
+	tzName[tzName %in% pacificSlash] = "Pacific/"
+	# when first testing, the above lines reduced number of labels from 189 (only) to 170.
+	# in real/full data, it takes them from 268 to 213
+
+	basicallyLondon = c("UTC", "GMT", "BST")
+	tzName[tzName %in% basicallyLondon] = "London"
+
+	# in addition, there are potentially a bunch with "America/Indiana*"   (though actually not in our data)
+	indianaSlash = names(t3)[grepl("America/Indiana", names(t3))]
+	tzName[tzName %in% indianaSlash] = "America/Indiana"
+
+
+	# 2. Next, save the categories we know we'll keep: the main US time zones, and anything else that fits within numToKeep.
+	# no need to touch these
+	mainUSTimeZoneStrings = c("Arizona", "Hawaii", "Alaska", "Indiana (East)",
+				 "Eastern", "Central", "Mountain", "Pacific")
+	
+	importantLocalTZ = c(mainUSTimeZoneStrings, "America/nonUS", "America/variousUS")
+	numNotChangeable = 2 + length(importantLocalTZ) 	# length(importantLocalTZ) + "" + "rare"
+
+	# What do freqs look like outside those main ones
+	t4 = table(tzName[ !(tzName %in% importantLocalTZ) & tzName != ""])
+	numFreqToKeep = max(0, numToKeep - numNotChangeable)
+	placesToKeep = names(sort(t4, d=T)[1:numFreqToKeep])	
+
+
+	# 3. Before collapsing everything else to "rare", collapse known places to their more informative label.
+
+	# complete list of US named zones from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+	USVarious = c( "America/Chicago", "America/Denver", "America/New_York", "America/Los_Angeles",
+			 "America/Boise", "America/Detroit", "America/Anchorage", "America/Phoenix",
+			 "America/Fort_Wayne", "America/Indiana",
+			 "America/Juneau", "America/Kentucky/Louisville", "America/Kentucky/Monticello", "America/Knox_IN", "America/Louisville",
+			 "America/Menominee", "America/Metlakatla", "America/Nome", "America/Sitka", "America/Yakutat", 
+			 "America/North_Dakota/Beulah", "America/North_Dakota/Center", "America/North_Dakota/New_Salem", 
+			 "Navajo", "US/Alaska", "US/Aleutian", "US/Arizona", "US/Central", "US/Eastern", "US/East-Indiana",
+			 "US/Hawaii", "US/Indiana-Starke", "US/Michigan", "US/Mountain", "US/Pacific", "US/Pacific-New")
+	# and a bunch of observed abbreviations
+	USVarious = c(USVarious, "EST", "EDT", "CST", "CDT", "PST", "PDT", "MST", "MDT", "GMT-4", "GMT-5", "GMT-6", "GMT-7", "GMT-8")
+ 
+	tzName[(tzName %in% USVarious) & !(tzName %in% placesToKeep)] = "America/variousUS"	
+
+	otherAmericaSlash = names(t3)[grepl("America/", names(t3))]
+	tzName[tzName %in% otherAmericaSlash & !(tzName %in% placesToKeep)] = "America/nonUS"	# down to 164
+	
+	# Let's try to distinguish US vs. non-US for cities sharing our time zones
+	# *** May want to expand this list based on names we observe ***
+	placesNonUS = c("Bogota", "Central America", "Chihuahua", "Guadalajara", "Lima", "Mazatlan", "Mexico City",
+			"Monterrey", "Saskatchewan", "Tijuana")  # left out Quito b/c it's so popular
+	tzName[(tzName %in% placesNonUS) & !(tzName %in% placesToKeep)] = "America/nonUS"
+
+	
+	# 4. Finally, collapse everything else to "rare"
 	tzName[ !(tzName %in% importantLocalTZ) & tzName != "" & !(tzName %in% placesToKeep)] = "rare"
 
 	tzName = as.factor(tzName)

@@ -11,16 +11,20 @@ source("processLocations.R")	# for isLocationInUSA and its helper fns
 # to execute: 
 # inDir = "~/twitter_matching/mySQL_load_retrieve/data"
 # outDir = "~/twitter_matching/add_locs_and_do_match/data/candidateMatchFiles"
+# placeListDir = "~/twitter_matching/add_locs_and_do_match/data/placeLists"
 # finalOutfile = "~/twitter_matching/add_locs_and_do_match/data/allCandidateMatchLocs2M.csv"
-# system.time(runDirectory(inDir, outDir)) 	# quick! Took 55 minutes for all 1000 files (from the 2M voters).
-# grabAll(outDir, 1000, finalOutfile)
+# system.time(runDirectory(inDir, outDir, placeListDir)) 	# quick! Took 55 minutes for all 1000 files (from the 2M voters).
+# grabAll(outDir, finalOutfile)
 
 # and finally, rbind all of them:
-grabAll = function(dataDir, numFiles, outFile) {
-	listOfDataTables = vector(mode="list", length=numFiles)
-	infiles = paste0(dataDir, "/candMatchLocs-", 1:numFiles, ".csv")
-	for (i in 1:numFiles) {
-		listOfDataTables[[i]] = fread(infiles[i])
+grabAll = function(dataDir, outFile) {
+
+	infiles = list.files(dataDir, pattern="candMatchLocs-[0-9]+.csv", full.names=T)
+	listOfDataTables = vector(mode="list", length=length(infiles))
+	i = 0
+	for (infile in infiles) {
+		i = i + 1
+		listOfDataTables[[i]] = fread(infile)
 		# need to explicitly convert twitterID to integer64 for all tables, else some treat it as numeric
 		listOfDataTables[[i]] = listOfDataTables[[i]][, twProfileID := as.integer64(twProfileID)]	# note unfamiliar syntax. Seems to mean "replace one col, while keeping the others"
 	}
@@ -28,18 +32,24 @@ grabAll = function(dataDir, numFiles, outFile) {
 	fwrite(allTogether, file=outFile)
 }
 
-runDirectory = function(inDir, outDir, numFiles=1000) {
-	placeListDir = "data/placeLists/"
+# Looks for files named candMatches-1.txt to [some number]. Adds loc to each one.
+runDirectory = function(inDir, outDir, placeListDir) {
 	inParallel = T
 	timeProfiling = T
 
 	initSnowfall()
 
-	for (i in 1:numFiles) {
-		infile = file.path(inDir, paste0("candMatches-", i, ".txt"))
-		outfile = file.path(outDir, paste0("candMatchLocs-", i, ".csv"))
+	infiles = list.files(path=inDir, pattern="candMatches-[0-9]+.txt")
+	i = 0  # just a counter now
+	for (filename in infiles) {
+		i = i + 1
+		infile = file.path(inDir, filename)
+		outfileName = sub("candMatches", "candMatchLocs", filename)
+		outfileName = sub("txt", "csv", outfileName)
+		outfile = file.path(outDir, outfileName)
+
 		print(paste("Starting file", i))
-		addLocToFile(infile, outfile, placeListDir, inParallel=inParallel, timeProfiling=T)
+		addLocToFile(infile, outfile, placeListDir, inParallel=inParallel, timeProfiling=timeProfiling)
 	}
 	sfStop()
 
@@ -68,6 +78,17 @@ addLocToFile = function(infile, outfile, placeListDir, inParallel=F, timeProfili
 	candMatches = as.data.table(fread(infile, skip=1))		# header doesn't have enough fields; easier to paste on correct names here.
 	headerStart = read.table(infile, nrows=1)
 	colnames(candMatches)[1:ncol(headerStart)] = sapply(headerStart[1,], as.character)
+	# update column names to look like voter file format 2:
+        if ("personid" %in% colnames(candMatches)) {
+		setnames(candMatches, "personid", "voter_id")
+	}
+        if ("reg_address_city" %in% colnames(candMatches)) {
+		setnames(candMatches, "reg_address_city", "city")
+	}
+        if ("state_code" %in% colnames(candMatches)) {
+		setnames(candMatches, "state_code", "state")
+	}
+
 
 	print(paste("Read", nrow(candMatches), "lines of matches to process"))
 	if (timeProfiling) {
@@ -95,7 +116,7 @@ addLocToFile = function(infile, outfile, placeListDir, inParallel=F, timeProfili
 		print(paste("computed loc2 at", Sys.time()-startTime, units(Sys.time()-startTime)))
 	}
 
-	locStringContainsCity = locContainsCity(nonBlankLocMatchCands$reg_address_city, nonBlankLocMatchCands$twProfileLoc, places, inParallel)
+	locStringContainsCity = locContainsCity(nonBlankLocMatchCands$city, nonBlankLocMatchCands$twProfileLoc, places, inParallel)
 	candMatches$locContainsCity = rep(0, nrow(candMatches))
 	candMatches$locContainsCity[hasLocString] = as.numeric(locStringContainsCity)
 
@@ -146,8 +167,8 @@ computeLoc2Parallel = function(locStrings, places, inParallel = T) {
 #
 updateLocInferenceParallel = function(matchData, inferredLocs, places, inParallel=T, locStringContainsCity=NULL) {
 
-	matchData$city = as.character(matchData$reg_address_city)
-	matchData$state = as.character(matchData$state_code)
+	matchData$city = as.character(matchData$city)
+	matchData$state = as.character(matchData$state)
 	matchData$location = as.character(matchData$twProfileLoc)
 
 	if (is.null(locStringContainsCity)) {
@@ -254,6 +275,12 @@ getInferredCity2 = function(locString, inferredStateSeen, stateAbbrevs, cityStat
 
 # city and locString must be character class
 locContainsCity = function(cityVector, locStringVector, places, inParallel=T) {
+	# weird fix: somewhere out there (in Oklahoma) there are records whose "city" creates invalid regexps. Due to ')' or '&'.
+	#cityVector = sub(")", "\\\\)", cityVector)	# fixes single paren, but breaks matched ones
+	#cityVector = gsub("([()])", "\\\\\\1", cityVector)	# works until we saw '&'. 
+	# Try to escape all meta chars (except, brackets don't work):
+	cityVector = gsub("([().\\|\\{\\^\\$\\&\\*\\+\\?])", "\\\\\\1", cityVector)
+
     citiesAsPatterns = paste0("\\b", cityVector, "\\b")
 
 	# to parallelize, can't use mapply. Since there are 2 args, try making it into a matrix and using apply.
