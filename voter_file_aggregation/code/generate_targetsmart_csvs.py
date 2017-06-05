@@ -18,7 +18,7 @@ from functools import partial
 
 import time
 
-sys.argv = ['', "../data/targetsmart/", "../data/targetsmart_cleaned_csvs/"]
+#sys.argv = ['', "../data/targetsmart/", "../data/targetsmart_cleaned_csvs/"]
 if len(sys.argv) != 3:
     print('USAGE: generate_targetsmart_csvs.py [path_to_targetsmart_data] [path_to_output_data]')
     sys.exit(-1)
@@ -43,6 +43,13 @@ varnames_to_keep =copy(all_var_names)
 varnames_to_keep.remove("birth_date")
 varnames_to_keep_len = len(varnames_to_keep)
 
+def convert_zipcode(x):
+    if x =='':
+        return x
+    try:
+        return str(int(x))
+    except:
+        return ''
 
 def get_data_for_state_from_targetsmart(filename, output_dir):
     print(filename)
@@ -80,7 +87,7 @@ def get_data_for_state_from_targetsmart(filename, output_dir):
                                 })
 
     data['voter_id'] = data.voter_id.apply(lambda x: "ts_" + str(x))
-    data['zipcode'] = data.zipcode.apply(lambda x: str(int(x)) if x != '' else x)
+    data['zipcode'] = data.zipcode.apply(convert_zipcode)
 
     data = data.fillna("")
     data = data[varnames_to_keep]
@@ -102,7 +109,17 @@ def get_data_for_state_from_targetsmart(filename, output_dir):
     return filename
 
 
-files = glob.glob(os.path.join(VOTER_FILE_DATA_DIR,"*"))
+files = glob.glob(os.path.join(VOTER_FILE_DATA_DIR,"*.csv"))
+
+fil2= []
+for filename in files:
+    output_filename = os.path.join(OUTPUT_DIR, os.path.basename(filename.replace(".csv",".tsv")))
+    if os.path.exists(output_filename):
+        continue
+    fil2.append(filename)
+
+files = fil2
+print('N FILES: ', len(files))
 
 # generate results in parallel for state voter files
 n_cpu = 4
@@ -110,11 +127,14 @@ n_cpu = 4
 #get_data_voter_file_helper('WA')
 print('N CPUS: ', n_cpu)
 
-get_data_for_state_from_targetsmart(files[0],OUTPUT_DIR)
+#get_data_for_state_from_targetsmart(files[0],OUTPUT_DIR)
+#for fil in files:
+#    get_data_for_state_from_targetsmart(fil, OUTPUT_DIR)
 
-# pool = Pool(int(n_cpu))
-# results = pool.map(get_data_voter_file_helper,ALL_STATES)
-# for result in results:
-#      print result
-# pool.close()
-# pool.terminate()
+pool = Pool(int(n_cpu))
+partial_fun = partial(get_data_for_state_from_targetsmart,output_dir=OUTPUT_DIR)
+results = pool.map(partial_fun,files)
+for result in results:
+    print(result)
+pool.close()
+pool.terminate()

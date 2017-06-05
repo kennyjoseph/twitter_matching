@@ -5,14 +5,14 @@ import sys
 import pandas as pd
 from util import write_file
 
-sys.argv = ['', '../data/cleaned_voter_files']
+#sys.argv = ['', '../data/cleaned_voter_files']
 
 if len(sys.argv) != 2:
     print 'Usage: generate_counts.py [path_to_cleaned_voter_files]'
     sys.exit(-1)
 
 VOTER_FILE_LOC = sys.argv[1]
-OUTPUT_DIR = VOTER_FILE_LOC +"_with_counts" if VOTER_FILE_LOC[-1] != "/" else VOTER_FILE_LOC[-1] +"_with_counts"
+OUTPUT_DIR = VOTER_FILE_LOC +"_with_counts" if VOTER_FILE_LOC[-1] != "/" else VOTER_FILE_LOC[:-1] +"_with_counts"
 
 try:
     os.mkdir(OUTPUT_DIR)
