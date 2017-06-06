@@ -48,8 +48,10 @@ run_command_line_call = function(args, linesPerFile = 2000000, maxLinesPerFile =
 	}
 
 	data1 = fread(rawStateFile)
+	# data1 contains all records from the original targetsmart file, including those from out of state.
+	data1_state = data1[state==stateAbbrev,]
 	data2 = fread(extraStateFile, header=FALSE)
-	allData = rbind(data1, data2, use.names=FALSE)
+	allData = rbind(data1_state, data2, use.names=FALSE)
 	print(paste(stateAbbrev, ": found", nrow(allData), "rows"))
 	
 	withCntZip = allData[, .(zipcode_cnt = .N), by=.(first_name, last_name, zipcode, state)]

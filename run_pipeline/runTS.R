@@ -17,14 +17,15 @@ usage = "Usage: Rscript [--vanilla] runTS.R <fileNum> <actionNum> <force=1 or 0>
 #			/one-subdir-per-input-file  	# (eventually deleted)
 #			/handful of files per input file 
 #	/match-results		# (Output of part2.)
-#			/handful of files per input file 
+#		/handful of files per input file 
 
 # Initialize vars
 voterfileDir 		= "/net/data/twitter-voters/voter-data/ts_chunks"
-numVoterfilesWeKnowAbout = 1   # starting with SD!
+numVoterfilesWeKnowAbout = 124   # for sanity check
 candMatchesBaseDir 	= "/net/data/twitter-voters/matching-work-files/cand-matches"
 locsBaseDir 		= "/net/data/twitter-voters/matching-work-files/with-locations"
 matchResultsBaseDir 	= "/net/data/twitter-voters/match-results"
+
 scriptsBaseDir = "/home/lfriedl/twitter_matching/"
 placeListDir = file.path(scriptsBaseDir, "add_locs_and_do_match/data/placeLists/")
 
@@ -65,8 +66,7 @@ run_command_line_call = function() {
 
 # From input file name, attempts to create a substring we'll want to use for subdirs and output files
 getVoterfileStem = function(voterfileName) {
-	st = sub("_northeastern_install_file_", "", voterfileName)
-	st = sub("\\.tsv", "", st)
+	st = sub("\\.tsv", "", voterfileName)
 	return(st)
 }
 
@@ -80,7 +80,7 @@ getWordCount = function(voterfilePath) {
 }
 
 run_part1 = function(fileNum, force=F) {
-	voterfileName = voterfiles[fileNum] 	# looks something like tsmart_northeastern_install_file_SD.tsv. If it's been split, will be more complicated.
+	voterfileName = voterfiles[fileNum] 	# looks something like WI_chunk1.tsv
 	print(paste("Working on file", voterfileName))
         voterfileIn = file.path(voterfileDir, voterfileName)
 	voterfileStem = getVoterfileStem(voterfileName)
@@ -102,7 +102,7 @@ run_part1 = function(fileNum, force=F) {
 	}
 
 	# Get numRecords
-	numRecords = getWordCount(voterfileIn)
+	numRecords = getWordCount(voterfileIn) - 1
 
 	# Query against Twitter DB.
         setwd(file.path(scriptsBaseDir, "mySQL_load_retrieve"))
@@ -130,7 +130,7 @@ run_part1 = function(fileNum, force=F) {
 	print("Timing for location computations:")
         print(t)
         grabAll(candMatchesLocsWorkDir, candMatchLocsFile)            # rbind
-        if (file.exists(candMatchLocsFile) && file.size(candMatchLocsFile) >= 175 * numRecords) {       # cutoff taken from existing files. Was 200, but now reducing a bit.
+        if (file.exists(candMatchLocsFile) && file.size(candMatchLocsFile) >= 150 * numRecords) {       # cutoff taken from existing files. Was 200, but now reducing a bit.
                 unlink(candMatchesLocsWorkDir, recursive=T)     # ok to delete outDir once we have candMatchLocsFile
                 # also remove candMatchesDir/candMatches-* at this point. But not the other files in that dir (matchCounts-* and out-*).
                 unlink(paste0(candMatchesDir, "/candMatches-*")) 
@@ -140,42 +140,46 @@ run_part1 = function(fileNum, force=F) {
 
 }
 
-# (in progress, so far just sketched)
 run_part2 = function(fileNum, force=F) {
-
-	voterfileName = voterfiles[fileNum] 	# looks something like tsmart_northeastern_install_file_SD.tsv. If it's been split, will be more complicated.
+	voterfileName = voterfiles[fileNum] 	# looks something like WI_chunk1.tsv
 	print(paste("Working on file", voterfileName))
         voterfileIn = file.path(voterfileDir, voterfileName)
 	voterfileStem = getVoterfileStem(voterfileName)
 
 	# Construct names of output files and check whether they exist yet
 	candMatchLocProbsFile = file.path(locsBaseDir, voterfileStem, "allCandidateMatchLocProbs.csv")
-# todo...
+	if (file.exists(candMatchLocProbsFile) & !force) {
+		stop("Found existing output file ", candMatchLocProbsFile, "; please remove or run again using 'force' option")
+	}
 
+        foreignCutoff = .9
+	filterFieldForMatching = "city_count"
+	filterFieldBase = substr(filterFieldForMatching, 1, nchar(filterFieldForMatching) - 6)
+	matchResultsFile = file.path(matchResultsBaseDir, paste0("matches-", voterfileStem, "-uniq", filterFieldBase, "-Ctree", foreignCutoff, "-rule5-wDups.csv"))
+	matchResultsOut = file.path(matchResultsBaseDir, paste0("matches-", voterfileStem, "-uniq", filterFieldBase, "-Ctree", foreignCutoff, "-rule5-wDups.out"))
+	if ((file.exists(matchResultsFile) || file.exists(matchResultsOut)) & !force) {
+		stop("Found existing output file ", matchResultsFile, "or", matchResultsOut, "; please remove or run again using 'force' option")
+	}
+
+
+        # Get numRecords
+	numRecords = getWordCount(voterfileIn) - 1	
+	howManyMillions = numRecords / 1000000 		# for downsampling. This ratio reproduces the "downsample = .5" for 2M voters.
 
 	# Add probMetaForeign
         setwd(file.path(scriptsBaseDir, "add_locs_and_do_match"))
 	source("randomForest.R")
+	# caution: is a terrible memory hog.
+        candMatchLocsFile = file.path(locsBaseDir, voterfileStem, "allCandidateMatchLocs.csv")
 	addPredictionToCandMatches(infile=candMatchLocsFile, outfile=candMatchLocProbsFile, downsampleTrainingFactor=min(1, 1/howManyMillions))
-
-        # Get numRecords
-        numRecords = getWordCount(voterfileIn)
 
 	# Do the matching
         source("do_the_matching.R")
+	capture.output(matchTheMatches(voterfileIn=NULL, matchFileIn=candMatchLocProbsFile, fullMatchFileOut=matchResultsFile,
+					matchRulesVersion = 5, filterField = filterFieldForMatching, filterFieldMax = 1, 
+					foreignIfProbScoreAbove = foreignCutoff, removeDups=FALSE), file=matchResultsOut)
 
-        howManyMillions = numRecords / 1000000          # for downsampling. This ratio reproduces the "downsample = .5" for 2M voters.
-        foreignCutoff = .9
-
-	filterFieldForMatching = "city_count"
-	filterFieldBase = substr(filterFieldForMatching, 1, nchar(filterFieldForMatching) - 6)
-
-# todo...
-	matchResultsFile = file.path(commonOutDir, paste0("matches-", voterfileStem, "-uniq", filterFieldBase, "RF", foreignCutoff, "-rule5-wDups.csv"))
-	matchResultsOut = file.path(commonOutDir, paste0("matches-", voterfileStem, "-uniq", filterFieldBase, "RF", foreignCutoff, "-rule5-wDups.out"))
-	capture.output(matchTheMatches(voterfileIn=voterfileIn, matchFileIn=candMatchLocProbsFile, fullMatchFileOut=matchResultsFile,
-		matchRulesVersion = 5, filterField = filterFieldForMatching, filterFieldMax = 1, foreignIfProbScoreAbove=.9, removeDups=FALSE), file=matchResultsOut)
-
+	print(paste("Done with part2; see results log at", matchResultsOut))
 
 }
 
