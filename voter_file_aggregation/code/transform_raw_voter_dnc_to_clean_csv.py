@@ -27,7 +27,7 @@ import time
 if len(sys.argv) != 2:
     print 'USAGE: transform_raw_voter_dnc_to_clean_csv.py [path_to_raw_data_files -> e.g. ../data/]'
 
-DATA_DIR = sys.argv[1]
+DATA_DIR = "../"
 VOTER_FILE_DATA_DIR = os.path.join(DATA_DIR, "raw_voter", "public_voter_files")
 DNC_DATA_DIR = os.path.join(DATA_DIR, "raw_voter","dnc_voter_files")
 OUTPUT_DIR = os.path.join(DATA_DIR,"cleaned_voter_files")

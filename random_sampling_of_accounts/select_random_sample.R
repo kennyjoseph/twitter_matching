@@ -37,4 +37,7 @@ setnames(d, c("id", "name", "handle", "url", "is_protected", "location", "descri
               "pic_url", "is_verified"))
 
 d <- d[profile_lang == 'en' & tweet_lang == "en" & (d$tz_name == "None" | d$tz_name %in% USTimeZoneStrings)]
-
+set.seed(0)
+write.table(sample_n(d,10000)$id,
+            "~/git/lazerlab/voter_project/twitter_matching/twitter_tools/random_sample_usalike_users.txt", 
+            row.names=F,col.names=F,quote=F)

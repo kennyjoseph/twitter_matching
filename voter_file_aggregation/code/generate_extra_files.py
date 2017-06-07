@@ -9,7 +9,6 @@ states = ['WY', 'WV', 'WI', 'WA', 'VT', 'VA', 'UT', 'TX', 'TN', 'SD', 'SC',
 state_map = {s : io.open("/net/data/twitter-voters/voter-data/extra_state_files/"+s+"_extra.tsv","w") for s in states}
 
 for fil in glob.glob("/net/data/twitter-voters/voter-data/ts_cleaned/*"):
-
     fil_state = fil[-6:-4]
     print fil, fil_state
     infil = io.open(fil)
