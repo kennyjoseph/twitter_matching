@@ -12,12 +12,13 @@ dir.create(OUTPUT_DIR, showWarnings = FALSE)
 
 files <- unlist(lapply(state.abb[!state.abb %in% bad_states], 
                        function(l){Sys.glob(file.path(INPUT_DIR,paste0(l,"*")))}))
-sfInit(parallel = T,cpus=2)
+sfInit(parallel = T,cpus=12)
 sfLibrary(data.table)
 sfExport("OUTPUT_DIR","desired_min_age")
 
 gen_preferred_chunk <- function(fil){
   d <- fread(fil)
+  d <- d[state_count == 1]
   d[,weight:=1]
   d[birth_year > (2017 - desired_min_age),weight:=weight*5]
   d[! race %in% c("Causcasian","Other","Uncoded","African-American"),weight :=weight *1.5]
@@ -27,6 +28,7 @@ gen_preferred_chunk <- function(fil){
   
   ## write out fil
   to_write <- d[unique(sampled)]
+  to_write$weight <- NULL
   outfile_name <- file.path(OUTPUT_DIR,paste0("preferred_",basename(fil)))
   write.csv(to_write,outfile_name,fileEncoding="utf8")
   return(fil)
