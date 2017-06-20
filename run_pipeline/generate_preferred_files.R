@@ -1,7 +1,7 @@
 library(data.table)
 library(snowfall)
 
-bad_states <- c("DE","RI","NH","IA","CT","OK","CO","WA","MI","NC","OH","FL")
+bad_states <- c("DE","RI","NH","IA","CT","OK","CO","WA","MI","NC","OH","FL","WI")
 desired_min_age <- 45
 
 INPUT_DIR <- "/net/data/twitter-voters/voter-data/ts_chunks/"
@@ -30,7 +30,8 @@ gen_preferred_chunk <- function(fil){
   to_write <- d[unique(sampled)]
   to_write$weight <- NULL
   outfile_name <- file.path(OUTPUT_DIR,paste0("preferred_",basename(fil)))
-  write.csv(to_write,outfile_name,fileEncoding="utf8")
+  fwrite(to_write,outfile_name, sep="\t")
+  #write.csv(to_write,outfile_name,fileEncoding="utf8")
   return(fil)
 }
 

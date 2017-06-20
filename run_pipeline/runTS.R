@@ -17,11 +17,13 @@ usage = "Usage: Rscript [--vanilla] runTS.R <fileNum> <actionNum> <force=1 or 0>
 #			/one-subdir-per-input-file  	# (eventually deleted)
 #			/handful of files per input file 
 #	/match-results		# (Output of part2.)
-#		/handful of files per input file 
+#		/handful of files per input file  --> later moved into subdirs
 
 # Initialize vars
-voterfileDir 		= "/net/data/twitter-voters/voter-data/ts_chunks"
-numVoterfilesWeKnowAbout = 124   # for sanity check
+#voterfileDir 		= "/net/data/twitter-voters/voter-data/ts_chunks"
+#numVoterfilesWeKnowAbout = 124   # for sanity check
+voterfileDir 		= "/net/data/twitter-voters/voter-data/preferred_chunks"
+numVoterfilesWeKnowAbout = 86   # for sanity check
 candMatchesBaseDir 	= "/net/data/twitter-voters/matching-work-files/cand-matches"
 locsBaseDir 		= "/net/data/twitter-voters/matching-work-files/with-locations"
 matchResultsBaseDir 	= "/net/data/twitter-voters/match-results"
