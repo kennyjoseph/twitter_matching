@@ -50,6 +50,9 @@ the pattern of the already existing states and then rerun the script.
 The data will be output in ```[path_to_data_dir]/cleaned_voter_files```.
 
 
+
+
+
 # Loading data into BigQuery
 
 ## Step 1

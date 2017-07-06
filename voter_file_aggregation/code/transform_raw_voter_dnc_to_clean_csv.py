@@ -24,18 +24,12 @@ from multiprocessing import Pool, cpu_count
 from functools import partial
 
 import time
-if len(sys.argv) != 2:
-    print 'USAGE: transform_raw_voter_dnc_to_clean_csv.py [path_to_raw_data_files -> e.g. ../data/]'
 
-DATA_DIR = "../"
+DATA_DIR = "../data/"
 VOTER_FILE_DATA_DIR = os.path.join(DATA_DIR, "raw_voter", "public_voter_files")
 DNC_DATA_DIR = os.path.join(DATA_DIR, "raw_voter","dnc_voter_files")
 OUTPUT_DIR = os.path.join(DATA_DIR,"cleaned_voter_files")
 TODAYS_DATE = time.strftime("%d/%m/%Y")
-try:
-    os.mkdir(OUTPUT_DIR)
-except:
-    print 'didnt make output dir, exists already'
 
 STATE_COUNTY_FILE = os.path.join(DATA_DIR, "used_by_model", "per_county_state.csv")
 
@@ -187,9 +181,7 @@ def clean_dnc_address_data(data,addr_type):
     data['city']= data.city.str.lower()
     return data[varnames_to_keep]
 
-def get_data_for_state_from_dnc_data(filename, output_dir):
-    print filename
-    output_filename = os.path.join(output_dir, os.path.basename(filename))
+def transform_dnc_data(filename):
     data = pd.read_csv(filename,encoding='utf8')
     data = data.fillna("")
     data['middle_name'] = ''
@@ -219,6 +211,13 @@ def get_data_for_state_from_dnc_data(filename, output_dir):
     data['zipcode'] = data.zipcode.apply(lambda x: str(int(x)) if x != '' else x)
 
     data = data.fillna("")
+    return data
+
+def get_data_for_state_from_dnc_data(filename, output_dir):
+    print filename
+    output_filename = os.path.join(output_dir, os.path.basename(filename))
+
+    data = transform_dnc_data(filename)
     state_county_res = defaultdict(set)
     for r in data[['state', 'county']].drop_duplicates().itertuples():
         state_county_res[r[1]].add(r[2])
@@ -238,44 +237,55 @@ def get_data_voter_file_helper(state):
                                                              line_reader)
     return state, counties
 
-state_to_county_data = defaultdict(set)
 
-# read in the existing state -> county mappings, so we don't have to rerun everything
-# every time just to generate this file
-if os.path.exists(STATE_COUNTY_FILE):
-    state_county_out_fil = open(STATE_COUNTY_FILE)
-    for line in state_county_out_fil:
-        state, county = line.strip().split("\t")
-        state_to_county_data[state].add(county)
+if __name__ == "__main__":
 
-# generate results in parallel for state voter files
-n_cpu = min(len(ALL_STATES), cpu_count()/float(2))
+    if len(sys.argv) != 2:
+        print 'USAGE: transform_raw_voter_dnc_to_clean_csv.py [path_to_raw_data_files -> e.g. ../data/]'
 
-#get_data_voter_file_helper('WA')
-print 'N CPUS: ', n_cpu
-pool = Pool(int(n_cpu))
-results = pool.map(get_data_voter_file_helper,ALL_STATES)
-for result in results:
-     state, counties = result
-     state_to_county_data[state] = state_to_county_data[state] | counties
-pool.close()
-pool.terminate()
+    try:
+        os.mkdir(OUTPUT_DIR)
+    except:
+        print 'didnt make output dir, exists already'
 
-# generate results for the DNC data
-dnc_partial = partial(get_data_for_state_from_dnc_data, output_dir = OUTPUT_DIR)
-pool = Pool(2)
-results = pool.map(dnc_partial,glob.glob(DNC_DATA_DIR + "/*"))
-for result in results:
-    for state,counties in result.items():
-        state_to_county_data[state] = state_to_county_data[state] | counties
-pool.close()
-pool.terminate()
+    state_to_county_data = defaultdict(set)
 
-# write out county/state file
-state_county_out_fil = open(STATE_COUNTY_FILE, "w")
-for k, v in state_to_county_data.items():
-    for county in v:
-        state_county_out_fil.write(k + "\t" + str(county) + "\n")
-state_county_out_fil.close()
+    # read in the existing state -> county mappings, so we don't have to rerun everything
+    # every time just to generate this file
+    if os.path.exists(STATE_COUNTY_FILE):
+        state_county_out_fil = open(STATE_COUNTY_FILE)
+        for line in state_county_out_fil:
+            state, county = line.strip().split("\t")
+            state_to_county_data[state].add(county)
+
+    # generate results in parallel for state voter files
+    n_cpu = min(len(ALL_STATES), cpu_count()/float(2))
+
+    #get_data_voter_file_helper('WA')
+    print 'N CPUS: ', n_cpu
+    pool = Pool(int(n_cpu))
+    results = pool.map(get_data_voter_file_helper,ALL_STATES)
+    for result in results:
+         state, counties = result
+         state_to_county_data[state] = state_to_county_data[state] | counties
+    pool.close()
+    pool.terminate()
+
+    # generate results for the DNC data
+    dnc_partial = partial(get_data_for_state_from_dnc_data, output_dir = OUTPUT_DIR)
+    pool = Pool(2)
+    results = pool.map(dnc_partial,glob.glob(DNC_DATA_DIR + "/*"))
+    for result in results:
+        for state,counties in result.items():
+            state_to_county_data[state] = state_to_county_data[state] | counties
+    pool.close()
+    pool.terminate()
+
+    # write out county/state file
+    state_county_out_fil = open(STATE_COUNTY_FILE, "w")
+    for k, v in state_to_county_data.items():
+        for county in v:
+            state_county_out_fil.write(k + "\t" + str(county) + "\n")
+    state_county_out_fil.close()
 
 
