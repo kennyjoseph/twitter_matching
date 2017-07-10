@@ -30,14 +30,16 @@ tfile = tempfile(fileext=".txt")
 writeBin(r, tfile)
 rm(r)
 inFile = tfile
-d <- fread(inFile)
+d2 <- fread(inFile)
 
-setnames(d, c("id", "name", "handle", "url", "is_protected", "location", "description", "num_followers", "num_following",
+setnames(d2, c("id", "name", "handle", "url", "is_protected", "location", "description", "num_followers", "num_following",
               "date_created", "tz_offset", "tz_name", "num_tweets", "profile_lang", "date_last_seen", "coords", "tweet_lang",
               "pic_url", "is_verified"))
 
-d <- d[profile_lang == 'en' & tweet_lang == "en" & (d$tz_name == "None" | d$tz_name %in% USTimeZoneStrings)]
+d2 <- d2[profile_lang == 'en' & tweet_lang == "en" & (d2$tz_name == "None" | d2$tz_name %in% USTimeZoneStrings)]
 set.seed(0)
-write.table(sample_n(d,10000)$id,
-            "~/git/lazerlab/voter_project/twitter_matching/twitter_tools/random_sample_usalike_users.txt", 
+
+sample_uids <- sample_n(d2,100000)$id
+write.table(sample_uids,
+            "~/git/lazerlab/voter_project/twitter_matching/random_sampling_of_accounts/random_sample_usalike_users.txt", 
             row.names=F,col.names=F,quote=F)
