@@ -1,7 +1,5 @@
 library(data.table)
 library(snowfall)
-library(stringr)
-library(lubridate)
 bad_states <- c()#"DE","RI","NH","IA","CT","OK","CO","WA","MI","NC","OH","FL","WI")
 desired_min_age <- 45
 
@@ -22,13 +20,11 @@ files <- unlist(lapply(state.abb[!state.abb %in% bad_states],
                        function(l){Sys.glob(file.path(INPUT_DIR,paste0(l,"*")))}))
 sfInit(parallel = T,cpus=15)
 sfLibrary(data.table)
-sfLibrary(stringr)
-sfLibrary(lubridate)
 sfExport("OUTPUT_DIR","desired_min_age","AGE_SAMPLING_WEIGHTS","PRIOR_NAME","INDIR_NAME")
 
 gen_preferred_chunk <- function(fil){
-  prior_fil <- str_replace(fil,INDIR_NAME,PRIOR_NAME)
-  prior_fil <- str_replace(prior_fil,basename(prior_fil),paste0("preferred_",basename(prior_fil)))
+  prior_fil <- sub(INDIR_NAME,PRIOR_NAME,fil)
+  prior_fil <- sub(basename(prior_fil),paste0("preferred_",basename(prior_fil)),prior_fil)
   d <- fread(fil)
   prior_data <- fread(prior_fil)
   
@@ -61,7 +57,7 @@ gen_preferred_chunk <- function(fil){
   d[party_affiliation %in% c("","N"), weight := weight * .25]
   
   # if we have party affiliation
-  sampled <- sample(1:nrow(d),300000,prob=d$weight,replace=T)
+  sampled <- sample(1:nrow(d),350000,prob=d$weight,replace=T)
   
   ## write out fil
   to_write <- d[unique(sampled)]
