@@ -1,11 +1,11 @@
 library(data.table)
 library(snowfall)
 
-bad_states <- c("DE","RI","NH","IA","CT","OK","CO","WA","MI","NC","OH","FL","WI")
+bad_states <- c()#"DE","RI","NH","IA","CT","OK","CO","WA","MI","NC","OH","FL","WI")
 desired_min_age <- 45
 
 INPUT_DIR <- "/net/data/twitter-voters/voter-data/ts_chunks/"
-OUTPUT_DIR <- "/net/data/twitter-voters/voter-data/preferred_chunks/"
+OUTPUT_DIR <- "/net/data/twitter-voters/voter-data/preferred_chunks_2/"
 
 dir.create(OUTPUT_DIR, showWarnings = FALSE)
 
@@ -20,11 +20,11 @@ gen_preferred_chunk <- function(fil){
   d <- fread(fil)
   d <- d[state_count == 1]
   d[,weight:=1]
-  d[birth_year > (2017 - desired_min_age),weight:=weight*5]
+  d[birth_year <= (2017 - desired_min_age),weight:=weight*8]
   d[! race %in% c("Causcasian","Other","Uncoded","African-American"),weight :=weight *1.5]
   
   # if we have party affiliation
-  sampled <- sample(1:nrow(d),500000,prob=d$weight,replace=T)
+  sampled <- sample(1:nrow(d),300000,prob=d$weight,replace=T)
   
   ## write out fil
   to_write <- d[unique(sampled)]
