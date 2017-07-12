@@ -16,8 +16,9 @@ AGE_SAMPLING_WEIGHTS <- fread("age_resample.csv")
 dir.create(OUTPUT_DIR, showWarnings = FALSE)
 
 
-files <- unlist(lapply(state.abb[!state.abb %in% bad_states], 
+files <- unlist(lapply(c(state.abb[!state.abb %in% bad_states],"DC"), 
                        function(l){Sys.glob(file.path(INPUT_DIR,paste0(l,"*")))}))
+
 sfInit(parallel = T,cpus=15)
 sfLibrary(data.table)
 sfExport("OUTPUT_DIR","desired_min_age","AGE_SAMPLING_WEIGHTS","PRIOR_NAME","INDIR_NAME")
