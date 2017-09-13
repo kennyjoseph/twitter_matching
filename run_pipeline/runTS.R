@@ -10,6 +10,7 @@ usage = "Usage: Rscript [--vanilla] runTS.R <fileNum> <actionNum> <force=1 or 0>
 #		/targetsmart   	# raw data from TargetSmart
 #		/ts_cleaned	# preprocessed
 #		/ts_chunks	# split into files of < 3 million people. (Input to this script.)
+#		/preferred_chunks	# ts_chunks further subsampled. (Other possible input to this script.)
 #	/matching-work-files
 #		/cand-matches	# (Created during part1.)
 #			/one-subdir-per-input-file
@@ -22,9 +23,14 @@ usage = "Usage: Rscript [--vanilla] runTS.R <fileNum> <actionNum> <force=1 or 0>
 # Initialize vars
 voterfileDir 		= "/net/data/twitter-voters/voter-data/ts_chunks"
 numVoterfilesWeKnowAbout = 124   # for sanity check
+
 #voterfileDir 		= "/net/data/twitter-voters/voter-data/preferred_chunks"
+#voterfileDir 		= "/net/data/twitter-voters/voter-data/preferred_chunks_2"
+#hackAddToStem = ".2"
+hackAddToStem = ""	# turn off the "hack" for preferred_chunks_2
 #numVoterfilesWeKnowAbout = 124   # now that we've sampled all
 ##numVoterfilesWeKnowAbout = 86   # for sanity check <-- previously in preferred_chunks
+
 candMatchesBaseDir 	= "/net/data/twitter-voters/matching-work-files/cand-matches"
 locsBaseDir 		= "/net/data/twitter-voters/matching-work-files/with-locations"
 matchResultsBaseDir 	= "/net/data/twitter-voters/match-results"
@@ -68,8 +74,9 @@ run_command_line_call = function() {
 }
 
 # From input file name, attempts to create a substring we'll want to use for subdirs and output files
-getVoterfileStem = function(voterfileName) {
+getVoterfileStem = function(voterfileName, suffix=hackAddToStem) {
 	st = sub("\\.tsv", "", voterfileName)
+	st = paste0(st, suffix)
 	return(st)
 }
 
@@ -154,6 +161,10 @@ run_part2 = function(fileNum, force=F) {
 	if (file.exists(candMatchLocProbsFile) & !force) {
 		stop("Found existing output file ", candMatchLocProbsFile, "; please remove or run again using 'force' option")
 	}
+        candMatchLocsFile = file.path(locsBaseDir, voterfileStem, "allCandidateMatchLocs.csv")
+	if (!file.exists(candMatchLocsFile)) {
+		stop("Input file", candMatchLocsFile, "not found")
+	}
 
         foreignCutoff = .9
 	filterFieldForMatching = "city_count"
@@ -173,7 +184,6 @@ run_part2 = function(fileNum, force=F) {
         setwd(file.path(scriptsBaseDir, "add_locs_and_do_match"))
 	source("randomForest.R")
 	# caution: is a terrible memory hog.
-        candMatchLocsFile = file.path(locsBaseDir, voterfileStem, "allCandidateMatchLocs.csv")
 	addPredictionToCandMatches(infile=candMatchLocsFile, outfile=candMatchLocProbsFile, downsampleTrainingFactor=min(1, 1/howManyMillions))
 
 	# Do the matching

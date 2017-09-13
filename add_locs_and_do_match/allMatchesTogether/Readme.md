@@ -1,7 +1,9 @@
 
 This directory contains panel match data for around 475k people.
 
-sourceMatchFiles: for each voter file, the matches we'll use. (10 public states, dnc:IANH, dnc:natl2M (in 2 formats), dnc:100k (in old format only).)
+sourceMatchFiles:
+[now moved to /net/data/twitter-voters/match-reults/dnc_and_public]
+	For each voter file, the matches we'll use. (10 public states, dnc:IANH, dnc:natl2M (in 2 formats), dnc:100k (in old format only).)
 	These were all run with the flag to not deduplicate within files.
 	All matching is done first at the city level (with all names unique in their city), then the state (restricted to names unique in their state).
 
