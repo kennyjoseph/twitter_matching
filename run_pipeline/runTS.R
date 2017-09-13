@@ -20,10 +20,11 @@ usage = "Usage: Rscript [--vanilla] runTS.R <fileNum> <actionNum> <force=1 or 0>
 #		/handful of files per input file  --> later moved into subdirs
 
 # Initialize vars
-#voterfileDir 		= "/net/data/twitter-voters/voter-data/ts_chunks"
-#numVoterfilesWeKnowAbout = 124   # for sanity check
-voterfileDir 		= "/net/data/twitter-voters/voter-data/preferred_chunks"
-numVoterfilesWeKnowAbout = 86   # for sanity check
+voterfileDir 		= "/net/data/twitter-voters/voter-data/ts_chunks"
+numVoterfilesWeKnowAbout = 124   # for sanity check
+#voterfileDir 		= "/net/data/twitter-voters/voter-data/preferred_chunks"
+#numVoterfilesWeKnowAbout = 124   # now that we've sampled all
+##numVoterfilesWeKnowAbout = 86   # for sanity check <-- previously in preferred_chunks
 candMatchesBaseDir 	= "/net/data/twitter-voters/matching-work-files/cand-matches"
 locsBaseDir 		= "/net/data/twitter-voters/matching-work-files/with-locations"
 matchResultsBaseDir 	= "/net/data/twitter-voters/match-results"

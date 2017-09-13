@@ -61,7 +61,7 @@ matchTheMatches = function(voterfileIn, matchFileIn, fullMatchFileOut,
 	}
 
     # If input data includes voters with blank cities, drop them. (Try to prevent this at earlier steps?)
-    if ("city" %in% colnames(matchCountsData) & sum(matchCountsData$city == '') > 0) {
+    if (matchRulesVersion == 5 && "city" %in% colnames(matchCountsData) && sum(matchCountsData$city == '') > 0) {
         matchCountsData = matchCountsData[matchCountsData$city != '',]
     }
 
@@ -171,8 +171,10 @@ summarizeRemainder = function(matchCountsData, matchLevel = "state") {
 	print(paste("Total # voters:", length(allVoters), "; total # candidate rows:", nrow(matchCountsData)))
 	print(paste("rows with blank loc:", sum(matchCountsData$newInferredLoc == ""), "; with 'unparsed':", sum(matchCountsData$newInferredLoc == "unparsed")))
 	print(paste("rows with other state:", sum(matchCountsData$newInferredLoc != matchCountsData$state & nchar(matchCountsData$newInferredLoc)==2),
-		"; with correct state:", sum(matchCountsData$newInferredLoc == matchCountsData$state), "; with both city and state:", 
-		sum(matchCountsData$newInferredLoc == matchCountsData$state & matchCountsData$cityMatchColumn)))
+		"; with correct state:", sum(matchCountsData$newInferredLoc == matchCountsData$state), 
+		ifelse("cityMatchColumn" %in% colnames(matchCountsData), 
+			paste("; with both city and state:", sum(matchCountsData$newInferredLoc == matchCountsData$state & matchCountsData$cityMatchColumn)),
+			"")))
 
 	# for each voter, how many candidates have the right state?
 	if (matchLevel == "state") {
