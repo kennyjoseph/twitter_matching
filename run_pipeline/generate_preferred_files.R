@@ -1,6 +1,10 @@
 library(data.table)
 library(snowfall)
-bad_states <- c()#"DE","RI","NH","IA","CT","OK","CO","WA","MI","NC","OH","FL","WI")
+
+bad_states <- c() # was c("DE","RI","NH","IA","CT","OK","CO","WA","MI","NC","OH","FL","WI")
+#good_states <- c("DE","RI","CT","OK","CO","WA","MI","NC","OH","FL")	# for which we have public data, but now want to sample TS
+#good_states = c("IA", "NH", "WI", "DC")				# others we skipped originally for various reasons
+
 desired_min_age <- 45
 
 DATA_DIR <-  "/net/data/twitter-voters/voter-data/"
@@ -15,8 +19,8 @@ AGE_SAMPLING_WEIGHTS <- fread("age_resample.csv")
 
 dir.create(OUTPUT_DIR, showWarnings = FALSE)
 
-
-files <- unlist(lapply(c(state.abb[!state.abb %in% bad_states],"DC"), 
+files <- unlist(lapply(c(state.abb[!state.abb %in% bad_states],"DC"), 	# orig
+#files <- unlist(lapply(good_states, 					# temp
                        function(l){Sys.glob(file.path(INPUT_DIR,paste0(l,"*")))}))
 
 sfInit(parallel = T,cpus=15)
