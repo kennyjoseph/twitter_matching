@@ -1,7 +1,8 @@
 
 Scripts for sending TargetSmart data through the matching pipeline:
 
-- [things KJ did] changes raw TargetSmart data files (one per state) into ts_cleaned + extra_state_files (which have correct formatting, incorrect counts)
+- `../voter_file_aggregation/code/generate_targetsmart_csvs.py` takes raw TargetSmart data file (one per state), select and cleans columns to produce files we keep in `ts_cleaned`.
+- `../voter_file_aggregation/code/generate_extra_files.py` takes the complete set of `ts_cleaned` files and creates, for every state of residence, a file under `extra_state_files` for voters who live here but were registered elsewhere. (Files produced so far have correct formatting, incorrect counts.)
 - ```prepCountInputs.R```: takes all voters (and non-voters) from 1 state, recomputes counts, subdivides into "chunk" files.
 - [Optional] Run ```generate_preferred_files.R``` to generate a sub-sampled collection for matching from the TS data
 - ```runTS.R```: To run parts 1 and 2 of matching pipeline, in separate calls, for each input file.
