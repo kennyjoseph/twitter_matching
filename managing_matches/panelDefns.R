@@ -48,9 +48,10 @@ allPanelNames = function() {
 		"TSmart-5fullStates",
 		"TSmart-natlSample-oldPeople",
 		"TSmart-all-May2017",
+		"TSmart-CA-Oct2017",
 
 		# combinations start here:  	
-		"TSmart-natlSample-2-combo"
+		"TSmart-natlSample-2-combo"	# if we call two panels a "combo" in this file, never have to think of them as separate outside this file.
 		# these aren't used, are more like what I'm now calling "universes":
 		#"all-DNC-plus-public",			# these tweets have all been collected together
 		#"TSmart-natlSample-plus-DNC-natl"	# full TSmart would be a superset of DNC, but this is only a sample  <-- not sure we'll want exactly this, though
@@ -67,7 +68,7 @@ getPanelPrecedences = function() {
 	# 		national samples > full states
 	# 		big samples > smaller samples
 	# 		newer > older
-	c("TSmart-all-May2017", "TSmart-natlSample-2-combo", "TSmart-natlSample-1", "TSmart-natlSample-oldPeople", "TSmart-5fullStates", "public-10states", "DNC-natl-2", 
+	c("TSmart-CA-Oct2017", "TSmart-all-May2017", "TSmart-natlSample-2-combo", "TSmart-natlSample-1", "TSmart-natlSample-oldPeople", "TSmart-5fullStates", "public-10states", "DNC-natl-2", 
 		"DNC-IANH-2", "DNC-100k-geo", "DNC-100k-2", "DNC-natl-1", "DNC-IANH-1")
 }
 
@@ -87,7 +88,11 @@ getPanelInfo = function(panelName, printInfo=T) {
 					"'rule 5': Requires a single Twitter name match to the right location and no others to blank/unknown locations; either Twitter profile has correct city & state,",
 					"or it has correct state and the name is unique at the state level. A classifier removes some foreign profiles based on profile metadata.")
 	if (grepl("TSmart", panelName, ignore.case=T)) {
-		allVars$voterDataFileDescrip = "TargetSmart data, May 2017, containing 231 million U.S. residents"
+		if (grepl("Oct2017", panelName)) {
+			allVars$voterDataFileDescrip = "TargetSmart data, Oct 2017, containing U.S. residents"
+		} else {
+			allVars$voterDataFileDescrip = "TargetSmart data, May 2017, containing 231 million U.S. residents"
+		}
 	} else if (grepl("public", panelName, ignore.case=T)) {
 		allVars$voterDataFileDescrip = "Public voter data, downloaded March 2017"
 	}  # DNC: varied, so describe each separately
@@ -137,6 +142,19 @@ getPanelInfo = function(panelName, printInfo=T) {
 
 		allVars$matchFile = "<todo!>"
 		allVars$sourceMatchFilesWithDups = "/net/data/twitter-voters/match-results/targetsmart_fullStates/matches-*_chunk*-uniqcity-Ctree0.9-rule5-wDups.csv"
+
+	} else if (panelName == "TSmart-CA-Oct2017") {
+		allVars$panelDescrip = "Matches from TargetSmart CA voter data (the version provided to us Oct 2017)"
+
+		# This matching also used extra_state_files/CA_extra.tsv, which comes from the May data.
+		# todo: fix the universe deduping I did that only used the main CA raw file.
+		allVars$voterDataFiles = c("/net/data/twitter-voters/voter-data/targetsmart_oct2017/tsmart_northeastern_install_file_CA.csv",
+					   "/net/data/twitter-voters/voter-data/targetsmart/tsmart_northeastern_install_file_*.csv")
+
+		allVars$matchingInputFiles = "/net/data/twitter-voters/voter-data/ts_chunks/CA_chunk*.tsv"
+
+		allVars$matchFile = "<todo!>"
+		allVars$sourceMatchFilesWithDups = "/net/data/twitter-voters/match-results/targetsmart_Oct2017/matches-CA_chunk*-uniqcity-Ctree0.9-rule5-wDups.csv"
 
 	} else if (panelName == "public-10states") {
 		allVars$panelDescrip = "Matches from 10 full states of public voter data"

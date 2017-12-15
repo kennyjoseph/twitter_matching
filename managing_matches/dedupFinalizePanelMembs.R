@@ -53,7 +53,41 @@ panelsForNatlSample = c("TSmart-natlSample-2-combo", "DNC-natl-2", "DNC-100k-geo
 # version 3 (Sept 2017)
 panelsInUniverse = c("TSmart-all-May2017", "TSmart-natlSample-2-combo", "DNC-natl-1", "DNC-natl-2", "DNC-100k-geo")	# Any that we might potentially want to look at
 panelsForMillionMan = c("TSmart-all-May2017", "DNC-natl-2", "DNC-100k-geo")	# Keeping the DNC panels for their California people 
-# i.e., call createDedupedUniverse(panelsInUniverse, ...) and then getIDsForPanels(panelsForMillionMan, ...) to know who to track
+# universePath = "~/voter-stuff/panels/universe_sept-13-2017/"	<-- trailing slash is important
+# createDedupedUniverse(panelsInUniverse, universePath)
+# idsForMillionMan = getIDsForPanels(universePath, panelsForMillionMan)
+#  to get data in common input format:
+# inputDemogs = fread(paste0(universePath, "inputFormat.csv"))
+# merged1 = merge(idsForMillionMan, inputDemogs, by=c("twProfileID", "voter_id"))
+# fwrite(merged1, paste0(universePath, "people-for-million-man-panel.csv"))
+# finally, what I've prepped for Kenny is [probably]: sort *twIDs.txt | uniq > all-union.twIDs.txt 
+
+# version 4 (Oct/Nov 2017)
+panelsForTargetSmart = c("TSmart-CA-Oct2017", "TSmart-all-May2017")
+panelsInUniverse = c("TSmart-CA-Oct2017", panelsInUniverse)
+# universePath = "~/voter-stuff/panels/universe_nov-2-2017-keepDNCaround"	<-- trailing slash is important
+# createDedupedUniverse(panelsInUniverse, universePath)
+# idsForTargetSmart = getIDsForPanels(universePath, panelsForTargetSmart)
+#  to get data in common input format:
+# inputDemogs = fread(paste0(universePath, "inputFormat.csv"))
+# merged1 = merge(idsForTargetSmart, inputDemogs, by=c("twProfileID", "voter_id"))
+# fwrite(merged1, paste0(universePath, "people-for-targetsmart-panel.csv"))
+
+# version 5 (Oct/Nov 2017) -- In this version, I'm just forgetting about the DNC matches. (They're already having their Twitter info collected anyway, regardless of what I do here.) 
+panelsForTargetSmart = c("TSmart-CA-Oct2017", "TSmart-all-May2017")
+panelsInUniverse = c("TSmart-CA-Oct2017", "TSmart-all-May2017")
+# universePath = "~/voter-stuff/panels/universe_nov-2-2017/"	<-- trailing slash is important
+# createDedupedUniverse(panelsInUniverse, universePath)
+# idsForTargetSmart = getIDsForPanels(universePath, panelsForTargetSmart)
+#  to get data in common input format:
+# inputDemogs = fread(paste0(universePath, "inputFormat.csv"))
+# merged1 = merge(idsForTargetSmart, inputDemogs, by=c("twProfileID", "voter_id"))
+# fwrite(merged1, paste0(universePath, "people-for-targetsmart-panel.csv"))
+
+# version 6 (Nov 2017) -- not for general use, just a helper for matching DNC-1 panel to TargetSmart records.
+universePath = "~/voter-stuff/panels/matching_universe_nov-22-2017/"
+panelsInUniverse = c("DNC-natl-1", "TSmart-CA-Oct2017", "TSmart-all-May2017")
+# createDedupedUniverse(panelsInUniverse, universePath)	<-- hacked/stopped before it merges with the raw formats.
  
 
 ####
@@ -71,13 +105,14 @@ panelsForMillionMan = c("TSmart-all-May2017", "DNC-natl-2", "DNC-100k-geo")	# Ke
 # Assumes each config$sourceMatchFilesWithDups expands via file globbing to a list of >= 1 file.
 # Assumes the voter_ids in voterDataFiles can be translated to those in raw input files by removing everything up to the last underscore.
 # Cannot assume sourceMatchFilesWithDups contains fields from common input format; some do, others just have ~5 cols.
-# outDirAndPrefix is the start of the file path for all saved files.  Can be just a dir (ending in '/') or also contain a prefix + "-"
+# outDirAndPrefix is the start of the file path for all saved files.  Can be just a dir (if so, MUST end in '/'!) or also contain a prefix + "-"
 createDedupedUniverse = function(panelNames, outDirAndPrefix) {
-	outDir = dirname(outDirAndPrefix)
+	outDir = dirname(paste0(outDirAndPrefix, "testStub"))
 	print("Making sure output directory can be written to")
 	if (!dir.exists(outDir)) {
-		isOK = dir.create(outDir, recursive = T)
-		stopifnot(isOK, paste("Could not create directory", outDir))
+		if (! dir.create(outDir, recursive = T) ) {
+			stop(paste("Could not create directory", outDir))
+		}
 	}
 
 	panelsInfo = getAllPanelInfo(panelNames)
@@ -143,9 +178,11 @@ createDedupedUniverse = function(panelNames, outDirAndPrefix) {
 
 	# save all rows (minus dups) with voter data from common input format
 	#   (saves voter data for each voter x each panel they're in)
-	matchesCommonInputFormat = merge(dedupedData, simpleVoterData, by="voter_id")  # expanded form (1 row per voter x panel), plus all the tracking columns
+	#matchesCommonInputFormat = merge(dedupedData, simpleVoterData, by="voter_id")  # expanded form (1 row per voter x panel), plus all the tracking columns
+	# (prev line created 2 cols of twProfileID)
+	matchesCommonInputFormat = merge(dedupedData, simpleVoterData, by=intersect(colnames(dedupedData), colnames(simpleVoterData))) # expanded form (1 row per voter x panel), plus all the tracking columns
 	outfile = paste0(outDirAndPrefix, "inputFormat.csv")
-	fwrite(matchesCommonInputFormat[, -c("source_panels", "dup_handling", "dup_voterIDs"), with=F], outfile)
+	fwrite(unique(matchesCommonInputFormat[, -c("source_panels", "dup_handling", "dup_voterIDs"), with=F]), outfile)	# taking unique rows even here b/c same source file is sometimes the input to >1 panel.
 
 	# for each panel, save:
 	#  twitter IDs alone
@@ -158,7 +195,7 @@ createDedupedUniverse = function(panelNames, outDirAndPrefix) {
 	}
 
 	#   and merged with raw voter data (one row per voter x panel)
-	saveWithRawVoterData(dedupedData, panelsInfo)
+	saveWithRawVoterData(dedupedData, panelsInfo, outDirAndPrefix)
 
 }
 
@@ -200,7 +237,7 @@ readRawMatches = function(panelInfo) {
 
 		dataTables[[i]] = data
 	}
-	inData = rbindlist(dataTables)		# cols: voter_id, [unif_voter_id,] twProfileID, [sourceFile,] panel
+	inData = rbindlist(dataTables, use.names=T)		# cols: voter_id, [unif_voter_id,] twProfileID, [sourceFile,] panel
 	return(inData)
 }
 
@@ -251,7 +288,7 @@ getIDsForPanels = function(universePath, panelNames) {
 		goodPairsToKill = (goodPairs$voter_id %in% votersToKill)
 		goodPairs = goodPairs[!goodPairsToKill,]
 	}
-	rowsToKeep = rbindlist(rowsPerPanel)
+	rowsToKeep = rbindlist(rowsPerPanel, use.names=T)
 	if (nrow(goodPairs) > 0) {   # sanity check: rowsToKeep should cover everything in goodPairs (but with each ID once).
 		print("warning: didn't use all up the rows of goodPairs")
 	}
@@ -313,7 +350,7 @@ manageDupVoters = function(dataRows, simpleVoterData, panelNames) {
 
 }
 
-saveWithRawVoterData = function(dataRows, panelInfo) {
+saveWithRawVoterData = function(dataRows, panelInfo, outDirAndPrefix) {
 	panelNames = names(panelInfo)
 	possVoterIDColNames = c("voter_id", "personid", "voterbase_id")	  # will use the first of these in the raw voter data (each data source should only have 1)
 
@@ -352,7 +389,7 @@ saveWithRawVoterData = function(dataRows, panelInfo) {
 			#setnames(matchesWithVoterData, "orig_voter_id", "voter_id")   # always save as voter_id
 			matchesList[[i]] = matchesWithVoterData
 		}
-		matchesThisPanelVoterData = rbindlist(matchesList)
+		matchesThisPanelVoterData = rbindlist(matchesList, use.names=T)
 		if (nrow(matchesThisPanel) == nrow(matchesThisPanelVoterData)) {
 			print(paste("Good! Merged in voter data for all", nrow(matchesThisPanel), "matches in the panel"))
 		} else {
@@ -417,7 +454,7 @@ mergeInInputVoterData = function(dataRows, panelInfo) {
 			print(paste("Had", nrow(matchesThisPanel), "matches; after merging, only", nrow(matchesThisPanelVoterData)))
 		}
 	}
-	allMatches = rbindlist(bigMatchesList)
+	allMatches = rbindlist(bigMatchesList, use.names=T)
 	#fwrite(allMatches, file=outfile)
 	return(allMatches)
 
