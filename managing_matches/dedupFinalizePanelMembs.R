@@ -19,9 +19,9 @@ source("panelDefns.R")
 #
 ###
 # Data storage in a universe: (all files generated in createDedupedUniverse)
-# prefix + "masterList.csv"
-# prefix + "inputFormat.csv"
-# prefix + panelName + "-rawFormat.csv"
+# prefix + "masterList.csv"			<-- one line per twProfileID + voter_id in match files, mult panels listed per line
+# prefix + "inputFormat.csv"			<-- one line per twProfileID + voter_id after deduplication. Panel not listed or assigned. (A few lines are missing for DNC data.)
+# prefix + panelName + "-rawFormat.csv"		<-- one file per panel in the universe, lines look just like raw voter data, apart from fields twProfileID, orig_voter_id and voter_id. 
 # prefix + panelName + ".twIDs.txt" <-- not strictly necessary, but simpler for times when we don't need to attach voter data
 ###
 #
@@ -41,14 +41,18 @@ panelsInUniverse = c("TSmart-natlSample-1", "DNC-natl-1", "DNC-natl-2", "DNC-100
 
 # for testing:
 #panelsInUniverse = c("TSmart-natlSample-1", "DNC-natl-2", "DNC-100k-geo")
-panelsInUniverse = c("TSmart-5fullStates", "DNC-natl-2", "DNC-100k-geo")
+#panelsInUniverse = c("TSmart-5fullStates", "DNC-natl-2", "DNC-100k-geo")
 
-# What we actually want to use in prediction paper
-panelsForNatlSample = c("TSmart-natlSample-1", "DNC-natl-2", "DNC-100k-geo")
 
 # version 2
 panelsInUniverse = c("TSmart-natlSample-2-combo", "DNC-natl-1", "DNC-natl-2", "DNC-100k-geo", "TSmart-5fullStates")	# All that we collect data for
+# What we actually want to use in prediction paper
 panelsForNatlSample = c("TSmart-natlSample-2-combo", "DNC-natl-2", "DNC-100k-geo")					# All that we want to analyze data for right now
+# I must have then run:
+# universePath = "~/voter-stuff/panels/universe_july19/"
+# createDedupedUniverse(panelsInUniverse, universePath)
+# idsForNatlSample = getIDsForPanels(universePath, panelsForNatlSample)
+# fwrite(idsForNatlSample, paste0(universePath, "panelIDs-natlSample.csv"))
 
 # version 3 (Sept 2017)
 panelsInUniverse = c("TSmart-all-May2017", "TSmart-natlSample-2-combo", "DNC-natl-1", "DNC-natl-2", "DNC-100k-geo")	# Any that we might potentially want to look at
@@ -57,7 +61,7 @@ panelsForMillionMan = c("TSmart-all-May2017", "DNC-natl-2", "DNC-100k-geo")	# Ke
 # createDedupedUniverse(panelsInUniverse, universePath)
 # idsForMillionMan = getIDsForPanels(universePath, panelsForMillionMan)
 #  to get data in common input format:
-# inputDemogs = fread(paste0(universePath, "inputFormat.csv"))
+# inputDemogs = fread(paste0(universePath, "inputFormat.csv"), colClasses = list(character=c(21, 26)))
 # merged1 = merge(idsForMillionMan, inputDemogs, by=c("twProfileID", "voter_id"))
 # fwrite(merged1, paste0(universePath, "people-for-million-man-panel.csv"))
 # finally, what I've prepped for Kenny is [probably]: sort *twIDs.txt | uniq > all-union.twIDs.txt 
