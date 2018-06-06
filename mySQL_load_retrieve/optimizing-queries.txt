@@ -1,0 +1,46 @@
+Reading about what to do...
+
+-Only select the columns that are needed
+-Use LIMIT
+-Don't have functions in the WHERE clause  <-- yeah, that's a problem
+-Careful with subqueries
+[x] Read the execution plan		
+-Sphinx for searching mySQL?
+-Why queries might occasionally be very slow: if index is corrupted or server thinks many rows will be returned, it'll choose to do 
+a full table scan instead of using the index.
+-Fulltext performance analysis (https://makandracards.com/makandra/12813-performance-analysis-of-mysql-s-fulltext-indexes-and-like-queries-for-full-text-search)
+shows that if total vocabulary is small, runtime scales poorly with number of rows in table; with larger vocab, number of rows matters less.
+
+
+
+[x] Idea: remove from the main tables all records that don't have >1 nameHandleWord. It's almost 10%.
+[x] Idea: split data among >= 3 tables, rather than 2.
+-Idea: only select id column initially, then go back and get the rest of the fields later via one big join.
+-Idea: Hey, the current version of mySQL supports FULLTEXT indexing for InnoDB tables. Maybe those are faster.
+	It will need its own flags for min word length.
+	See https://dev.mysql.com/doc/refman/5.7/en/optimizing-innodb-bulk-data-loading.html about column setup to make fulltext fast.
+[x] Once in InnoDB, make sure autocommit is on for read-only work. (Default of autocommit=1 will be fine for all my purposes.)
+-Idea: Store fewer columns in the tables?
+[x] Idea: for that subquery with limit 200, use limit 20 instead? or 11?
+
+--------------------
+
+Wow! Great speedup (calling table 2, as during other tests) by first spending the 2.6 minutes to call
+LOAD INDEX INTO CACHE profiles2017_2 ignore leaves;
+After that, it was down to 2 minutes for 100 records, and average of 1 second per count(*) call.
+Try again not ignoring leaves. 3.5 min to load key cache.
+Wow!! 15 seconds for 100 records. Average of .15 sec per count(*) call.
+
+Trying 1000 records: now getting averages of .2 to .5 per call; previous run must have been a lucky fluke. Total: 5.6 min.
+That now matches what I got in October, but I need to try again/tomorrow searching all tables. (Not sure any more whether it'll be better 
+to have many little ones or one big one.)
+
+And...it can do multiple sessions at once. I did 1000 records x 2 (in simultaneous runs), taking 7.3 and 7.7 min, respectively.
+Definitely worth it, and might possibly be further parallelizable.
+
+Comparing profiles2017_2 to [more or less identical data in] profiles2017v2_3 and profiles2017v2_4. The latter, once loaded in key cache, 
+do 1000 records in (just under) 5 min.  --> Not clear that it's significantly faster than using 1 table only, but it's not slower. Great!
+And since the set-of-4 tables has fewer records (<=1 nameHandleWords ones removed), we want to use it.
+
+Set-of-4 tables (i.e., searching full set of twitter profiles): 1000 records takes 9.28 minutes now. That's ... a bit worse than before. But
+doable. Especially if it can be parallelized(?).
