@@ -1,0 +1,20 @@
+Ontario	ON
+Quebec	QC
+Nova Scotia	NS
+New Brunswick	NB
+Manitoba	MB
+British Columbia	BC
+Prince Edward Island	PE
+Saskatchewan	SK
+Alberta	AB
+Newfoundland and Labrador	NL
+Newfoundland	NL
+Labrador	NL
+American Samoa	AS
+Guam	GU
+Marshall Islands	MH
+Micronesia	FM
+Northern Marianas	MP
+Palau	PW
+Puerto Rico	PR
+Virgin Islands	VI
