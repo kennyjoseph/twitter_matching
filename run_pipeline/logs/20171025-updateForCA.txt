@@ -1,0 +1,22 @@
+# modified generate_extra_files.py to have "states = ['CA']" instead of the list of 50.
+# Create extra_state_files/CA_extra.tsv from the existing 50 files (from May)
+lfriedl@achtung03:~/voter-stuff/voter-data$ ~/twitter_matching/voter_file_aggregation/code/generate_extra_files.py
+
+# Create the 'ts_cleaned' version of CA:
+lfriedl@achtung03:~/voter-stuff/voter-data$ mkdir ts_cleaned2
+lfriedl@achtung03:~/voter-stuff/voter-data$ python ~/twitter_matching/voter_file_aggregation/code/generate_targetsmart_csvs.py targetsmart_oct2017 ts_cleaned2
+# (Ran for > 1 hour, took lots of memory, generated ts_cleaned2/tsmart_northeastern_install_file_CA.tsv)
+$ mv ts_cleaned2/tsmart_northeastern_install_file_CA.tsv ts_cleaned
+
+# Run prepCountInputs.R to create the chunk files. 
+# For safety, modify output directory to be ts_chunks2 when first run this. (Then moved results to regular ts_chunks.)
+$ cd ~/twitter_matching/run_pipeline
+$ Rscript prepCountInputs.R 5		# CA is the 5th when 1-indexed.
+
+# Run runTS.R. 
+# First need to edit the hard-coded number of files in ts_chunks --> since nothing else is in process,
+# the change shouldn't break anything (apart from manual notes in some *.sh files mapping states to their numbers).
+# Then, created file 'fullStates-withCA.sh' with command-line calls part 1, of the form 'Rscript runTS.R 8 1' for the CA chunk files, which have indices 8-20.
+$ screen
+$ sh fullStates-withCA.sh
+# (started running 10/25/17, ~4:14pm, on achtung03.)

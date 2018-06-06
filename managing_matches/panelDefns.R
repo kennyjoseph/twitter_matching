@@ -148,6 +148,7 @@ getPanelInfo = function(panelName, printInfo=T) {
 
 		# This matching also used extra_state_files/CA_extra.tsv, which comes from the May data.
 		# todo: fix the universe deduping I did that only used the main CA raw file.
+		# todo: other option: break CA into CA-from-old and CA-from-new versions
 		allVars$voterDataFiles = c("/net/data/twitter-voters/voter-data/targetsmart_oct2017/tsmart_northeastern_install_file_CA.csv",
 					   "/net/data/twitter-voters/voter-data/targetsmart/tsmart_northeastern_install_file_*.csv")
 
