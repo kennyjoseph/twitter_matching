@@ -1,10 +1,12 @@
 import io
 import glob
+# states for which we'll produce 'extra' files
 states = ['WY', 'WV', 'WI', 'WA', 'VT', 'VA', 'UT', 'TX', 'TN', 'SD', 'SC', 
           'RI', 'PA', 'OR', 'OK', 'OH', 'NY', 'NV', 'NM', 'NJ', 'NH', 'NE',
           'ND', 'NC', 'MT', 'MS', 'MO', 'MN', 'MI', 'ME', 'MD', 'MA', 'LA', 
           'KY', 'KS', 'IN', 'IL', 'ID', 'IA', 'HI', 'GA', 'FL', 'DE', 'DC', 
           'CT', 'CO', 'AZ', 'AR', 'AL', 'AK']
+#states = ['CA']  	# (when rerun for CA only)
 
 state_map = {s : io.open("/net/data/twitter-voters/voter-data/extra_state_files/"+s+"_extra.tsv","w") for s in states}
 

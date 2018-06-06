@@ -22,7 +22,7 @@ usage = "Usage: Rscript [--vanilla] runTS.R <fileNum> <actionNum> <force=1 or 0>
 
 # Initialize vars
 voterfileDir 		= "/net/data/twitter-voters/voter-data/ts_chunks"
-numVoterfilesWeKnowAbout = 124   # for sanity check
+numVoterfilesWeKnowAbout = 137   # for sanity check -- now that CA has been added too
 
 #voterfileDir 		= "/net/data/twitter-voters/voter-data/preferred_chunks"
 #voterfileDir 		= "/net/data/twitter-voters/voter-data/preferred_chunks_2"
