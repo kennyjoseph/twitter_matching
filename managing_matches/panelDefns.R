@@ -105,7 +105,8 @@ getPanelInfo = function(panelName, printInfo=T) {
 	if (panelName == "TSmart-natlSample-1") {
 		allVars$panelDescrip = "National sample from TargetSmart voter data"
 		allVars$voterDataFiles = "/net/data/twitter-voters/voter-data/targetsmart/tsmart_northeastern_install_file_*.csv"
-		allVars$matchingInputFiles = "/net/data/twitter-voters/voter-data/preferred_chunks/preferred_*_chunk*.tsv"
+		# these matchingInputFiles were deleted to save space
+		allVars$matchingInputFiles = "/net/data/twitter-voters/voter-data/input_to_pipeline/preferred_chunks/preferred_*_chunk*.tsv"
 
 		allVars$matchFile = "<todo!>"
 		allVars$sourceMatchFilesWithDups = "/net/data/twitter-voters/match-results/targetsmart_preferred/matches-preferred_*_chunk*-uniqcity-Ctree0.9-rule5-wDups.csv"
@@ -114,11 +115,11 @@ getPanelInfo = function(panelName, printInfo=T) {
 	} else if (panelName == "TSmart-5fullStates") {
 		allVars$panelDescrip = "From TargetSmart voter data, all matches from 5 states: IA,NH,WI,PA,MN"
 		allVars$voterDataFiles = "/net/data/twitter-voters/voter-data/targetsmart/tsmart_northeastern_install_file_*.csv"
-		allVars$matchingInputFiles = c("/net/data/twitter-voters/voter-data/ts_chunks/IA_chunk*.tsv",
-						"/net/data/twitter-voters/voter-data/ts_chunks/NH_chunk*.tsv",
-						"/net/data/twitter-voters/voter-data/ts_chunks/WI_chunk*.tsv",
-						"/net/data/twitter-voters/voter-data/ts_chunks/PA_chunk*.tsv",
-						"/net/data/twitter-voters/voter-data/ts_chunks/MN_chunk*.tsv")
+		allVars$matchingInputFiles = c("/net/data/twitter-voters/voter-data/input_to_pipeline/ts_chunks/IA_chunk*.tsv",
+						"/net/data/twitter-voters/voter-data/input_to_pipeline/ts_chunks/NH_chunk*.tsv",
+						"/net/data/twitter-voters/voter-data/input_to_pipeline/ts_chunks/WI_chunk*.tsv",
+						"/net/data/twitter-voters/voter-data/input_to_pipeline/ts_chunks/PA_chunk*.tsv",
+						"/net/data/twitter-voters/voter-data/input_to_pipeline/ts_chunks/MN_chunk*.tsv")
 
 		allVars$matchFile = "<todo!>"
 		allVars$sourceMatchFilesWithDups = c("/net/data/twitter-voters/match-results/targetsmart_fullStates/matches-IA_chunk*-uniqcity-Ctree0.9-rule5-wDups.csv",
@@ -130,15 +131,16 @@ getPanelInfo = function(panelName, printInfo=T) {
 	} else if (panelName == "TSmart-natlSample-oldPeople") {
 		allVars$panelDescrip = "National sample from TargetSmart voter data, oversampling people aged > 45"
 		allVars$voterDataFiles = "/net/data/twitter-voters/voter-data/targetsmart/tsmart_northeastern_install_file_*.csv"
-		allVars$matchingInputFiles = "/net/data/twitter-voters/voter-data/preferred_chunks_2/preferred_*_chunk*.tsv"
+		# these matchingInputFiles were deleted to save space
+		allVars$matchingInputFiles = "/net/data/twitter-voters/voter-data/input_to_pipeline/preferred_chunks_2/preferred_*_chunk*.tsv"
 
 		allVars$matchFile = "<todo!>"
-		allVars$sourceMatchFilesWithDups = "/net/data/twitter-voters/match-results/targetsmart_preferred_2/matches-preferred_*_chunk*-uniqcity-Ctree0.9-rule5-wDups.csv"
+		allVars$sourceMatchFilesWithDups = "/net/data/twitter-voters/match-results/input_to_pipeline/targetsmart_preferred_2/matches-preferred_*_chunk*-uniqcity-Ctree0.9-rule5-wDups.csv"
 
 	} else if (panelName == "TSmart-all-May2017") {
 		allVars$panelDescrip = "All matches from TargetSmart voter data (the version provided to us May 2017)"
 		allVars$voterDataFiles = "/net/data/twitter-voters/voter-data/targetsmart/tsmart_northeastern_install_file_*.csv"
-		allVars$matchingInputFiles = "/net/data/twitter-voters/voter-data/ts_chunks/*_chunk*.tsv"
+		allVars$matchingInputFiles = "/net/data/twitter-voters/voter-data/input_to_pipeline/ts_chunks/*_chunk*.tsv"
 
 		allVars$matchFile = "<todo!>"
 		allVars$sourceMatchFilesWithDups = "/net/data/twitter-voters/match-results/targetsmart_fullStates/matches-*_chunk*-uniqcity-Ctree0.9-rule5-wDups.csv"
@@ -152,7 +154,7 @@ getPanelInfo = function(panelName, printInfo=T) {
 		allVars$voterDataFiles = c("/net/data/twitter-voters/voter-data/targetsmart_oct2017/tsmart_northeastern_install_file_CA.csv",
 					   "/net/data/twitter-voters/voter-data/targetsmart/tsmart_northeastern_install_file_*.csv")
 
-		allVars$matchingInputFiles = "/net/data/twitter-voters/voter-data/ts_chunks/CA_chunk*.tsv"
+		allVars$matchingInputFiles = "/net/data/twitter-voters/voter-data/input_to_pipeline/ts_chunks/CA_chunk*.tsv"
 
 		allVars$matchFile = "<todo!>"
 		allVars$sourceMatchFilesWithDups = "/net/data/twitter-voters/match-results/targetsmart_Oct2017/matches-CA_chunk*-uniqcity-Ctree0.9-rule5-wDups.csv"

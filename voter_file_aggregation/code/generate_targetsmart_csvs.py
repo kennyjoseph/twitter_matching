@@ -2,6 +2,8 @@ from __future__ import print_function
 
 """
 This file parses raw data specifically from targetsmart voter registration files
+Automatically skips output files that exist at the start of the run.
+Note: actually generates .tsv files, not .csv.
 
 """
 
@@ -19,17 +21,19 @@ from functools import partial
 import time
 
 #sys.argv = ['', "../data/targetsmart/", "../data/targetsmart_cleaned_csvs/"]
-if len(sys.argv) != 3:
-    print('USAGE: generate_targetsmart_csvs.py [path_to_targetsmart_data] [path_to_output_data]')
+if len(sys.argv) != 4:
+    print('USAGE: generate_targetsmart_csvs.py [path_to_targetsmart_data] [path_to_output_data] [CSV or ZIP (input format)]')
     sys.exit(-1)
 
 VOTER_FILE_DATA_DIR = sys.argv[1]
 OUTPUT_DIR = sys.argv[2]
-TODAYS_DATE = time.strftime("%d/%m/%Y")
+ZIPPED = True if (sys.argv[3] == 'ZIP') else False
+INPUT_EXT = '.zip' if ZIPPED else '.csv'
+
 try:
     os.mkdir(OUTPUT_DIR)
 except:
-    print('didnt make output dir, exists already')
+    print('didn\'t make output dir, exists already')
 
 
 all_var_names = ["voter_id", "first_name", "middle_name",
@@ -41,7 +45,7 @@ all_var_names = ["voter_id", "first_name", "middle_name",
 
 varnames_to_keep =copy(all_var_names)
 varnames_to_keep.remove("birth_date")
-varnames_to_keep_len = len(varnames_to_keep)
+
 
 def convert_zipcode(x):
     if x =='':
@@ -53,8 +57,8 @@ def convert_zipcode(x):
 
 def get_data_for_state_from_targetsmart(filename, output_dir):
     print(filename)
-    output_filename = os.path.join(output_dir, os.path.basename(filename))
-    data = pd.read_csv(filename,sep="\t")
+    output_filename = os.path.join(output_dir, os.path.basename(filename.replace(INPUT_EXT,".tsv")))
+    data = pd.read_csv(filename,sep="\t")   # automatically detects .zip extension
     data = data.fillna("")
     data['middle_name'] = data.tsmart_middle_name.apply(clean_name_text)
     data['first_name'] = data.tsmart_first_name.apply(clean_name_text)
@@ -70,7 +74,7 @@ def get_data_for_state_from_targetsmart(filename, output_dir):
     data["turnout_2012"] = ''
     data["turnout_2014"] = ''
 
-    file_id = os.path.basename(filename).replace("_northeastern_install_file", "").replace(".csv", "")
+    file_id = os.path.basename(filename).replace("_northeastern_install_file", "").replace(INPUT_EXT, "")
     data['from'] =file_id
 
     data['birth_year'] = data.voterbase_dob.astype(str).str.slice(0, 4)
@@ -92,28 +96,29 @@ def get_data_for_state_from_targetsmart(filename, output_dir):
     data = data.fillna("")
     data = data[varnames_to_keep]
 
-    for x in ['county', 'city', 'state', 'zipcode']:
-        print("\t", file_id, x)
-        if x != 'state':
-            gvs = [x, 'state']
-        else:
-            gvs = ['state']
-        group_vars = ['first_name', 'last_name'] + gvs
-        v = pd.DataFrame(data.groupby(group_vars).size()).reset_index()
-        v.columns = group_vars + [x + "_count"]
-        data = pd.merge(data, v, on=group_vars)
+    # skip counting, since we have to redo later anyway
+    #for x in ['county', 'city', 'state', 'zipcode']:
+    #    print("\t", file_id, x)
+    #    if x != 'state':
+    #        gvs = [x, 'state']
+    #    else:
+    #        gvs = ['state']
+    #    group_vars = ['first_name', 'last_name'] + gvs
+    #    v = pd.DataFrame(data.groupby(group_vars).size()).reset_index()
+    #    v.columns = group_vars + [x + "_count"]
+    #    data = pd.merge(data, v, on=group_vars)
         
     data = data.fillna("")
 
-    write_file(data,output_filename.replace(".csv",".tsv"))
+    write_file(data,output_filename)
     return filename
 
 
-files = glob.glob(os.path.join(VOTER_FILE_DATA_DIR,"*.csv"))
+files = glob.glob(os.path.join(VOTER_FILE_DATA_DIR,"*" + INPUT_EXT))
 
 fil2= []
 for filename in files:
-    output_filename = os.path.join(OUTPUT_DIR, os.path.basename(filename.replace(".csv",".tsv")))
+    output_filename = os.path.join(OUTPUT_DIR, os.path.basename(filename.replace(INPUT_EXT,".tsv")))
     if os.path.exists(output_filename):
         continue
     fil2.append(filename)
@@ -122,9 +127,7 @@ files = fil2
 print('N FILES: ', len(files))
 
 # generate results in parallel for state voter files
-n_cpu = 4
-
-#get_data_voter_file_helper('WA')
+n_cpu = 1
 print('N CPUS: ', n_cpu)
 
 #get_data_for_state_from_targetsmart(files[0],OUTPUT_DIR)

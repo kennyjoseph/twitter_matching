@@ -39,9 +39,12 @@ scriptsBaseDir = "/home/lfriedl/twitter_matching/"
 placeListDir = file.path(scriptsBaseDir, "add_locs_and_do_match/data/placeLists/")
 
 # Master list of files = whatever's in voterfileDir. Make sure it doesn't change without our knowing about it.
-voterfiles = list.files(voterfileDir, pattern="\\.tsv$")
-if (length(voterfiles) != numVoterfilesWeKnowAbout) {
-	stop("Something has changed in ", voterfileDir, "; please check this and update script before proceeding")
+sanity_check = function() {
+	voterfiles = list.files(voterfileDir, pattern="\\.tsv$")
+	if (length(voterfiles) != numVoterfilesWeKnowAbout) {
+		stop("Something has changed in ", voterfileDir, "; please check this and update script before proceeding")
+	}
+	return(voterfiles)
 }
 
 # Process command-line instructions
@@ -90,6 +93,7 @@ getWordCount = function(voterfilePath) {
 }
 
 run_part1 = function(fileNum, force=F) {
+	voterfiles = sanity_check()
 	voterfileName = voterfiles[fileNum] 	# looks something like WI_chunk1.tsv
 	print(paste("Working on file", voterfileName))
         voterfileIn = file.path(voterfileDir, voterfileName)
@@ -151,6 +155,7 @@ run_part1 = function(fileNum, force=F) {
 }
 
 run_part2 = function(fileNum, force=F) {
+	voterfiles = sanity_check()
 	voterfileName = voterfiles[fileNum] 	# looks something like WI_chunk1.tsv
 	print(paste("Working on file", voterfileName))
         voterfileIn = file.path(voterfileDir, voterfileName)
@@ -197,5 +202,5 @@ run_part2 = function(fileNum, force=F) {
 }
 
 # Actually do the call down here
-run_command_line_call()
+#run_command_line_call()
 

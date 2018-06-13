@@ -3,7 +3,7 @@ library(data.table)
 # To run: 
 usage = "Usage: Rscript [--vanilla] prepCountInputs.R <fileNum>"
 # where fileNum corresponds to the 50 states
-args = commandArgs(T)   # everything after executable name
+#args = commandArgs(T)   # everything after executable name
 
 # This script bundles data from ts_cleaned + extra_state_files into input files for a state: 
 # -rbind raw-ish and extra state files for a state
@@ -26,30 +26,34 @@ args = commandArgs(T)   # everything after executable name
 #                       /handful of files per input file 
 
 # Initialize vars
-rawStateDir 		= "/net/data/twitter-voters/voter-data/ts_cleaned"	# example filename: tsmart_northeastern_install_file_AK.tsv
-extraStateDir 		= "/net/data/twitter-voters/voter-data/extra_state_files"	# example filename: AK_extra.tsv
-voterfileDir            = "/net/data/twitter-voters/voter-data/ts_chunks"	# for output
+#rawStateDir 		= "/net/data/twitter-voters/voter-data/ts_cleaned"	# example filename: tsmart_northeastern_install_file_AK.tsv
+#extraStateDir 		= "/net/data/twitter-voters/voter-data/extra_state_files"	# example filename: AK_extra.tsv
+#voterfileDir            = "/net/data/twitter-voters/voter-data/ts_chunks"	# for output
 
 # example rawState filename: tsmart_northeastern_install_file_AK.tsv
 # example extraState filename: AK_extra.tsv
 
-run_command_line_call = function(args, linesPerFile = 2000000, maxLinesPerFile = 3000000) {
-        if (length(args) != 1) {
-                stop("Expected exactly 1 arg\n", usage)
-        }
-        fileNum = as.integer(args[1])
+# Returns the number of chunk files written
+run_command_line_call = function(fileNum, rawStateDir, extraStateDir, voterfileDir, linesPerFile = 2000000, maxLinesPerFile = 3000000) {
+        #if (length(args) != 1) {
+                #stop("Expected exactly 1 arg\n", usage)
+        #}
+        #fileNum = as.integer(args[1])
+	if (!dir.exists(voterfileDir) && !dir.create(voterfileDir)) {
+		stop(paste("Cannot create output directory", voterfileDir))
+	}
 	allStateFiles = list.files(rawStateDir, pattern="\\.tsv$")
 	rawStateFileStem = allStateFiles[fileNum]
 	rawStateFile = file.path(rawStateDir, rawStateFileStem)
 	stateAbbrev = substr(rawStateFileStem, nchar(rawStateFileStem) - 5, nchar(rawStateFileStem) - 4)
-	extraStateFile = file.path(extraStateDir, paste0(stateAbbrev, "_extra.tsv"))
+	extraStateFile = file.path(extraStateDir, paste0(toupper(stateAbbrev), "_extra.tsv"))
 	if (!file.exists(extraStateFile)) {
 		stop("Didn't find extra state file")
 	}
 
 	data1 = fread(rawStateFile)
 	# data1 contains all records from the original targetsmart file, including those from out of state.
-	data1_state = data1[state==stateAbbrev,]
+	data1_state = data1[state==toupper(stateAbbrev),]
 	data2 = fread(extraStateFile, header=FALSE)
 	allData = rbind(data1_state, data2, use.names=FALSE)
 	print(paste(stateAbbrev, ": found", nrow(allData), "rows"))
@@ -98,10 +102,11 @@ run_command_line_call = function(args, linesPerFile = 2000000, maxLinesPerFile =
 		linesWritten = stopLine
 	}
 
+	return(fileCnt)
 
 }
 
 
 # Actually do the call down here
-run_command_line_call(args)
+#run_command_line_call(args)
 
