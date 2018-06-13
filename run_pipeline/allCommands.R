@@ -1,4 +1,7 @@
 
+# Wrapper for scripts in run_pipeline: pre-processes Targetsmart voter data, then queries voters against database, infers locations, and writes matches.
+# Recommended way to run this: within a "screen" session, start R, and copy and paste these commands to the prompt.
+
 rawDir         = "/net/data/twitter-voters/voter-data/targetsmart_oct2017"         # example filename: tsmart_northeastern_install_file_ak.zip
 cleanedDir     = "/net/data/twitter-voters/voter-data/input_to_pipeline/ts_cleaning"   # example filename: tsmart_northeastern_install_file_ak.tsv
 extraStateDir  = "/net/data/twitter-voters/voter-data/input_to_pipeline/extra_state_files2"       # example filename: ak_extra.tsv
@@ -24,6 +27,7 @@ system2("python", args=c(file.path(repoBaseDir, "voter_file_aggregation/code/gen
 			cleanedDir, extraStateDir))
 
 # 3. cleaned + extra --> chunks: prepCountInputs.R
+# Runtime: ~1 hour
 print("wrapper: starting prepCountInputs.R")
 source(file.path(repoBaseDir, "run_pipeline/prepCountInputs.R"))
 numChunkFiles = 0
@@ -45,6 +49,7 @@ placeListDir = file.path(scriptsBaseDir, "add_locs_and_do_match/data/placeLists/
 
 sanity_check()   # see if we have the number of chunk files expected
 
+# Runtime: ~6 hours per chunk
 for (i in 1:numChunkFiles) {
 	run_part1(i)
 }
@@ -52,6 +57,7 @@ for (i in 1:numChunkFiles) {
 # 5. cand-matches --> match-results: runTS.R part 2
 print("wrapper: starting runTS.R part 2")
 
+# Runtime: ~20 min per chunk
 for (i in 1:numChunkFiles) {
 	run_part2(i)
 }
