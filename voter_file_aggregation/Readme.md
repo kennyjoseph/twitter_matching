@@ -51,7 +51,7 @@ The data will be output in ```[path_to_data_dir]/cleaned_voter_files```.
 
 
 
-
+# Ignore below here....
 
 # Loading data into BigQuery
 
