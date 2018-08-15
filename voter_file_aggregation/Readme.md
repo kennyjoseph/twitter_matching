@@ -37,6 +37,10 @@ Most data is from the public database at, e.g., connvoters.com.
 -  NV http://nvsos.gov/index.aspx?page=332
 -  NY http://www.elections.ny.gov/FoilRequests.html
 
+
+
+# Ignore below here....
+
 # Generating Clean Voter Files
 
 1. download voter data - this step has to be automated, sorry. 
@@ -51,7 +55,6 @@ The data will be output in ```[path_to_data_dir]/cleaned_voter_files```.
 
 
 
-# Ignore below here....
 
 # Loading data into BigQuery
 
