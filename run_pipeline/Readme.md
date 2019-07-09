@@ -25,7 +25,7 @@
 
 # Scripts for sending TargetSmart data through the matching pipeline:
 
-TLDR: a wrapper `run_pipeline/allCommands.R` now has code to do all through runTS.R. 
+TLDR: a wrapper `run_pipeline/allCommands.R` now has code to do everything up through (and including) runTS.R. 
 
 - `../voter_file_aggregation/code/generate_targetsmart_csvs.py` takes raw TargetSmart data file (one per state), select and cleans columns to produce files we keep in `ts_cleaned`.
 - `../voter_file_aggregation/code/generate_extra_files.py` takes the complete set of `ts_cleaned` files and creates, for every state of residence, a file under `extra_state_files` for voters who live here but were registered elsewhere. (Files produced so far have correct formatting, incorrect counts.)
@@ -36,29 +36,29 @@ TLDR: a wrapper `run_pipeline/allCommands.R` now has code to do all through runT
 	- part 2: train and apply a classifier for P(US loc | profile metadata); use "matching rules" to change candidate matches into actual matches.			
 - Then see `../managing_matches/dedupFinalizePanelMembs.R` to deduplicate and join against the voter files. Before this step, need to make an entry in `managing_matches/panelDefns.R`.
 
-
-# Data maintenance
-- We should make sure to have backed up: 
-	1. /net/data/twitter-voters/voter-data/[every raw directory]
-	- /net/data/twitter-voters/match-results
-	- /net/data/twitter-voters/panels
-- We should make sure to compress:
-	1. /net/data/twitter-voters/voter-data/[every raw directory]
-	-  /net/data/twitter-voters/voter-data/[every "chunks" directory]
-	- Anything else we choose not to delete
-- We should go ahead and delete:
-	- After scripts ran successfully:
-		1. /net/data/twitter-voters/voter-data/input_to_pipeline/ts_cleaned
-		- /net/data/twitter-voters/voter-data/input_to_pipeline/extra_state_files
-		- /net/data/twitter-voters/matching-work-files/cand-matches/out-*.txt
-		- /net/data/twitter-voters/matching-work-files/with-locations/*/allCandidateMatchLocs.csv
-	- If no reason to track matching outcomes for each voter:
-		- /net/data/twitter-voters/matching-work-files/cand-matches/*
-		- /net/data/twitter-voters/matching-work-files/*
-		- Else if keep these around, should move to a subdir for the data set, and also compress.
-
 		
 # Setup for new voter data (e.g., where are locations configured?)
 - The wrapper script `allCommands.R` manages paths during matching.
 	- Choose a location for the raw data and for the chunks.
 - Before deduping finished matches, need to make an entry for the dataset in `managing_matches/panelDefns.R`. Each entry stores meta-data for a version of the panel, including paths for all data we're going to keep around.
+
+# Data maintenance
+- We should make sure to have backed up: 
+	1. /net/data/twitter-voters/voter-data/[every raw directory]
+	1. /net/data/twitter-voters/match-results
+	1. /net/data/twitter-voters/panels
+- We should make sure to compress:
+	1. /net/data/twitter-voters/voter-data/[every raw directory]
+	1.  /net/data/twitter-voters/voter-data/[every "chunks" directory]
+	1. Anything else we choose not to delete
+- We should go ahead and delete:
+	- After scripts ran successfully:
+		1. /net/data/twitter-voters/voter-data/input_to_pipeline/ts_cleaned
+		1. /net/data/twitter-voters/voter-data/input_to_pipeline/extra_state_files
+		1. /net/data/twitter-voters/matching-work-files/cand-matches/out-*.txt
+		1. /net/data/twitter-voters/matching-work-files/with-locations/*/allCandidateMatchLocs.csv
+	- If no reason to track matching outcomes for each voter:
+		- /net/data/twitter-voters/matching-work-files/cand-matches/*
+		- /net/data/twitter-voters/matching-work-files/*
+		- Else if keep these around, should move to a subdir for the data set, and also compress.
+

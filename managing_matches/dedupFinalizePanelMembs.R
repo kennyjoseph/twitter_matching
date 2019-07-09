@@ -375,7 +375,7 @@ saveWithRawVoterData = function(dataRows, panelInfo, outDirAndPrefix) {
 		matchesThisPanel$orig_voter_id = gsub(".*_", "", matchesThisPanel$voter_id)   # keep only portion after the last underscore
 
 		if (grepl("TSmart", panelName)) {
-			charColsArg = list(character=c(9:11, 15, 26, 31:33, 35:36, 43:46, 49:53, 70, 76, 80))
+			charColsArg = list(character=c(9:11, 15, 17, 26, 31:33, 35:36, 43:46, 49:53, 70, 76, 80))
 		} else {
 			charColsArg = NULL
 		}
@@ -384,9 +384,11 @@ saveWithRawVoterData = function(dataRows, panelInfo, outDirAndPrefix) {
 		for (i in 1:length(voterDataFiles)) {
 			gc()
 			voterFile = voterDataFiles[i]
-			#voterData = fread(voterFile)
-			# todo: go back and set colClasses to "character" for columns 11, 32, 43, 44, 45, 46, 49, 50, 51, 52, 53, 70, 76 . (and maybe others in the future?)
-			voterData = fread(voterFile, colClasses=charColsArg)
+			if ("zip" == substr(voterFile, nchar(voterFile) - 2, nchar(voterFile)) {
+				voterData = fread(paste("unzip -p", voterFile), colClasses=charColsArg)
+			} else {
+				voterData = fread(voterFile, colClasses=charColsArg)
+			}
 			idcolname = possVoterIDColNames[first(which(possVoterIDColNames %in% colnames(voterData)))]
 			voterData[[idcolname]] = as.character(voterData[[idcolname]])
 			matchesWithVoterData = merge(matchesThisPanel[, .(orig_voter_id, voter_id, twProfileID)], voterData, by.x = "orig_voter_id", by.y = idcolname)

@@ -5,7 +5,7 @@
 This is non-trivial because (a) we have to be smart about handling Twitter IDs that match more than one voter, and (b) the voter data files had different properties (such as format of IDs).
 
 * `createDedupedUniverse(panelNames, outDirAndPrefix)` -- run this to create a master list of all people and all panels they're on. Should include as many panel names as we might potentially care about. **N.B. When the universe changes, the composition of any given panel will also change.** (Due to handling of duplicates.)
-	0. Loads all match files (`config$sourceMatchFilesWithDups`) for the list of panels, to get Twitter + voter IDs.
+	1. Loads all match files (`config$sourceMatchFilesWithDups`) for the list of panels, to get Twitter + voter IDs.
 	1. Checks for any voter IDs that occur twice. (If any, warns and drops them.)
 	2. Flags any Twitter IDs that occur twice.
 	3. Merges in demographic data (`config$matchingInputFiles`) for each panel from the input voter file. 

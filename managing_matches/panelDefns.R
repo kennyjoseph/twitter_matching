@@ -49,6 +49,7 @@ allPanelNames = function() {
 		"TSmart-natlSample-oldPeople",
 		"TSmart-all-May2017",
 		"TSmart-CA-Oct2017",
+		"TSmart-cleaner-Oct2017",
 
 		# combinations start here:  	
 		"TSmart-natlSample-2-combo"	# if we call two panels a "combo" in this file, never have to think of them as separate outside this file.
@@ -68,7 +69,7 @@ getPanelPrecedences = function() {
 	# 		national samples > full states
 	# 		big samples > smaller samples
 	# 		newer > older
-	c("TSmart-CA-Oct2017", "TSmart-all-May2017", "TSmart-natlSample-2-combo", "TSmart-natlSample-1", "TSmart-natlSample-oldPeople", "TSmart-5fullStates", "public-10states", "DNC-natl-2", 
+	c("TSmart-cleaner-Oct2017", "TSmart-CA-Oct2017", "TSmart-all-May2017", "TSmart-natlSample-2-combo", "TSmart-natlSample-1", "TSmart-natlSample-oldPeople", "TSmart-5fullStates", "public-10states", "DNC-natl-2", 
 		"DNC-IANH-2", "DNC-100k-geo", "DNC-100k-2", "DNC-natl-1", "DNC-IANH-1")
 }
 
@@ -137,6 +138,14 @@ getPanelInfo = function(panelName, printInfo=T) {
 		allVars$matchFile = "<todo!>"
 		allVars$sourceMatchFilesWithDups = "/net/data/twitter-voters/match-results/input_to_pipeline/targetsmart_preferred_2/matches-preferred_*_chunk*-uniqcity-Ctree0.9-rule5-wDups.csv"
 
+	} else if (panelName == "TSmart-cleaner-Oct2017") {
+		allVars$panelDescrip = "All matches from TargetSmart voter data (the version provided to us Oct 2017)"
+		allVars$voterDataFiles = "/net/data/twitter-voters/voter-data/targetsmart_oct2017/tsmart_northeastern_install_file_*.zip"
+		allVars$matchingInputFiles = "/net/data/twitter-voters/voter-data/ts_oct2017_chunks/*_chunk*.tsv"
+
+		allVars$matchFile = "<todo!>"
+		allVars$sourceMatchFilesWithDups = "/net/data/twitter-voters/match-results/targetsmart_cleaner_Oct2017/matches-*_chunk*-uniqcity-Ctree0.9-rule5-wDups.csv"
+		
 	} else if (panelName == "TSmart-all-May2017") {
 		allVars$panelDescrip = "All matches from TargetSmart voter data (the version provided to us May 2017)"
 		allVars$voterDataFiles = "/net/data/twitter-voters/voter-data/targetsmart/tsmart_northeastern_install_file_*.csv"
@@ -146,7 +155,6 @@ getPanelInfo = function(panelName, printInfo=T) {
 		allVars$sourceMatchFilesWithDups = "/net/data/twitter-voters/match-results/targetsmart_fullStates/matches-*_chunk*-uniqcity-Ctree0.9-rule5-wDups.csv"
 
 	} else if (panelName == "TSmart-CA-Oct2017") {
-		allVars$panelDescrip = "Matches from TargetSmart CA voter data (the version provided to us Oct 2017)"
 
 		# This matching also used extra_state_files/CA_extra.tsv, which comes from the May data.
 		# todo: fix the universe deduping I did that only used the main CA raw file.
