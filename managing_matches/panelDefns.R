@@ -243,8 +243,8 @@ getPanelInfo = function(panelName, printInfo=T) {
 		allVars$voterDataFiles = "/net/data/twitter-voters/voter-data/dnc/raw/voterfile_unique_national2m.csv"
 		allVars$matchingInputFiles = "/net/data/twitter-voters/voter-data/dnc/prepped/voterfile_unique_national2m.tsv"
 
-		allVars$sourceMatchFilesWithDups = "/home/lfriedl/twitterUSVoters/data/twitterDB-matching/match-results/locsFeb3/national2MWithDups-rule3.csv"
-		allVars$matchFile = "/home/lfriedl/twitterUSVoters/data/twitterDB-matching/match-results/locsFeb3/national2M-rule3.csv"
+		allVars$sourceMatchFilesWithDups = "/net/data/twitter-voters/from-twitterUSVoters/data/twitterDB-matching/match-results/locsFeb3/national2MWithDups-rule3.csv"
+		allVars$matchFile = "/net/data/twitter-voters/from-twitterUSVoters/data/twitterDB-matching/match-results/locsFeb3/national2M-rule3.csv"
 		# (note: matchFile has columns from raw input format)
 
 		# Since this is from an older matching process...
@@ -255,8 +255,8 @@ getPanelInfo = function(panelName, printInfo=T) {
 						"Requires a single Twitter name match to the right location and no others to blank/unknown locations.")
 
 		# Note for archival purposes: there was an intermediate version of the DB prepared but not used much (SQL tables: profiles2016*).
-		# It used "account census" data from Devin, and then was updated to cover all of 2015's IDs -- see the data sprawl in /home/lfriedl/twitterUSVoters/data/twitterDB-matching/twitter-acct-status.
-		# Matches from that are in twitterUSVoters/data/twitterDB-matching/Oct2016. All ignored, I believe, in favor of the 2017 update.
+		# It used "account census" data from Devin, and then was updated to cover all of 2015's IDs -- see the data sprawl in /net/data/twitter-voters/from-twitterUSVoters/data/twitterDB-matching/twitter-acct-status.
+		# Matches from that are in /net/data/twitter-voters/from-twitterUSVoters/data/twitterDB-matching/Oct2016. All ignored, I believe, in favor of the 2017 update.
 
 	} else if (panelName == "DNC-IANH-1") {
 		allVars$panelDescrip = "DNC matches from IA and NH (about ~21k), tweets included in the 'dnc' grouping collected from Oct 2016 to Jun 2017"
@@ -268,8 +268,8 @@ getPanelInfo = function(panelName, printInfo=T) {
 		allVars$sourceMatchFilesWithDups = "(was never created)"
 		# note: these were individually deduped, though. Well anyway, special case, together with DNC-natl-1.
 		# note: I went back and successfully ran DNC-natl-1 preserving dups, but didn't bother for these -- don't foresee the need.
-		#allVars$sourceMatchFilesWithDups = file.path("/home/lfriedl/twitterUSVoters/data/twitterDB-matching/match-results/locsFeb3", c("IA-rule3.csv", "NH-rule3.csv"))
-		allVars$matchFile = file.path("/home/lfriedl/twitterUSVoters/data/twitterDB-matching/match-results/locsFeb3", c("IA-rule3.csv", "NH-rule3.csv"))
+		#allVars$sourceMatchFilesWithDups = file.path("/net/data/twitter-voters/from-twitterUSVoters/data/twitterDB-matching/match-results/locsFeb3", c("IA-rule3.csv", "NH-rule3.csv"))
+		allVars$matchFile = file.path("/net/data/twitter-voters/from-twitterUSVoters/data/twitterDB-matching/match-results/locsFeb3", c("IA-rule3.csv", "NH-rule3.csv"))
 		#allVars$matchFile = "(single deduped version never created)"
 
 		# created just like DNC-natl-1
